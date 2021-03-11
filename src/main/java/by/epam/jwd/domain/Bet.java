@@ -7,6 +7,7 @@ import java.util.Objects;
 public class Bet extends Entity {
     private static final long serialVersionUID = -848437283670389073L;
 
+
     private int accountId;
     private int eventResultId;
     private BigDecimal amount;

@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title></title>
+    <link>
 </head>
 <body>
 <h1><%= "Hello World!" %>
