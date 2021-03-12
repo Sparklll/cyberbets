@@ -2,9 +2,9 @@
 <%@ page session="false" %>
 <html>
 <head>
-    <title></title>
+    <title>Title</title>
 </head>
 <body>
-error page
+
 </body>
 </html>
