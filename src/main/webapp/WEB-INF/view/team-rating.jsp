@@ -2,10 +2,10 @@
 <%@ page session="false" %>
 <html>
 <head>
-    <title></title>
+    <title>Title</title>
     <link rel="icon" href="#">
 </head>
 <body>
-error page
+rating
 </body>
 </html>

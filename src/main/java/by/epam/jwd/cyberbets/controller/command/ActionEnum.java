@@ -1,9 +1,13 @@
 package by.epam.jwd.cyberbets.controller.command;
 
+import by.epam.jwd.cyberbets.controller.command.impl.general.ForwardErrorPage;
+import by.epam.jwd.cyberbets.controller.command.impl.general.Ignore;
+
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
 public enum ActionEnum {
-    DEFAULT(FORWARD_ERROR_PAGE, ::new);
+    DEFAULT(IGNORE, new Ignore()),
+    ERROR_PAGE(FORWARD_ERROR_PAGE, new ForwardErrorPage());
 
     private final String actionName;
     private final Action action;

@@ -15,7 +15,7 @@ import static by.epam.jwd.cyberbets.connection.ConnectionParameter.*;
 public enum ConnectionPool {
     INSTANCE;
 
-    private final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
 
     private static final int DEFAULT_POOL_SIZE = 16;
 

@@ -3,8 +3,9 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel="icon" href="#">
 </head>
 <body>
-
+news
 </body>
 </html>

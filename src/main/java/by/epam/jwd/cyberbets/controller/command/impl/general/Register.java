@@ -1,4 +1,4 @@
 package by.epam.jwd.cyberbets.controller.command.impl.general;
 
-public class Register {
+public final class Register {
 }
