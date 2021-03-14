@@ -3,19 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
-
-    <error-page>
-        <error-code>404</error-code>
-        <location>/WEB-INF/view/error404.jsp</location>
-    </error-page>
-
     <servlet>
         <servlet-name>FrontController</servlet-name>
         <servlet-class>by.epam.jwd.cyberbets.controller.FrontController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>FrontController</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern></url-pattern>
     </servlet-mapping>
 
 
@@ -25,4 +19,18 @@
             <max-age>7776000</max-age> <!-- 7776000sec - 3 months -->
         </cookie-config>
     </session-config>
+    <context-param>
+        <param-name>jakarta.servlet.jsp.jstl.fmt.localizationContext</param-name>
+        <param-value>localization.locale</param-value>
+    </context-param>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/view/error404.jsp</location>
+    </error-page>
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>
 </web-app>

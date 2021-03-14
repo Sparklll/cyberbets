@@ -25,7 +25,6 @@ public enum Router {
 
     public void resolveRoute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-        System.out.println(requestURI);
         Action transitionAction = routes.getOrDefault(requestURI, ActionEnum.ERROR_PAGE.getAction());
         transitionAction.perform(request, response);
     }

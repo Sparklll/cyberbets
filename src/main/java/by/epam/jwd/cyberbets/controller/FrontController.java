@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-
 public class FrontController extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(FrontController.class);
 
