@@ -14,10 +14,26 @@
         <div class="collapse navbar-collapse text-uppercase" id="navbarSupportedContent">
 
             <ul class="navbar-nav">
-                <li class="nav-item me-2"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item me-2"><a class="nav-link" href="/news/">News</a></li>
-                <li class="nav-item me-2"><a class="nav-link" href="/rating/">Rating</a></li>
-                <li class="nav-item text-nowrap"><a class="nav-link" href="/support/">Support</a></li>
+                <li class="nav-item me-2">
+                    <a class="nav-link" href="/">
+                        <fmt:message key="navbar.link.home"/>
+                    </a>
+                </li>
+                <li class="nav-item me-2">
+                    <a class="nav-link" href="/news/">
+                        <fmt:message key="navbar.link.news"/>
+                    </a>
+                </li>
+                <li class="nav-item me-2">
+                    <a class="nav-link" href="/rating/">
+                        <fmt:message key="navbar.link.rating"/>
+                    </a>
+                </li>
+                <li class="nav-item text-nowrap">
+                    <a class="nav-link" href="/support/">
+                        <fmt:message key="navbar.link.support"/>
+                    </a>
+                </li>
             </ul>
 
             <ul class="navbar-nav ms-auto me-3">
@@ -64,31 +80,31 @@
                                 <li>
                                     <a class="dropdown-item" href="#">
                                         <i class="fas fa-dice me-2"></i>
-                                        My Bets
+                                        <fmt:message key="navbar.account.my_bets"/>
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="#">
                                         <i class="fas fa-plus-circle me-2"></i>
-                                        Deposit
+                                        <fmt:message key="navbar.account.deposit"/>
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="#">
                                         <i class="fas fa-arrow-circle-up me-2"></i>
-                                        Withdrawal
+                                        <fmt:message key="navbar.account.withdrawal"/>
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="#">
                                         <i class="fas fa-history me-2"></i>
-                                        Transaction History
+                                        <fmt:message key="navbar.account.transaction_history"/>
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="#">
                                         <i class="fas fa-user-cog me-2"></i>
-                                        Account Settings
+                                        <fmt:message key="navbar.account.account_settings"/>
                                     </a>
                                 </li>
                                 <li>
@@ -98,14 +114,14 @@
                                 <li>
                                     <a class="dropdown-item" href="#">
                                         <i class="fas fa-cogs me-2"></i>
-                                        Admin Panel
+                                        <fmt:message key="navbar.account.admin_panel"/>
                                     </a>
                                 </li>
                                 </c:if>
                                 <li>
                                     <a class="dropdown-item" href="#">
                                         <i class="fas fa-sign-out-alt me-2"></i>
-                                        Sign Out
+                                        <fmt:message key="navbar.account.log_out"/>
                                     </a>
                                 </li>
                             </ul>
@@ -117,13 +133,15 @@
                         <li class="nav-item me-2 mt-2 mt-lg-0">
                             <button type="button" class="register btn btn-secondary text-uppercase"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#registerModal">Register
+                                    data-bs-target="#registerModal">
+                                <fmt:message key="navbar.button.register"/>
                             </button>
                         </li>
                         <li class="nav-item mt-2 mt-lg-0">
                             <button type="button" class="login btn btn-primary text-uppercase text-nowrap"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#loginModal">Log in
+                                    data-bs-target="#loginModal">
+                                <fmt:message key="navbar.button.log_in"/>
                             </button>
                         </li>
                     </ul>
@@ -141,7 +159,9 @@
             <div class="registration-form">
                 <div class="card">
                     <div class="card-header d-inline-flex align-items-center">
-                        <h5 class="mt-3 text-uppercase fw-bold">Register</h5>
+                        <h5 class="mt-3 text-uppercase fw-bold">
+                            <fmt:message key="navbar.register_modal.header"/>
+                        </h5>
                         <a class="close ms-auto" role="button"
                            data-bs-dismiss="modal"
                            data-bs-toggle="modal">
@@ -175,7 +195,7 @@
                             </div>
                             <div class="d-grid gap-1 mb-4">
                                 <button type="submit" class="btn btn-primary btn-block text-uppercase mt-3">
-                                    Register
+                                    <fmt:message key="navbar.register_modal.button.register"/>
                                 </button>
                             </div>
                         </form>
@@ -192,7 +212,9 @@
             <div class="login-form">
                 <div class="card">
                     <div class="card-header d-inline-flex align-items-center">
-                        <h5 class="mt-3 text-uppercase fw-bold">Log in</h5>
+                        <h5 class="mt-3 text-uppercase fw-bold">
+                            <fmt:message key="navbar.login_modal.header"/>
+                        </h5>
                         <a class="close ms-auto" role="button"
                            data-bs-dismiss="modal"
                            data-bs-toggle="modal">
@@ -217,14 +239,18 @@
                                        required>
                             </div>
                             <div class="d-grid gap-1">
-                                <button type="submit" class="btn btn-primary btn-block text-uppercase mt-3">Log in
+                                <button type="submit" class="btn btn-primary btn-block text-uppercase mt-3">
+                                    <fmt:message key="navbar.login_modal.button.log_in"/>
                                 </button>
                             </div>
                             <div class="text-center mt-4">
-                                <span>Don't have an account?</span>
+                                <span>
+                                    <fmt:message key="navbar.login_modal.dont_have_account"/>
+                                </span>
                                 <a class="fw-bold" role="button" data-bs-dismiss="modal"
                                    data-bs-toggle="modal"
-                                   data-bs-target="#registerModal">Register
+                                   data-bs-target="#registerModal">
+                                    <fmt:message key="navbar.login_modal.button.log_in"/>
                                 </a>
                             </div>
                         </form>

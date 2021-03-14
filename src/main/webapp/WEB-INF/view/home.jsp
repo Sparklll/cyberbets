@@ -4,7 +4,7 @@
 <%@ page session="false" %>
 
 <c:set var="lang" value="${cookie['lang'].getValue()}"/>
-<fmt:setLocale value="${empty lang ? 'default' : lang}"/>
+<fmt:setLocale value="${empty lang ? 'default' : lang}" scope="request"/>
 
 
 <!doctype html>
