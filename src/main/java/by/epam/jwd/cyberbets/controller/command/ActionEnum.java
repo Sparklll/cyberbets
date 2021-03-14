@@ -6,8 +6,8 @@ import by.epam.jwd.cyberbets.controller.command.impl.general.Ignore;
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
 public enum ActionEnum {
-    DEFAULT(IGNORE, new Ignore()),
-    ERROR_PAGE(FORWARD_ERROR_PAGE, new ForwardErrorPage());
+    DEFAULT(IGNORE_ACTION, new Ignore()),
+    ERROR_PAGE(FORWARD_ERROR_PAGE_ACTION, new ForwardErrorPage());
 
     private final String actionName;
     private final Action action;

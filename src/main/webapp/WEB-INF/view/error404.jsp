@@ -27,18 +27,18 @@
     <jsp:param name="role" value="${role}"/>
 </jsp:include>
 
-
 <div class="error container wrapper my-5">
     <div class="row">
         <div class="col-12 d-flex justify-content-center">
             <img src="/resources/assets/error404.png">
         </div>
         <div class="col-12 d-flex justify-content-center mt-5">
-            <a class="login btn btn-primary btn-lg text-uppercase" href="/">Back to main page</a>
+            <a class="login btn btn-primary btn-lg text-uppercase" href="/">
+                <fmt:message key="error_page.button.return_to_main_page"/>
+            </a>
         </div>
     </div>
 </div>
-
 
 <jsp:include page="general/footer.jsp"/>
 

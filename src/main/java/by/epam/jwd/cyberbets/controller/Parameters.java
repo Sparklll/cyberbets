@@ -7,13 +7,14 @@ public final class Parameters {
     // GLOBAL
     public static final String ACTION = "action";
 
+    // REQUEST PARAMS
+
 
     // ACTION NAMES
-    public static final String IGNORE = "ignore";
-    public static final String FORWARD_ERROR_PAGE = "forwardErrorPage";
+    public static final String IGNORE_ACTION = "ignore";
+    public static final String FORWARD_ERROR_PAGE_ACTION = "forwardErrorPage";
 
     // PAGES
-
     public static final String ROOT_PAGE = "/WEB-INF/view/home.jsp";
     public static final String NEWS_PAGE = "/WEB-INF/view/news.jsp";
     public static final String TEAM_RATING_PAGE = "/WEB-INF/view/team-rating.jsp";
@@ -29,13 +30,4 @@ public final class Parameters {
     public static final String SUPPORT_ROUTE = "/support/";
     public static final String CONTACTS_ROUTE = "/contacts/";
     public static final String PRIVACY_POLICY_ROUTE = "/privacy-policy/";
-
-
-    // LOCALE
-    public static final String LOCALE_LANG_DE = "de";
-    public static final String LOCALE_LANG_EN = "en";
-    public static final String LOCALE_LANG_FR = "fr";
-    public static final String LOCALE_LANG_RU = "ru";
-
-    // COOKIES
 }

@@ -1,9 +1,5 @@
 $(document).ready(function () {
 
-    setTimezone()
-    setLanguage();
-
-
     function createCookie(name, value, days) {
         var expires = "";
         if (days) {
@@ -19,24 +15,6 @@ $(document).ready(function () {
         var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
-
-    function setLanguage() {
-        if (0) {
-
-        } else {
-            var defaultActiveLang = $('.lang-select .dropdown-item.active').html();
-            $('.lang-select .dropdown-toggle').html(defaultActiveLang);
-        }
-    }
-
-    function setTimezone() {
-        if (0) {
-
-        } else {
-
-        }
-    }
-
     
     if($('.discipline-filter').length > 0) {
         $('.discipline').off('click').click(function () {
@@ -52,7 +30,9 @@ $(document).ready(function () {
     }
 
     if($('.timezone-select').length > 0) {
-        $('.timezone-select .dropdown-menu li a').off('click').click(function () {
+        $('.timezone-select .dropdown-menu li a').off('click').click(function (e) {
+            e.preventDefault();
+
             $('.timezone-select .dropdown-menu li a').removeClass('active');
             $(this).addClass('active');
             var selectedItem = $(this).html();
@@ -66,7 +46,9 @@ $(document).ready(function () {
     }
 
     if($('.lang-select').length > 0) {
-        $('.lang-select .dropdown-menu li a').off('click').click(function () {
+        $('.lang-select .dropdown-menu li a').off('click').click(function (e) {
+            e.preventDefault();
+
             $('.lang-select .dropdown-menu li a').removeClass('active');
             $(this).addClass('active');
             var selectedItem = $(this).html();

@@ -3,7 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page session="false" %>
 
-<footer>
+<footer class="mt-auto">
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-md-3 item">

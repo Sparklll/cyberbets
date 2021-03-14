@@ -306,7 +306,7 @@ footer .item.social {
 }
 
 @media (max-width: 991px) {
-    .footer-dark .item.social {
+    footer .item.social {
         text-align: center;
         margin-top: 20px;
     }

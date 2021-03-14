@@ -51,10 +51,10 @@
                     <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false"></a>
                     <ul class="dropdown-menu fade-down" aria-labelledby="langDropdown">
-                        <li><a class="dropdown-item" href="#"><i class="flag flag-de me-2"></i>De</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="flag flag-gb me-2"></i>En</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="flag flag-fr me-2"></i>Fr</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="flag flag-ru me-2"></i>Ru</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="de"><i class="flag flag-de me-2"></i>De</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="en"><i class="flag flag-gb me-2"></i>En</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="fr"><i class="flag flag-fr me-2"></i>Fr</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="ru"><i class="flag flag-ru me-2"></i>Ru</a></li>
                     </ul>
                 </li>
             </ul>
