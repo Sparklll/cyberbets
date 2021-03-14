@@ -15,7 +15,7 @@
     <link rel="icon" href="/static/assets/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/resources/css/style.css">
     <title>CYBERBETS | ERROR404</title>
 </head>
 
@@ -23,9 +23,21 @@
 <body class="d-flex flex-column min-vh-100">
 
 <jsp:include page="general/navbar.jsp">
-    <jsp:param name="auth" value="${true}"/>
+    <jsp:param name="auth" value="${auth}"/>
+    <jsp:param name="role" value="${role}"/>
 </jsp:include>
 
+
+<div class="error container wrapper my-5">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+            <img src="/resources/assets/error404.png">
+        </div>
+        <div class="col-12 d-flex justify-content-center mt-5">
+            <a class="login btn btn-primary btn-lg text-uppercase" href="/">Back to main page</a>
+        </div>
+    </div>
+</div>
 
 
 <jsp:include page="general/footer.jsp"/>
@@ -35,6 +47,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
         crossorigin="anonymous"></script>
-<script src="static/js/script.js"></script>
+<script src="/resources/js/script.js"></script>
 </body>
 </html>

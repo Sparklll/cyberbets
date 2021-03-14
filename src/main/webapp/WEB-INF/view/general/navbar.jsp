@@ -5,7 +5,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark smart-scroll">
     <div class="container">
-        <a class="navbar-brand py-0" href="#"><img src="static/assets/logo.png" alt="logo"></a>
+        <a class="navbar-brand py-0" href="/"><img src="/resources/assets/logo.png" alt="logo"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -14,10 +14,10 @@
         <div class="collapse navbar-collapse text-uppercase" id="navbarSupportedContent">
 
             <ul class="navbar-nav">
-                <li class="nav-item me-2"><a class="nav-link" href="#">Home</a></li>
-                <li class="nav-item me-2"><a class="nav-link" href="#">News</a></li>
-                <li class="nav-item me-2"><a class="nav-link" href="#">Rating</a></li>
-                <li class="nav-item text-nowrap"><a class="nav-link" href="#">Support</a></li>
+                <li class="nav-item me-2"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item me-2"><a class="nav-link" href="/news/">News</a></li>
+                <li class="nav-item me-2"><a class="nav-link" href="/rating/">Rating</a></li>
+                <li class="nav-item text-nowrap"><a class="nav-link" href="/support/">Support</a></li>
             </ul>
 
             <ul class="navbar-nav ms-auto me-3">
@@ -48,7 +48,7 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link text-nowrap" href="#">
-                                <img src="static/assets/wallet.png" class="balance">
+                                <img src="/resources/assets/wallet.png" class="balance">
                                 <span>
                             <i class="fas fa-dollar-sign"></i>
                             <span>10000</span>
@@ -58,27 +58,56 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false"><img
-                                    src="static/assets/profile-avatar.png"
+                                    src="/resources/assets/profile-avatar.png"
                                     class="profile-avatar rounded-circle"></a>
                             <ul class="dropdown-menu fade-down" aria-labelledby="profileDropdown">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-dice me-2"></i>My Bets</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-plus-circle me-2"></i>Deposit</a>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-dice me-2"></i>
+                                        My Bets
+                                    </a>
                                 </li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-arrow-circle-up me-2"></i>Withdrawal</a>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-plus-circle me-2"></i>
+                                        Deposit
+                                    </a>
                                 </li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>Transaction
-                                    History</a>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-arrow-circle-up me-2"></i>
+                                        Withdrawal
+                                    </a>
                                 </li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog me-2"></i>Account
-                                    Settings</a>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-history me-2"></i>
+                                        Transaction History
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-user-cog me-2"></i>
+                                        Account Settings
+                                    </a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-cogs me-2"></i>Admin Panel</a>
+                                <c:if test="${param.role eq 'admin'}">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cogs me-2"></i>
+                                        Admin Panel
+                                    </a>
                                 </li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Sign
-                                    Out</a></li>
+                                </c:if>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-sign-out-alt me-2"></i>
+                                        Sign Out
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
