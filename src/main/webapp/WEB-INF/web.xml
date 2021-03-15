@@ -19,7 +19,7 @@
     <session-config>
         <session-timeout>10080</session-timeout> <!-- 10080min - 7 days -->
         <cookie-config>
-            <max-age>7776000</max-age> <!-- 7776000sec - 3 months -->
+            <max-age>31557600</max-age> <!-- 31557600sec - 1year -->
         </cookie-config>
     </session-config>
     <context-param>

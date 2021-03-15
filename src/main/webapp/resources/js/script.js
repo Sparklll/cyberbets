@@ -1,26 +1,37 @@
 $(document).ready(function () {
+    const lang = ['de', 'en', 'fr', 'ru'];
+    const defaultLang = 'en';
 
-    function createCookie(name, value, days) {
-        var expires = "";
+
+    function setCookie(name, value, days) {
         if (days) {
-            var date = new Date();
+            let date = new Date();
             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = "; expires=" + date.toUTCString();
-            date = null;
+
+            let cookie = name + "=" + value + ";";
+            let expires = "expires=" + date.toUTCString() + ";";
+            let path = "path=/;";
+            //let domain = "domain=." + window.location.hostname + ";";
+            document.cookie = cookie + expires + path;
         }
-        document.cookie = name + "=" + value + expires + "; path=/;domain=." + window.location.hostname;
     }
 
     function getCookie(name) {
-        var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
-    
-    if($('.discipline-filter').length > 0) {
+
+    function deleteCookie(name) {
+        setCookie(name, "", 0);
+    }
+
+    if ($('.discipline-filter').length > 0) {
         $('.discipline').off('click').click(function () {
-            if($(this).hasClass('active')) {
+            if ($(this).hasClass('active')) {
                 $(this).removeClass('active');
-                if($('.discipline-filter .discipline.active').length == 0){
+                if ($('.discipline-filter .discipline.active').length == 0) {
                     $('.discipline').first().addClass('active');
                 }
             } else {
@@ -29,15 +40,15 @@ $(document).ready(function () {
         });
     }
 
-    if($('.timezone-select').length > 0) {
+    if ($('.timezone-select').length > 0) {
         $('.timezone-select .dropdown-menu li a').off('click').click(function (e) {
             e.preventDefault();
 
             $('.timezone-select .dropdown-menu li a').removeClass('active');
             $(this).addClass('active');
-            var selectedItem = $(this).html();
+            let selectedItem = $(this).html();
 
-            var textAfterIcon = $('.timezone-select .dropdown-toggle i').get(0).nextSibling;
+            let textAfterIcon = $('.timezone-select .dropdown-toggle i').get(0).nextSibling;
             if (textAfterIcon != undefined) {
                 textAfterIcon.remove();
             }
@@ -45,15 +56,27 @@ $(document).ready(function () {
         });
     }
 
-    if($('.lang-select').length > 0) {
+    if ($('.lang-select').length > 0) {
+        let langCookie = getCookie('lang');
+        if (lang.includes(langCookie)) {
+            $(`.lang-select .dropdown-menu li a[data-id=${langCookie}]`).addClass('active');
+        } else {
+            $(`.lang-select .dropdown-menu li a[data-id=${defaultLang}]`).addClass('active');
+        }
+        $('.lang-select .dropdown-toggle').html(
+            $('.lang-select .dropdown-menu li a.active').html()
+        );
+
         $('.lang-select .dropdown-menu li a').off('click').click(function (e) {
             e.preventDefault();
 
             $('.lang-select .dropdown-menu li a').removeClass('active');
             $(this).addClass('active');
-            var selectedItem = $(this).html();
+            let selectedItem = $(this).html();
+            let selectedItemLang = $(this).data("id");
 
             $('.lang-select .dropdown-toggle').html(selectedItem);
+            setCookie('lang', selectedItemLang, 365);
         });
     }
 

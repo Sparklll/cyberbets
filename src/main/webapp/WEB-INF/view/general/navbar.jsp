@@ -151,6 +151,9 @@
     </div>
 </nav>
 
+<fmt:message key="navbar.modal.placeholder.email" var="email" />
+<fmt:message key="navbar.modal.placeholder.password" var="password" />
+<fmt:message key="navbar.modal.placeholder.repeat_password" var="repeat_password" />
 <div class="modal fade" id="registerModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="registerModalLabel"
      aria-hidden="true">
@@ -174,7 +177,7 @@
                                 <label for="registerEmail" class="col-sm-2 col-form-label">
                                     <i class="fas fa-user px-2"></i>
                                 </label>
-                                <input type="text" class="form-control" id="registerEmail" placeholder="Email"
+                                <input type="text" class="form-control" id="registerEmail" placeholder="${email}"
                                        required>
                             </div>
                             <div class="input-field my-4">
@@ -182,7 +185,7 @@
                                     <i class="fas fa-lock px-2"></i>
                                 </label>
                                 <input type="password" class="form-control" id="registerPassword"
-                                       placeholder="Password"
+                                       placeholder="${password}"
                                        required>
                             </div>
                             <div class="input-field my-4">
@@ -190,7 +193,7 @@
                                     <i class="fas fa-lock px-2"></i>
                                 </label>
                                 <input type="password" class="form-control" id="registerRepeatPassword"
-                                       placeholder="Repeat password"
+                                       placeholder="${repeat_password}"
                                        required>
                             </div>
                             <div class="d-grid gap-1 mb-4">
@@ -227,7 +230,7 @@
                                 <label for="loginEmail" class="col-sm-2 col-form-label">
                                     <i class="fas fa-user px-2"></i>
                                 </label>
-                                <input type="text" class="form-control" id="loginEmail" placeholder="Email"
+                                <input type="text" class="form-control" id="loginEmail" placeholder="${email}"
                                        required>
                             </div>
                             <div class="input-field my-4">
@@ -235,7 +238,7 @@
                                     <i class="fas fa-lock px-2"></i>
                                 </label>
                                 <input type="password" class="form-control" id="loginPassword"
-                                       placeholder="Password"
+                                       placeholder="${password}"
                                        required>
                             </div>
                             <div class="d-grid gap-1">
