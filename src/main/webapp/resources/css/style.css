@@ -224,15 +224,12 @@ img {
 
 .events .nav-tabs .nav-link {
     color: #68666f;
+    font-size: 0.9rem;
     font-weight: bold;
     background-color: #20232a;
     border: none;
     border-top: 2px solid transparent;
     transition: border-top-color 0.5s;
-}
-
-.events .nav-tabs .nav-link i {
-    font-size: 1.2em ;
 }
 
 .events .nav-tabs .nav-link.active {

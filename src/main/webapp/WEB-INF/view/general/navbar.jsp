@@ -197,7 +197,7 @@
                                        required>
                             </div>
                             <div class="d-grid gap-1 mb-4">
-                                <button type="submit" class="btn btn-primary btn-block text-uppercase mt-3">
+                                <button type="submit" class="register btn btn-primary btn-block text-uppercase mt-3">
                                     <fmt:message key="navbar.register_modal.button.register"/>
                                 </button>
                             </div>
@@ -242,7 +242,7 @@
                                        required>
                             </div>
                             <div class="d-grid gap-1">
-                                <button type="submit" class="btn btn-primary btn-block text-uppercase mt-3">
+                                <button type="submit" class="login btn btn-primary btn-block text-uppercase mt-3">
                                     <fmt:message key="navbar.login_modal.button.log_in"/>
                                 </button>
                             </div>
