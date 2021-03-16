@@ -1,0 +1,468 @@
+/* GLOBAL */
+body {
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+    background-color: #24282e;
+
+    overflow-y: scroll !important;
+    padding-right: 0 !important;
+}
+img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+}
+
+/* SMART SCROLL */
+.smart-scroll {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+.scrolled-down {
+    transform: translateY(-100%);
+    transition: all .3s ease-in-out;
+}
+
+.scrolled-up {
+    transform: translateY(0);
+    transition: all .3s ease-in-out;
+}
+
+/* NAVBAR */
+.navbar {
+    font-weight: bold;
+    background: linear-gradient(90deg, #043443, #4a0954, #055176);
+    background-size: 200% 200%;
+    animation: gradient 5s ease-out infinite;
+}
+
+.navbar .navbar-nav .nav-link {
+    color: #ffffff;
+}
+
+.navbar .navbar-brand img {
+    width: 200px;
+}
+
+.navbar .navbar-nav .nav-link {
+    border-bottom: 2px solid transparent;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    border-bottom: 2px solid rgb(83, 35, 194);
+}
+
+.navbar .nav-link .balance,
+.navbar .nav-link .profile-avatar {
+    width: 30px;
+    height: 30px;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* NAVBAR DROPDOWN */
+.nav-item.dropdown .dropdown-menu {
+    min-width: 0;
+    background: #3f4654;
+    border: 1px solid rgb(83, 35, 194);
+}
+
+.nav-item.dropdown .dropdown-menu .dropdown-item {
+    color: white;
+}
+
+.nav-item.dropdown .dropdown-menu .dropdown-item:hover {
+    background: #343a45;
+}
+
+.nav-item.dropdown .dropdown-menu .dropdown-item.active {
+    background: rgb(83, 35, 194);
+}
+
+.nav-item.dropdown .dropdown-menu {
+    left: auto;
+    right: 0;
+}
+
+.nav-item .dropdown-menu .dropdown-divider {
+    height: 5px;
+    background: rgb(83, 35, 194);
+}
+
+.navbar .dropdown-toggle::after {
+    transition: .5s;
+}
+
+.navbar .nav-item:hover .dropdown-toggle::after {
+    transform: rotate(180deg);
+}
+
+@media all and (min-width: 992px) {
+    .navbar .nav-item .dropdown-menu {
+        display: block;
+        opacity: 0;
+        visibility: hidden;
+        transition: .5s;
+        margin-top: 0;
+    }
+
+    .navbar .dropdown-menu.fade-down {
+        top: 80%;
+        transform: rotateX(-75deg);
+        transform-origin: 0% 0%;
+    }
+
+    .navbar .dropdown-menu.fade-up {
+        top: 180%;
+    }
+
+    .navbar .nav-item:hover .dropdown-menu {
+        transition: .5s;
+        opacity: 1;
+        visibility: visible;
+        top: 100%;
+        transform: rotateX(0deg);
+    }
+}
+
+/* WRAPPERS */
+.wrapper {
+    color: white;
+    background: #2a2f36;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* CONTAINERS */
+/* --DISCIPLINE FILTER-- */
+.discipline-filter {
+
+}
+
+.discipline {
+    position: relative;
+    border-radius: 10px;
+    transition: box-shadow 0.5s;
+}
+
+.discipline.active {
+    box-shadow: 0 10px 10px -5px #8800ff;
+}
+
+.discipline > img {
+    border-radius: 10px;
+    width: 100%;
+}
+
+.discipline .discipline-logo-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.discipline .discipline-logo-overlay img {
+    position: absolute;
+}
+
+.discipline[data-discipline="csgo"] .discipline-logo-overlay img {
+    width: 40%;
+    top: 35%;
+    left: 30%;
+}
+
+.discipline[data-discipline="dota2"] .discipline-logo-overlay img {
+    width: 60%;
+    top: 40%;
+    left: 20%;
+}
+
+.discipline[data-discipline="lol"] .discipline-logo-overlay img {
+    width: 50%;
+    top: 35%;
+    left: 25%;
+}
+
+.discipline[data-discipline="valorant"] .discipline-logo-overlay img {
+    width: 60%;
+    top: 45%;
+    left: 20%;
+}
+
+/* --ERROR CONTAINER-- */
+.error.container img {
+    width:100%;
+    max-width: 600px;
+}
+
+/* --EVENTS CONTAINER-- */
+.events .nav-tabs {
+    border: none;
+}
+
+.events .nav-tabs .nav-link {
+    color: #68666f;
+    font-size: 0.9rem;
+    font-weight: bold;
+    background-color: #20232a;
+    border: none;
+    border-top: 2px solid transparent;
+    transition: border-top-color 0.5s;
+}
+
+.events .nav-tabs .nav-link.active {
+    color: white;
+    border-top: 2px solid  #8800ff;
+    background-color: #444455;
+}
+
+.events .nav-tabs .nav-link.active i {
+    color:  #8800ff;
+}
+
+/* FOOTER */
+footer {
+    padding: 50px 0;
+    color: #f0f9ff;
+    background: linear-gradient(90deg, #043443, #4a0954, #055176);
+    background-size: 200% 200%;
+    animation: gradient 5s ease-out infinite;
+}
+
+footer h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+footer ul {
+    padding: 0;
+    list-style: none;
+    line-height: 1.6;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+footer ul a {
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.6;
+}
+
+footer ul a:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 767px) {
+    footer .item:not(.social) {
+        text-align: center;
+        padding-bottom: 20px;
+    }
+}
+
+footer .item.text {
+    margin-bottom: 36px;
+}
+
+@media (max-width: 767px) {
+    footer .item.text {
+        margin-bottom: 0;
+    }
+}
+
+footer .item.text p {
+    opacity: 0.6;
+    margin-bottom: 0;
+}
+
+footer .item.social {
+    text-align: center;
+}
+
+@media (max-width: 991px) {
+    footer .item.social {
+        text-align: center;
+        margin-top: 20px;
+    }
+}
+
+footer .item.social > a {
+    font-size: 20px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
+    margin: 0 8px;
+    color: #fff;
+    opacity: 0.7;
+}
+
+footer .item.social > a:hover {
+    opacity: 0.9;
+}
+
+footer .copyright {
+    text-align: center;
+    opacity: 0.3;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+/* BUTTONS */
+.btn {
+    font-weight: bold;
+    border: none;
+}
+
+.btn:focus,.btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.btn.btn-primary {
+    background: rgb(102, 24, 179);
+}
+
+.btn.btn-primary:hover {
+    background: rgba(102, 24, 179, 0.75);
+}
+
+.btn.btn-primary:active {
+    background: rgba(102, 24, 179, 0.3);
+}
+
+.btn.btn-secondary {
+    background: rgba(165, 160, 182, 0.5);
+}
+
+.btn.btn-secondary:hover {
+    background: rgba(130, 126, 144, 0.5);
+
+}
+
+/* INPUT FIELD */
+.input-field {
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border: 2px solid rgba(226, 212, 232, 0.8);
+}
+.input-field input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.input-field input:focus {
+    color: white;
+    box-shadow: none;
+    background-color: #4e5061;
+}
+
+.input-field input {
+    color: white;
+    border: none;
+    outline: none;
+    background-color: #4e5061;
+    width: 100%;
+}
+
+/* CARD */
+.card {
+    color: white;
+    border: none;
+    border-radius: 15px;
+    background: #2a2f36;
+    box-shadow: 0px 0px 50px #413b92;
+}
+
+.card .card-header {
+    border-radius: 15px;
+    background: #4e5061;
+    border-top: 5px solid #6618b3;
+}
+
+.card .card-header .close {
+    color: white;
+    font-size: 25px;
+    transition: 0.5s;
+}
+
+.card .card-header .close:hover {
+    transform: rotate(180deg);
+}
+
+/* MODALS GLOBAL */
+.modal-open {
+    position: fixed;
+    width: 100%;
+}
+
+.modal .modal-content {
+    width: auto;
+    background: none;
+    border: none;
+}
+
+/* SPECIAL MODALS */
+.login-form a {
+    font-style: italic;
+    text-decoration: none;
+    color: #a504ff;
+}
+
+
+/* FLAGS */
+.flag {
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 1.5em;
+    line-height: 1em;
+}
+
+.flag:before {
+    content: "\00a0";
+}
+
+.flag-de {
+    background-image: url(../assets/flags/de.svg);
+}
+
+.flag-gb {
+    background-image: url(../assets/flags/gb.svg);
+}
+
+.flag-fr {
+    background-image: url(../assets/flags/fr.svg);
+}
+
+.flag-ru {
+    background-image: url(../assets/flags/ru.svg);
+}
