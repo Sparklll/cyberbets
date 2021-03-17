@@ -7,10 +7,6 @@ public enum EventFormat {
     BO3(3),
     BO5(4);
 
-    // CS:GO
-
-    // DOTA2
-
     private final int id;
 
     EventFormat(int id) {

@@ -1,22 +1,25 @@
 package by.epam.jwd.cyberbets.controller.command;
 
+import by.epam.jwd.cyberbets.controller.command.impl.general.ForwardErrorPage;
+import by.epam.jwd.cyberbets.controller.command.impl.general.Ignore;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public final class ActionProvider {
-    private static final Map<String, Action> map;
+import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
-    static {
-        map = new HashMap<String, Action>();
-        for (ActionEnum a : ActionEnum.values()) {
-            map.put(a.getActionName(), a.getAction());
-        }
-    }
+
+public enum ActionProvider {
+    INSTANCE;
+
+    private final Map<String, Action> actions = new HashMap<>();
 
     private ActionProvider() {
+        actions.put(IGNORE_ACTION, new Ignore());
+        actions.put(FORWARD_ERROR_PAGE_ACTION, new ForwardErrorPage());
     }
 
-    public static Action getAction(String actionName) {
-        return map.getOrDefault(actionName, ActionEnum.DEFAULT.getAction());
+    public Action getAction(String actionName) {
+        return actions.getOrDefault(actionName, actions.get(IGNORE_ACTION));
     }
 }

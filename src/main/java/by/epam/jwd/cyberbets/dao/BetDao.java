@@ -1,4 +1,4 @@
 package by.epam.jwd.cyberbets.dao;
 
-public class BetDao {
+public interface BetDao {
 }

@@ -1,4 +1,4 @@
 package by.epam.jwd.cyberbets.service;
 
-public class TransactionTypeService {
+public interface TransactionTypeService {
 }

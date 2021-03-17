@@ -1,4 +1,4 @@
 package by.epam.jwd.cyberbets.service;
 
-public class RoleService {
+public interface RoleService {
 }

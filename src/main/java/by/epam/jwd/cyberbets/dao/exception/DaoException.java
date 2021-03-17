@@ -1,4 +1,4 @@
-package by.epam.jwd.cyberbets.exception;
+package by.epam.jwd.cyberbets.dao.exception;
 
 public class DaoException extends Exception {
     private static final long serialVersionUID = 1L;

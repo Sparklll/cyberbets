@@ -1,6 +1,6 @@
 package by.epam.jwd.cyberbets.connection;
 
-import by.epam.jwd.cyberbets.exception.ConnectionPoolException;
+import by.epam.jwd.cyberbets.connection.exception.ConnectionPoolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +16,6 @@ public enum ConnectionPool {
     INSTANCE;
 
     private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
-
-    private static final int DEFAULT_POOL_SIZE = 16;
 
     private final BlockingQueue<ProxyConnection> freeConnections;
     private final BlockingQueue<ProxyConnection> givenAwayConnections;
@@ -76,15 +74,5 @@ public enum ConnectionPool {
                 throw new ConnectionPoolException("Unable to destroy pool connection");
             }
         }
-    }
-
-    private void deregisterDrivers() {
-        DriverManager.getDrivers().asIterator().forEachRemaining(driver -> {
-            try {
-                DriverManager.deregisterDriver(driver);
-            } catch (SQLException throwables) {
-                logger.error("Unable to deregister drivers");
-            }
-        });
     }
 }

@@ -1,4 +1,4 @@
-package by.epam.jwd.cyberbets.exception;
+package by.epam.jwd.cyberbets.connection.exception;
 
 public class ConnectionPoolException extends RuntimeException {
     private static final long serialVersionUID = 1L;

@@ -7,12 +7,14 @@ public class Team extends Entity {
 
     private int disciplineId;
     private int logoResourceId;
+    private int rating;
     private String name;
 
-    public Team(int id, int disciplineId, int logoResourceId, String name) {
+    public Team(int id, int disciplineId, int logoResourceId, int rating, String name) {
         super(id);
         this.disciplineId = disciplineId;
         this.logoResourceId = logoResourceId;
+        this.rating = rating;
         this.name = name;
     }
 
@@ -32,6 +34,14 @@ public class Team extends Entity {
         this.logoResourceId = logoResourceId;
     }
 
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     public String getName() {
         return name;
     }
@@ -47,12 +57,13 @@ public class Team extends Entity {
         Team team = (Team) o;
         return disciplineId == team.disciplineId
                 && logoResourceId == team.logoResourceId
+                && rating == team.rating
                 && Objects.equals(name, team.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(disciplineId, logoResourceId, name);
+        return Objects.hash(disciplineId, logoResourceId, rating, name);
     }
 
     @Override
@@ -60,6 +71,7 @@ public class Team extends Entity {
         return "Team{" +
                 "disciplineId=" + disciplineId +
                 ", logoResourceId=" + logoResourceId +
+                ", rating=" + rating +
                 ", name='" + name + '\'' +
                 '}';
     }

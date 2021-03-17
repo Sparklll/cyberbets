@@ -1,5 +1,6 @@
 package by.epam.jwd.cyberbets.domain;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Account extends Entity {
@@ -8,15 +9,17 @@ public class Account extends Entity {
     private String email;
     private String passwordHash;
     private String salt;
-    private int accountDetailsId;
+    private BigDecimal balance;
     private int roleId;
+    private int avatarResourceId;
 
-    public Account(int id, String email, String passwordHash, String salt, int accountDetailsId, int roleId) {
+    public Account(int id, String email, String passwordHash, String salt, BigDecimal balance, int roleId, int avatarResourceId) {
         super(id);
         this.email = email;
         this.passwordHash = passwordHash;
         this.salt = salt;
-        this.accountDetailsId = accountDetailsId;
+        this.balance = balance;
+        this.avatarResourceId = avatarResourceId;
         this.roleId = roleId;
     }
 
@@ -44,12 +47,20 @@ public class Account extends Entity {
         this.salt = salt;
     }
 
-    public int getAccountDetailsId() {
-        return accountDetailsId;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
-    public void setAccountDetailsId(int accountDetailsId) {
-        this.accountDetailsId = accountDetailsId;
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public int getAvatarResourceId() {
+        return avatarResourceId;
+    }
+
+    public void setAvatarResourceId(int avatarResourceId) {
+        this.avatarResourceId = avatarResourceId;
     }
 
     public int getRoleId() {
@@ -65,16 +76,16 @@ public class Account extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
-        return accountDetailsId == account.accountDetailsId
-                && roleId == account.roleId
-                && Objects.equals(email, account.email)
+        return avatarResourceId == account.avatarResourceId
+                && roleId == account.roleId && Objects.equals(email, account.email)
                 && Objects.equals(passwordHash, account.passwordHash)
-                && Objects.equals(salt, account.salt);
+                && Objects.equals(salt, account.salt)
+                && Objects.equals(balance, account.balance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, passwordHash, salt, accountDetailsId, roleId);
+        return Objects.hash(email, passwordHash, salt, balance, avatarResourceId, roleId);
     }
 
     @Override
@@ -83,7 +94,8 @@ public class Account extends Entity {
                 "email='" + email + '\'' +
                 ", passwordHash='" + passwordHash + '\'' +
                 ", salt='" + salt + '\'' +
-                ", accountDetailsId=" + accountDetailsId +
+                ", balance=" + balance +
+                ", avatarResourceId=" + avatarResourceId +
                 ", roleId=" + roleId +
                 '}';
     }

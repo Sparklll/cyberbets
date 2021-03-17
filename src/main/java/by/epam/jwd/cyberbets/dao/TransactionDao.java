@@ -1,4 +1,4 @@
 package by.epam.jwd.cyberbets.dao;
 
-public class TransactionDao {
+public interface TransactionDao {
 }

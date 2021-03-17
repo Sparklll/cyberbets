@@ -8,8 +8,11 @@ public final class Parameters {
     public static final String ACTION = "action";
     public static final String JSON_MAP = "jsonMap";
     public static final String JSON_CONTENT_TYPE = "application/json;charset=UTF-8";
+    public static final String CONNECTION_PROPERTIES = "connection.db";
 
     // REQUEST PARAMS
+    public static final String EMAIL_PARAM = "email";
+    public static final String PASSWORD_PARAM = "password";
 
     // ACTION NAMES
     public static final String IGNORE_ACTION = "ignore";
@@ -25,7 +28,7 @@ public final class Parameters {
     public static final String ERROR_PAGE = "/WEB-INF/view/error404.jsp";
 
     // ROUTES
-    public static final String ACTION_ROUTE = "/action/";
+    public static final String ACTION_LISTENER_ROUTE = "/action/";
     public static final String ROOT_ROUTE = "/";
     public static final String NEWS_ROUTE = "/news/";
     public static final String TEAM_RATING_ROUTE = "/rating/";

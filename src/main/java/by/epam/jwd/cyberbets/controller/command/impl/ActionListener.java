@@ -1,5 +1,7 @@
-package by.epam.jwd.cyberbets.controller.command;
+package by.epam.jwd.cyberbets.controller.command.impl;
 
+import by.epam.jwd.cyberbets.controller.command.Action;
+import by.epam.jwd.cyberbets.controller.command.ActionProvider;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -13,7 +15,7 @@ import java.util.Map;
 import static by.epam.jwd.cyberbets.controller.Parameters.ACTION;
 import static by.epam.jwd.cyberbets.controller.Parameters.JSON_MAP;
 
-public class ActionListener implements Action{
+public class ActionListener implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new Gson();
@@ -25,7 +27,7 @@ public class ActionListener implements Action{
             actionName = (String) jsonMap.get(ACTION);
             request.setAttribute(JSON_MAP, jsonMap);
         }
-        Action action = ActionProvider.getAction(actionName);
+        Action action = ActionProvider.INSTANCE.getAction(actionName);
         action.perform(request, response);
     }
 }
