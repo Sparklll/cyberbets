@@ -1,4 +1,9 @@
 package by.epam.jwd.cyberbets.dao.impl;
 
-public class ResourceDaoImpl {
+import by.epam.jwd.cyberbets.dao.ResourceDao;
+
+public class ResourceDaoImpl implements ResourceDao {
+
+    private static final String ID = "id";
+    private static final String PATH = "path";
 }

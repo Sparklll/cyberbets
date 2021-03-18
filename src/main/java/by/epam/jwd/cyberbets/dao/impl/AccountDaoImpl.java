@@ -5,8 +5,6 @@ import by.epam.jwd.cyberbets.dao.AccountDao;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.domain.Account;
 import by.epam.jwd.cyberbets.domain.dto.CreateAccountDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -16,14 +14,11 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class AccountDaoImpl implements AccountDao {
-    private static final Logger logger = LoggerFactory.getLogger(AccountDaoImpl.class);
-
     private static final String FIND_ACCOUNT_BY_ID = "select * from account where id = ?";
     private static final String FIND_ACCOUNT_BY_EMAIL = "select * from account where email = ?";
     private static final String CREATE_NEW_ACCOUNT = "insert into account (email, password_hash, salt) VALUES (?, ?, ?)";
     private static final String UPDATE_ACCOUNT = "update account set email = ?, password_hash = ?, salt = ?, balance = ?, role_id = ?, avatar_resource_id = ? where id = ?";
     private static final String UPDATE_ACCOUNT_BALANCE = "update account set balance = ? where id = ?";
-
 
     private static final String ID = "id";
     private static final String EMAIL = "email";

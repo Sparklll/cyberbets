@@ -3,11 +3,11 @@
 
     <Properties>
         <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSSZ} [%t] %-5level %logger{1} - %msg%n</Property>
-        <Property name="APP_LOG_ROOT">logs</Property>
+        <Property name="APP_LOG_ROOT">project-logs</Property>
     </Properties>
 
     <Appenders>
-        <RollingFile name="RollingFile" fileName="${APP_LOG_ROOT}/logs.log" filePattern="${APP_LOG_ROOT}/logs-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="RollingFile" fileName="${sys:catalina.home}/logs/${APP_LOG_ROOT}/logs.log" filePattern="${APP_LOG_ROOT}/logs-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="5MB" />

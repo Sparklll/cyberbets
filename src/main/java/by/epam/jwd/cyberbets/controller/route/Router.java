@@ -35,7 +35,6 @@ public enum Router {
 
     public void resolveRoute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-        logger.info(requestURI);
         Action transitionAction = routes.getOrDefault(requestURI,
                 ActionProvider.INSTANCE.getAction(FORWARD_ERROR_PAGE_ACTION));
         transitionAction.perform(request, response);
