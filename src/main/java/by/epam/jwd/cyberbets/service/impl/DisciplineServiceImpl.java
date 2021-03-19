@@ -1,4 +1,6 @@
 package by.epam.jwd.cyberbets.service.impl;
 
-public class DisciplineServiceImpl {
+import by.epam.jwd.cyberbets.service.DisciplineService;
+
+public class DisciplineServiceImpl implements DisciplineService {
 }

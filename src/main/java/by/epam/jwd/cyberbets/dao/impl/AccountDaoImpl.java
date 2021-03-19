@@ -69,20 +69,20 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public boolean createAccount(CreateAccountDto createAccountDto) throws DaoException {
+    public void createAccount(CreateAccountDto createAccountDto) throws DaoException {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(CREATE_NEW_ACCOUNT)) {
             ps.setString(1, createAccountDto.email());
             ps.setString(2, createAccountDto.password());
             ps.setString(3, createAccountDto.salt());
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (SQLException throwables) {
             throw new DaoException(throwables);
         }
     }
 
     @Override
-    public boolean updateAccount(Account account) throws DaoException {
+    public void updateAccount(Account account) throws DaoException {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE_ACCOUNT)) {
             ps.setString(1, account.getEmail());
@@ -92,19 +92,19 @@ public class AccountDaoImpl implements AccountDao {
             ps.setInt(5, account.getRoleId());
             ps.setInt(6, account.getAvatarResourceId());
             ps.setInt(7, account.getId());
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (SQLException throwables) {
             throw new DaoException(throwables);
         }
     }
 
     @Override
-    public boolean updateAccountBalance(int id, BigDecimal balance) throws DaoException {
+    public void updateAccountBalance(int id, BigDecimal balance) throws DaoException {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE_ACCOUNT_BALANCE)) {
             ps.setBigDecimal(1, balance);
             ps.setInt(2, id);
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         } catch (SQLException throwables) {
             throw new DaoException(throwables);
         }

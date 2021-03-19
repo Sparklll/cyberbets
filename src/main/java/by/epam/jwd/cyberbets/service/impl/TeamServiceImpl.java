@@ -1,4 +1,6 @@
 package by.epam.jwd.cyberbets.service.impl;
 
-public class TeamServiceImpl {
+import by.epam.jwd.cyberbets.service.TeamService;
+
+public class TeamServiceImpl implements TeamService {
 }

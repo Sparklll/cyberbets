@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface AccountDao {
     Optional<Account> findAccountById(int id) throws DaoException;
     Optional<Account> findAccountByEmail(String email) throws DaoException;
-    boolean createAccount(CreateAccountDto createAccountDto) throws DaoException;
-    boolean updateAccount(Account account) throws DaoException;
-    boolean updateAccountBalance(int id, BigDecimal balance) throws DaoException;
+    void createAccount(CreateAccountDto createAccountDto) throws DaoException;
+    void updateAccount(Account account) throws DaoException;
+    void updateAccountBalance(int id, BigDecimal balance) throws DaoException;
 }

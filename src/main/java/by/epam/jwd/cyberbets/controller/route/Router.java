@@ -31,6 +31,14 @@ public enum Router {
         routes.put(PRIVACY_POLICY_ROUTE, new GoToPrivacyPolicyPage());
         routes.put(SUPPORT_ROUTE, new GoToSupportPage());
         routes.put(TEAM_RATING_ROUTE, new GoToTeamRatingPage());
+
+        routes.put(DEPOSIT_ROUTE, new GoToDepositPage());
+        routes.put(MYBETS_ROUTE, new GoToMyBetsPage());
+        routes.put(ACCOUNT_SETTINGS_ROUTE, new GoToAccountSettingsPage());
+        routes.put(TRANSACTIONS_ROUTE, new GoToTransactionsHistoryPage());
+        routes.put(WITHDRAWAL_ROUTE, new GoToWithdrawalPage());
+
+        routes.put(ADMIN_PANEL_ROUTE, new GoToAdminPanelPage());
     }
 
     public void resolveRoute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

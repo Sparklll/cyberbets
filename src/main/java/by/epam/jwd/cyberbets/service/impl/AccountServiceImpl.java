@@ -5,6 +5,7 @@ import by.epam.jwd.cyberbets.dao.DaoProvider;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.domain.Account;
 import by.epam.jwd.cyberbets.domain.dto.CreateAccountDto;
+import by.epam.jwd.cyberbets.domain.dto.RegisterDto;
 import by.epam.jwd.cyberbets.service.AccountService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 
@@ -33,22 +34,25 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean createAccount(CreateAccountDto createAccountDto) throws ServiceException {
-//        try {
-//
-//        } catch (DaoException throwables) {
-//            throw new ServiceException(throwables);
-//        }
-        return false;
+    public void createAccount(RegisterDto registerDto) throws ServiceException {
+        try {
+            String email = registerDto.email();
+            String password = registerDto.password();
+            // make salt with crypto
+            CreateAccountDto createAccountDto = new CreateAccountDto(email, password, password);
+           accountDao.createAccount(createAccountDto);
+        } catch (DaoException throwables) {
+            throw new ServiceException(throwables);
+        }
     }
 
     @Override
-    public boolean updateAccount(Account account) throws ServiceException {
-        return false;
+    public void updateAccount(Account account) throws ServiceException {
+
     }
 
     @Override
-    public boolean updateAccountBalance(int id, BigDecimal balance) throws ServiceException {
-        return false;
+    public void updateAccountBalance(int id, BigDecimal balance) throws ServiceException {
+
     }
 }

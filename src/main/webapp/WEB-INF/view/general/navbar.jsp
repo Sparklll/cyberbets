@@ -78,31 +78,31 @@
                                     class="profile-avatar rounded-circle"></a>
                             <ul class="dropdown-menu fade-down" aria-labelledby="profileDropdown">
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/mybets/">
                                         <i class="fas fa-dice me-2"></i>
                                         <fmt:message key="navbar.account.my_bets"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/deposit/">
                                         <i class="fas fa-plus-circle me-2"></i>
                                         <fmt:message key="navbar.account.deposit"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/withdrawal/">
                                         <i class="fas fa-arrow-circle-up me-2"></i>
                                         <fmt:message key="navbar.account.withdrawal"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/transactions/">
                                         <i class="fas fa-history me-2"></i>
                                         <fmt:message key="navbar.account.transaction_history"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/settings/">
                                         <i class="fas fa-user-cog me-2"></i>
                                         <fmt:message key="navbar.account.account_settings"/>
                                     </a>
@@ -112,7 +112,7 @@
                                 </li>
                                 <c:if test="${param.role eq 'admin'}">
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/admin/">
                                         <i class="fas fa-cogs me-2"></i>
                                         <fmt:message key="navbar.account.admin_panel"/>
                                     </a>
@@ -189,10 +189,10 @@
                                        required>
                             </div>
                             <div class="input-field my-4">
-                                <label for="registerRepeatPassword" class="col-sm-2 col-form-label">
+                                <label for="registerRepeatedPassword" class="col-sm-2 col-form-label">
                                     <i class="fas fa-lock px-2"></i>
                                 </label>
-                                <input type="password" class="form-control" id="registerRepeatPassword"
+                                <input type="password" class="form-control" id="registerRepeatedPassword"
                                        placeholder="${repeat_password}"
                                        required>
                             </div>

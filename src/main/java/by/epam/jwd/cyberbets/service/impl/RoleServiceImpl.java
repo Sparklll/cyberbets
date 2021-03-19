@@ -1,4 +1,6 @@
 package by.epam.jwd.cyberbets.service.impl;
 
-public class RoleServiceImpl {
+import by.epam.jwd.cyberbets.service.RoleService;
+
+public class RoleServiceImpl implements RoleService {
 }

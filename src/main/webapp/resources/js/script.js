@@ -1,6 +1,7 @@
 $(document).ready(function () {
     const lang = ['de', 'en', 'fr', 'ru'];
     const defaultLang = 'en';
+    const ACTION_URL = "/action/"
 
 
     function setCookie(name, value, days) {
@@ -51,8 +52,20 @@ $(document).ready(function () {
     if ($('#registerModal').length > 0) {
         $('#registerModal button.register').off('click').click( function (e) {
             e.preventDefault();
+            let email = $('#registerEmail').val();
+            let password = $('#registerPassword').val();
+            let repeatedPassword = $('#registerRepeatedPassword').val();
 
-
+            postData(ACTION_URL, {
+                "action" : "register",
+                "email" : email,
+                "password" : password,
+                "repeatedPassword" : repeatedPassword
+            }).then(response => {
+                if(response.ok) {
+                    reloadPage();
+                }
+            })
         });
     }
 

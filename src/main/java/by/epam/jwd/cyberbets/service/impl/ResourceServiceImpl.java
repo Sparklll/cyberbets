@@ -1,4 +1,6 @@
 package by.epam.jwd.cyberbets.service.impl;
 
-public class ResourceServiceImpl {
+import by.epam.jwd.cyberbets.service.ResourceService;
+
+public class ResourceServiceImpl implements ResourceService {
 }

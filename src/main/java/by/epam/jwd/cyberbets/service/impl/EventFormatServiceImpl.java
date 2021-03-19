@@ -1,4 +1,6 @@
 package by.epam.jwd.cyberbets.service.impl;
 
-public class EventFormatServiceImpl {
+import by.epam.jwd.cyberbets.service.EventFormatService;
+
+public class EventFormatServiceImpl implements EventFormatService {
 }

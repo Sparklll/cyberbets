@@ -1,4 +1,6 @@
 package by.epam.jwd.cyberbets.service.impl;
 
-public class EventResultServiceImpl {
+import by.epam.jwd.cyberbets.service.EventResultService;
+
+public class EventResultServiceImpl implements EventResultService {
 }

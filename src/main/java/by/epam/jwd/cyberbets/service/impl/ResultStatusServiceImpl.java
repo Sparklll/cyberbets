@@ -1,6 +1,6 @@
 package by.epam.jwd.cyberbets.service.impl;
 
-import by.epam.jwd.cyberbets.service.ResourceService;
+import by.epam.jwd.cyberbets.service.ResultStatusService;
 
-public class ResourceStatusServiceImpl implements ResourceService {
+public class ResultStatusServiceImpl implements ResultStatusService {
 }
