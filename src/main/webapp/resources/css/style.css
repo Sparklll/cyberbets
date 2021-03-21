@@ -18,6 +18,11 @@ img {
     user-drag: none;
 }
 
+.break {
+    flex-basis: 100%;
+    height: 0;
+}
+
 /* SMART SCROLL */
 .smart-scroll {
     position: fixed;

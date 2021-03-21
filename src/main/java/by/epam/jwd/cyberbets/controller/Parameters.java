@@ -7,13 +7,19 @@ public final class Parameters {
     // GLOBAL
     public static final String ACTION = "action";
     public static final String JSON_MAP = "jsonMap";
-    public static final String JSON_CONTENT_TYPE = "application/json;charset=UTF-8";
+    public static final String JSON_CONTENT_TYPE = "application/json";
+    public static final String UTF8_CHARSET = "UTF-8";
     public static final String CONNECTION_PROPERTIES = "connection.db";
 
     // REQUEST PARAMS
     public static final String EMAIL_PARAM = "email";
     public static final String PASSWORD_PARAM = "password";
     public static final String REPEATED_PASSWORD_PARAM = "repeatedPassword";
+
+    // RESPONSE PARAMS
+    public static final String STATUS_PARAM = "status";
+    public static final String STATUS_OK = "ok";
+    public static final String STATUS_DENY = "deny";
 
     // ACTION NAMES
     public static final String REGISTER_ACTION = "register";

@@ -111,12 +111,12 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <c:if test="${param.role eq 'admin'}">
-                                <li>
-                                    <a class="dropdown-item" href="/admin/">
-                                        <i class="fas fa-cogs me-2"></i>
-                                        <fmt:message key="navbar.account.admin_panel"/>
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/admin/">
+                                            <i class="fas fa-cogs me-2"></i>
+                                            <fmt:message key="navbar.account.admin_panel"/>
+                                        </a>
+                                    </li>
                                 </c:if>
                                 <li>
                                     <a class="dropdown-item" href="#">
@@ -151,9 +151,9 @@
     </div>
 </nav>
 
-<fmt:message key="navbar.modal.placeholder.email" var="email" />
-<fmt:message key="navbar.modal.placeholder.password" var="password" />
-<fmt:message key="navbar.modal.placeholder.repeat_password" var="repeat_password" />
+<fmt:message key="navbar.modal.placeholder.email" var="email"/>
+<fmt:message key="navbar.modal.placeholder.password" var="password"/>
+<fmt:message key="navbar.modal.placeholder.repeat_password" var="repeat_password"/>
 <div class="modal fade" id="registerModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="registerModalLabel"
      aria-hidden="true">
@@ -172,29 +172,52 @@
                         </a>
                     </div>
                     <div class="card-body p-3">
-                        <form action="" method="POST">
+                        <form action="" method="POST" novalidate>
                             <div class="input-field mt-3">
                                 <label for="registerEmail" class="col-sm-2 col-form-label">
                                     <i class="fas fa-user px-2"></i>
                                 </label>
-                                <input type="text" class="form-control" id="registerEmail" placeholder="${email}"
-                                       required>
+                                <div>
+                                    <input type="text" class="form-control" id="registerEmail"
+                                           placeholder="${email}"
+                                           maxlength="50"
+                                           required>
+                                    <div class="break"></div>
+                                    <div class="invalid-feedback">
+                                        <fmt:message key="navbar.register_modal.invalid_email"/>
+                                    </div>
+                                </div>
                             </div>
                             <div class="input-field my-4">
                                 <label for="registerPassword" class="col-sm-2 col-form-label">
                                     <i class="fas fa-lock px-2"></i>
                                 </label>
-                                <input type="password" class="form-control" id="registerPassword"
-                                       placeholder="${password}"
-                                       required>
+                                <div>
+                                    <input type="password" class="form-control" id="registerPassword"
+                                           placeholder="${password}"
+                                           maxlength="50"
+                                           required>
+                                    <div class="invalid-feedback">
+                                            <fmt:message key="navbar.register_modal.invalid_password_length"/>
+                                    </div>
+                                </div>
                             </div>
                             <div class="input-field my-4">
                                 <label for="registerRepeatedPassword" class="col-sm-2 col-form-label">
                                     <i class="fas fa-lock px-2"></i>
                                 </label>
-                                <input type="password" class="form-control" id="registerRepeatedPassword"
-                                       placeholder="${repeat_password}"
-                                       required>
+                                <div>
+                                    <input type="password" class="form-control" id="registerRepeatedPassword"
+                                           placeholder="${repeat_password}"
+                                           maxlength="50"
+                                           required>
+                                    <div class="invalid-feedback">
+                                        <fmt:message key="navbar.register_modal.invalid_repeated_password"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center text-danger">
+                                <fmt:message key="navbar.register_modal.email_already_exist"/>
                             </div>
                             <div class="d-grid gap-1 mb-4">
                                 <button type="submit" class="register btn btn-primary btn-block text-uppercase mt-3">
@@ -230,16 +253,28 @@
                                 <label for="loginEmail" class="col-sm-2 col-form-label">
                                     <i class="fas fa-user px-2"></i>
                                 </label>
-                                <input type="text" class="form-control" id="loginEmail" placeholder="${email}"
-                                       required>
+                                <div>
+                                    <input type="text" class="form-control" id="loginEmail" placeholder="${email}"
+                                           maxlength="50"
+                                           required>
+                                    <div class="invalid-feedback">
+                                        INCORRECT EMAIL MESSAGE
+                                    </div>
+                                </div>
                             </div>
                             <div class="input-field my-4">
                                 <label for="loginPassword" class="col-sm-2 col-form-label">
                                     <i class="fas fa-lock px-2"></i>
                                 </label>
-                                <input type="password" class="form-control" id="loginPassword"
-                                       placeholder="${password}"
-                                       required>
+                                <div>
+                                    <input type="password" class="form-control" id="loginPassword"
+                                           placeholder="${password}"
+                                           maxlength="50"
+                                           required>
+                                    <div class="invalid-feedback">
+                                        INCORRECT PASSWORD MESSAGE
+                                    </div>
+                                </div>
                             </div>
                             <div class="d-grid gap-1">
                                 <button type="submit" class="login btn btn-primary btn-block text-uppercase mt-3">
