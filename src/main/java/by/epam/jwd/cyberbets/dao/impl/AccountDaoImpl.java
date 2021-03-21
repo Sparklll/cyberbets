@@ -12,10 +12,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 public class AccountDaoImpl implements AccountDao {
     private static final String FIND_ACCOUNT_BY_ID = "select * from account where id = ?";
     private static final String FIND_ACCOUNT_BY_EMAIL = "select * from account where email = ?";
+    private static final String FIND_ID_BY_EMAIL = "select id from account where email = ?";
     private static final String CREATE_NEW_ACCOUNT = "insert into account (email, password_hash) VALUES (?, ?)";
     private static final String UPDATE_ACCOUNT = "update account set email = ?, password_hash = ?, balance = ?, role_id = ?, avatar_resource_id = ? where id = ?";
     private static final String UPDATE_ACCOUNT_BALANCE = "update account set balance = ? where id = ?";
@@ -59,6 +61,26 @@ public class AccountDaoImpl implements AccountDao {
                     accountOptional = Optional.of(account);
                 }
                 return accountOptional;
+            } catch (SQLException throwables) {
+                throw new DaoException(throwables);
+            }
+        } catch (SQLException throwables) {
+            throw new DaoException(throwables);
+        }
+    }
+
+    @Override
+    public OptionalInt findIdByEmail(String email) throws DaoException {
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement(FIND_ID_BY_EMAIL)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                OptionalInt idOptional = OptionalInt.empty();
+                if (rs.next()) {
+                    int id = rs.getInt(ID);
+                    idOptional = OptionalInt.of(id);
+                }
+                return idOptional;
             } catch (SQLException throwables) {
                 throw new DaoException(throwables);
             }

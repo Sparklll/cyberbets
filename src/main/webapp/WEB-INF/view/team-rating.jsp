@@ -24,6 +24,7 @@
 <jsp:include page="general/navbar.jsp">
     <jsp:param name="auth" value="${auth}"/>
     <jsp:param name="role" value="${role}"/>
+    <jsp:param name="balance" value="${balance}"/>
 </jsp:include>
 
 

@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,8 @@ public final class Login implements Action {
             response.setCharacterEncoding(UTF8_CHARSET);
             try {
                 if (accountService.isAuthorized(loginDto)) {
-                    // добавить сессию и т.д
+                    HttpSession httpSession = request.getSession();
+                    httpSession.setAttribute(ACCOUNT_EMAIL_ATTR, email);
                     jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                 } else {
                     jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);

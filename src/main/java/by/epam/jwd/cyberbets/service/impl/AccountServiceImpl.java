@@ -14,6 +14,7 @@ import com.password4j.Password;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 public class AccountServiceImpl implements AccountService {
     private final AccountDao accountDao = DaoProvider.INSTANCE.getAccountDao();
@@ -22,8 +23,8 @@ public class AccountServiceImpl implements AccountService {
     public Optional<Account> findAccountById(int id) throws ServiceException {
         try {
             return accountDao.findAccountById(id);
-        } catch (DaoException throwables) {
-            throw new ServiceException(throwables);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
         }
     }
 
@@ -31,8 +32,17 @@ public class AccountServiceImpl implements AccountService {
     public Optional<Account> findAccountByEmail(String email) throws ServiceException {
         try {
             return accountDao.findAccountByEmail(email);
-        } catch (DaoException throwables) {
-            throw new ServiceException(throwables);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public OptionalInt findIdByEmail(String email) throws ServiceException {
+        try {
+            return accountDao.findIdByEmail(email);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
         }
     }
 
@@ -47,8 +57,8 @@ public class AccountServiceImpl implements AccountService {
                                         .withArgon2();
             CreateAccountDto createAccountDto = new CreateAccountDto(email, passwordHash.getResult());
             accountDao.createAccount(createAccountDto);
-        } catch (DaoException throwables) {
-            throw new ServiceException(throwables);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
         }
     }
 
@@ -67,9 +77,9 @@ public class AccountServiceImpl implements AccountService {
         String loginDtoEmail = loginDto.email();
         String loginDtoPassword = loginDto.password();
 
-        Optional<Account> optionalFoundAccount = findAccountByEmail(loginDtoEmail);
-        if (optionalFoundAccount.isPresent()) {
-            Account foundAccount = optionalFoundAccount.get();
+        Optional<Account> foundAccountOptional = findAccountByEmail(loginDtoEmail);
+        if (foundAccountOptional.isPresent()) {
+            Account foundAccount = foundAccountOptional.get();
             String foundAccountPasswordHash = foundAccount.getPasswordHash();
             return Password.check(loginDtoPassword, foundAccountPasswordHash).withArgon2();
         }

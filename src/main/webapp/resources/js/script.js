@@ -208,6 +208,26 @@ $(document).ready(function () {
         });
     }
 
+    if($('#logout').length > 0) {
+        $('#logout').off('click').click(function (e) {
+            e.preventDefault();
+
+            postData(ACTION_URL, {
+                "action": "logout"
+            }).then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    return Promise.reject(response);
+                }
+            ).then(function (data) {
+                if(data.status === 'ok') {
+                    reloadPage();
+                }
+            }).catch((error) => console.log('Something went wrong.', error));
+        });
+    }
+
     if ($('.discipline-filter').length > 0) {
         $('.discipline').off('click').click(function () {
             if ($(this).hasClass('active')) {
@@ -267,7 +287,7 @@ $(document).ready(function () {
         $('body').css('padding-top', navbarHeight + 'px')
         var last_scroll_top = 0;
         $(window).on('scroll', function () {
-            scroll_top = $(this).scrollTop();
+            let scroll_top = $(this).scrollTop();
             if (scroll_top > navbarHeight) {
                 if (scroll_top < last_scroll_top) {
                     $('.smart-scroll').removeClass('scrolled-down').addClass('scrolled-up');

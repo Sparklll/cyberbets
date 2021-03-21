@@ -67,7 +67,9 @@
                                 <img src="/resources/assets/wallet.png" class="balance">
                                 <span>
                             <i class="fas fa-dollar-sign"></i>
-                            <span>10000</span>
+                            <span>
+                                <fmt:formatNumber value="${param.balance}" minIntegerDigits="1" minFractionDigits="2" groupingUsed="false"/>
+                            </span>
                         </span>
                             </a>
                         </li>
@@ -119,7 +121,7 @@
                                     </li>
                                 </c:if>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a id="logout" class="dropdown-item" href="#">
                                         <i class="fas fa-sign-out-alt me-2"></i>
                                         <fmt:message key="navbar.account.log_out"/>
                                     </a>
@@ -178,7 +180,7 @@
                                     <i class="fas fa-user px-2"></i>
                                 </label>
                                 <div>
-                                    <input type="text" class="form-control" id="registerEmail"
+                                    <input type="email" class="form-control" id="registerEmail"
                                            placeholder="${email}"
                                            maxlength="50"
                                            required>
@@ -255,7 +257,7 @@
                                     <i class="fas fa-user px-2"></i>
                                 </label>
                                 <div>
-                                    <input type="text" class="form-control" id="loginEmail" placeholder="${email}"
+                                    <input type="email" class="form-control" id="loginEmail" placeholder="${email}"
                                            maxlength="50"
                                            required>
                                 </div>

@@ -6,10 +6,15 @@ public final class Parameters {
 
     // GLOBAL
     public static final String ACTION = "action";
+    public static final String GUEST_ROLE = "guest";
+    public static final String USER_ROLE = "user";
+    public static final String ADMIN_ROLE = "admin";
+
+    public static final String CONNECTION_PROPERTIES = "connection.db";
     public static final String JSON_MAP = "jsonMap";
     public static final String JSON_CONTENT_TYPE = "application/json";
     public static final String UTF8_CHARSET = "UTF-8";
-    public static final String CONNECTION_PROPERTIES = "connection.db";
+
 
     // REQUEST PARAMS
     public static final String EMAIL_PARAM = "email";
@@ -20,6 +25,13 @@ public final class Parameters {
     public static final String STATUS_PARAM = "status";
     public static final String STATUS_OK = "ok";
     public static final String STATUS_DENY = "deny";
+
+    // REQUEST & SESSION ATTRIBUTES
+    public static final String ACCOUNT_ID_ATTR = "accountId";
+    public static final String ACCOUNT_EMAIL_ATTR = "accountEmail";
+    public static final String AUTH_ATTR = "auth";
+    public static final String ROLE_ATTR = "role";
+    public static final String BALANCE_ATTR = "balance";
 
     // ACTION NAMES
     public static final String REGISTER_ACTION = "register";
