@@ -23,6 +23,8 @@ public final class Parameters {
 
     // ACTION NAMES
     public static final String REGISTER_ACTION = "register";
+    public static final String LOGIN_ACTION = "login";
+    public static final String LOGOUT_ACTION = "logout";
     public static final String IGNORE_ACTION = "ignore";
     public static final String FORWARD_ERROR_PAGE_ACTION = "forwardErrorPage";
 

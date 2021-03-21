@@ -16,14 +16,13 @@ import java.util.Optional;
 public class AccountDaoImpl implements AccountDao {
     private static final String FIND_ACCOUNT_BY_ID = "select * from account where id = ?";
     private static final String FIND_ACCOUNT_BY_EMAIL = "select * from account where email = ?";
-    private static final String CREATE_NEW_ACCOUNT = "insert into account (email, password_hash, salt) VALUES (?, ?, ?)";
-    private static final String UPDATE_ACCOUNT = "update account set email = ?, password_hash = ?, salt = ?, balance = ?, role_id = ?, avatar_resource_id = ? where id = ?";
+    private static final String CREATE_NEW_ACCOUNT = "insert into account (email, password_hash) VALUES (?, ?)";
+    private static final String UPDATE_ACCOUNT = "update account set email = ?, password_hash = ?, balance = ?, role_id = ?, avatar_resource_id = ? where id = ?";
     private static final String UPDATE_ACCOUNT_BALANCE = "update account set balance = ? where id = ?";
 
     private static final String ID = "id";
     private static final String EMAIL = "email";
     private static final String PASSWORD_HASH = "password_hash";
-    private static final String PASSWORD_SALT = "salt";
     private static final String BALANCE = "balance";
     private static final String ROLE_ID = "role_id";
     private static final String AVATAR_RESOURCE_ID = "avatar_resource_id";
@@ -74,7 +73,6 @@ public class AccountDaoImpl implements AccountDao {
              PreparedStatement ps = connection.prepareStatement(CREATE_NEW_ACCOUNT)) {
             ps.setString(1, createAccountDto.email());
             ps.setString(2, createAccountDto.password());
-            ps.setString(3, createAccountDto.salt());
             ps.executeUpdate();
         } catch (SQLException throwables) {
             throw new DaoException(throwables);
@@ -87,11 +85,10 @@ public class AccountDaoImpl implements AccountDao {
              PreparedStatement ps = connection.prepareStatement(UPDATE_ACCOUNT)) {
             ps.setString(1, account.getEmail());
             ps.setString(2, account.getPasswordHash());
-            ps.setString(3, account.getSalt());
-            ps.setBigDecimal(4, account.getBalance());
-            ps.setInt(5, account.getRoleId());
-            ps.setInt(6, account.getAvatarResourceId());
-            ps.setInt(7, account.getId());
+            ps.setBigDecimal(3, account.getBalance());
+            ps.setInt(4, account.getRoleId());
+            ps.setInt(5, account.getAvatarResourceId());
+            ps.setInt(6, account.getId());
             ps.executeUpdate();
         } catch (SQLException throwables) {
             throw new DaoException(throwables);
@@ -115,7 +112,6 @@ public class AccountDaoImpl implements AccountDao {
                 rs.getInt(ID),
                 rs.getString(EMAIL),
                 rs.getString(PASSWORD_HASH),
-                rs.getString(PASSWORD_SALT),
                 rs.getBigDecimal(BALANCE),
                 rs.getInt(ROLE_ID),
                 rs.getInt(AVATAR_RESOURCE_ID)

@@ -198,7 +198,7 @@
                                            maxlength="50"
                                            required>
                                     <div class="invalid-feedback">
-                                            <fmt:message key="navbar.register_modal.invalid_password_length"/>
+                                        <fmt:message key="navbar.register_modal.invalid_password_length"/>
                                     </div>
                                 </div>
                             </div>
@@ -216,7 +216,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-center text-danger">
+                            <div id="emailAlreadyExist" class="text-center text-danger" style="display: none">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
                                 <fmt:message key="navbar.register_modal.email_already_exist"/>
                             </div>
                             <div class="d-grid gap-1 mb-4">
@@ -257,9 +258,6 @@
                                     <input type="text" class="form-control" id="loginEmail" placeholder="${email}"
                                            maxlength="50"
                                            required>
-                                    <div class="invalid-feedback">
-                                        INCORRECT EMAIL MESSAGE
-                                    </div>
                                 </div>
                             </div>
                             <div class="input-field my-4">
@@ -271,10 +269,11 @@
                                            placeholder="${password}"
                                            maxlength="50"
                                            required>
-                                    <div class="invalid-feedback">
-                                        INCORRECT PASSWORD MESSAGE
-                                    </div>
                                 </div>
+                            </div>
+                            <div id="wrongCredentials" class="text-center text-danger" style="display: none">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <fmt:message key="navbar.register_modal.wrong_credentials"/>
                             </div>
                             <div class="d-grid gap-1">
                                 <button type="submit" class="login btn btn-primary btn-block text-uppercase mt-3">
@@ -288,7 +287,7 @@
                                 <a class="fw-bold" role="button" data-bs-dismiss="modal"
                                    data-bs-toggle="modal"
                                    data-bs-target="#registerModal">
-                                    <fmt:message key="navbar.login_modal.button.log_in"/>
+                                    <fmt:message key="navbar.login_modal.button.register"/>
                                 </a>
                             </div>
                         </form>

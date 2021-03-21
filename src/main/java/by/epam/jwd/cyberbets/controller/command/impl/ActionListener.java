@@ -2,7 +2,6 @@ package by.epam.jwd.cyberbets.controller.command.impl;
 
 import by.epam.jwd.cyberbets.controller.command.Action;
 import by.epam.jwd.cyberbets.controller.command.ActionProvider;
-import by.epam.jwd.cyberbets.controller.command.impl.general.Register;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;

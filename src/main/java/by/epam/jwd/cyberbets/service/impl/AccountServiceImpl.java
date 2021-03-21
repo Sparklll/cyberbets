@@ -5,9 +5,12 @@ import by.epam.jwd.cyberbets.dao.DaoProvider;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.domain.Account;
 import by.epam.jwd.cyberbets.domain.dto.CreateAccountDto;
+import by.epam.jwd.cyberbets.domain.dto.LoginDto;
 import by.epam.jwd.cyberbets.domain.dto.RegisterDto;
 import by.epam.jwd.cyberbets.service.AccountService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
+import com.password4j.Hash;
+import com.password4j.Password;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -38,9 +41,12 @@ public class AccountServiceImpl implements AccountService {
         try {
             String email = registerDto.email();
             String password = registerDto.password();
-            // make salt with crypto
-            CreateAccountDto createAccountDto = new CreateAccountDto(email, password, password);
-           accountDao.createAccount(createAccountDto);
+
+            Hash passwordHash = Password.hash(password)
+                                        .addRandomSalt()
+                                        .withArgon2();
+            CreateAccountDto createAccountDto = new CreateAccountDto(email, passwordHash.getResult());
+            accountDao.createAccount(createAccountDto);
         } catch (DaoException throwables) {
             throw new ServiceException(throwables);
         }
@@ -54,5 +60,19 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void updateAccountBalance(int id, BigDecimal balance) throws ServiceException {
 
+    }
+
+    @Override
+    public boolean isAuthorized(LoginDto loginDto) throws ServiceException {
+        String loginDtoEmail = loginDto.email();
+        String loginDtoPassword = loginDto.password();
+
+        Optional<Account> optionalFoundAccount = findAccountByEmail(loginDtoEmail);
+        if (optionalFoundAccount.isPresent()) {
+            Account foundAccount = optionalFoundAccount.get();
+            String foundAccountPasswordHash = foundAccount.getPasswordHash();
+            return Password.check(loginDtoPassword, foundAccountPasswordHash).withArgon2();
+        }
+        return false;
     }
 }

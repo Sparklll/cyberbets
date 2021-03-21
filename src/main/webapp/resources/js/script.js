@@ -125,8 +125,8 @@ $(document).ready(function () {
                 ).then(function (data) {
                     if(data.status === 'ok') {
                         reloadPage();
-                    } else {
-                        // Табличка, что юзер занят
+                    } else if (data.status === 'deny') {
+                        $('#emailAlreadyExist').show(200).delay(3000).hide(200);
                     }
                 }).catch((error) => console.log('Something went wrong.', error));
 
@@ -145,12 +145,66 @@ $(document).ready(function () {
     }
 
     if ($('#loginModal').length > 0) {
+        $('#loginModal #loginEmail').off('input').on('input', function () {
+            let email = $('#loginEmail').val();
+            if (email.length > 0) {
+                if (validateEmail(email)) {
+                    $('#loginEmail').removeClass('is-invalid').addClass('is-valid')
+                } else {
+                    $('#loginEmail').removeClass('is-valid').addClass('is-invalid');
+                }
+            } else {
+                $('#loginEmail').removeClass('is-valid is-invalid');
+            }
+        });
 
+        $('#loginModal #loginPassword').off('input').on('input', function () {
+            let password = $('#loginPassword').val();
+            if (password.length > 0) {
+                if (validatePasswordLength(password)) {
+                    $('#loginPassword').removeClass('is-invalid').addClass('is-valid')
+                } else {
+                    $('#loginPassword').removeClass('is-valid').addClass('is-invalid');
+                }
+            } else {
+                $('#loginPassword').removeClass('is-valid is-invalid');
+            }
+        });
 
         $('#loginModal button.login').off('click').click(function (e) {
             e.preventDefault();
+            let email = $('#loginEmail').val();
+            let password = $('#loginPassword').val();
 
+            if (validateEmail(email)
+                && validatePasswordLength(password)) {
 
+                postData(ACTION_URL, {
+                    "action": "login",
+                    "email": email,
+                    "password": password,
+                }).then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        return Promise.reject(response);
+                    }
+                ).then(function (data) {
+                    if(data.status === 'ok') {
+                        reloadPage();
+                    } else if (data.status === 'deny') {
+                        $('#wrongCredentials').show(200).delay(3000).hide(200);
+                    }
+                }).catch((error) => console.log('Something went wrong.', error));
+
+            } else {
+                if (!$('#loginEmail').val()) {
+                    $('#loginEmail').addClass('is-invalid');
+                }
+                if (!$('#loginPassword').val()) {
+                    $('#loginPassword').addClass('is-invalid');
+                }
+            }
         });
     }
 

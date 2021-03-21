@@ -1,6 +1,7 @@
 package by.epam.jwd.cyberbets.controller.validator;
 
 import by.epam.jwd.cyberbets.domain.dto.RegisterDto;
+import org.apache.commons.lang3.StringUtils;
 
 public class RegisterValidator implements Validator<RegisterDto> {
 
@@ -18,7 +19,8 @@ public class RegisterValidator implements Validator<RegisterDto> {
     }
 
     private boolean isPasswordsValid(String password, String repeatedPassword) {
-        return password.length() >= MIN_PASSWORD_LENGTH
+        return StringUtils.isNotBlank(password)
+                && password.length() >= MIN_PASSWORD_LENGTH
                 && password.equals(repeatedPassword);
     }
 }

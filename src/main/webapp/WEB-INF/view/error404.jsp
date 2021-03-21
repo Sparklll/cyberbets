@@ -34,7 +34,7 @@
         </div>
         <div class="col-12 d-flex justify-content-center mt-5">
             <a class="login btn btn-primary btn-lg text-uppercase" href="/">
-                <fmt:message key="error_page.button.return_to_main_page"/>
+                <fmt:message key="page.error404.button.return_to_main_page"/>
             </a>
         </div>
     </div>

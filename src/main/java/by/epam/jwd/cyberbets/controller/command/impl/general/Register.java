@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.Optional;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
@@ -38,18 +39,23 @@ public final class Register implements Action {
 
             RegisterValidator registerValidator = ValidatorProvider.INSTANCE.getRegisterValidator();
             if(registerValidator.isValid(registerDto)) {
-                PrintWriter out = response.getWriter();
                 JsonObject jsonResponse = new JsonObject();
+                PrintWriter out = response.getWriter();
                 response.setContentType(JSON_CONTENT_TYPE);
                 response.setCharacterEncoding(UTF8_CHARSET);
+
                 try {
-                    accountService.createAccount(registerDto);
-                    // добавить сессию и т.д
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
+                    Optional<Account> existingAccount = accountService.findAccountByEmail(email);
+                    if(existingAccount.isEmpty()) {
+                        accountService.createAccount(registerDto);
+                        // добавить сессию и т.д
+                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
+                    } else {
+                        jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
+                    }
                     out.write(jsonResponse.toString());
                 } catch (ServiceException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
-                    out.write(jsonResponse.toString());
+                    logger.error(e.getMessage(), e);
                 }
             }
         }

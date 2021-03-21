@@ -28,6 +28,18 @@
 </jsp:include>
 
 
+<div class="support container wrapper my-5">
+    <div class="row">
+        <div class="header col-12 d-flex justify-content-start align-items-center">
+            <i class="fas fa-angle-double-right"></i>
+            <span class="ms-2 text-uppercase fw-bold">
+                <fmt:message key="page.user.withdrawal.header"/>
+            </span>
+        </div>
+    </div>
+</div>
+
+
 <jsp:include page="../general/footer.jsp"/>
 
 <script src="https://kit.fontawesome.com/4968ce6a0b.js" crossorigin="anonymous"></script>
