@@ -73,7 +73,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean isAuthorized(LoginDto loginDto) throws ServiceException {
+    public boolean isAuthorizationValid(LoginDto loginDto) throws ServiceException {
         String loginDtoEmail = loginDto.email();
         String loginDtoPassword = loginDto.password();
 

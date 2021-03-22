@@ -16,5 +16,5 @@ public interface AccountService {
     void createAccount(RegisterDto registerDto) throws ServiceException;
     void updateAccount(Account account) throws ServiceException;
     void updateAccountBalance(int id, BigDecimal balance) throws ServiceException;
-    boolean isAuthorized(LoginDto loginDto) throws ServiceException;
+    boolean isAuthorizationValid(LoginDto loginDto) throws ServiceException;
 }

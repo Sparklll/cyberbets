@@ -16,7 +16,14 @@
         <url-pattern>/resources/*</url-pattern>
     </servlet-mapping>
 
-
+    <filter>
+        <filter-name>UrlFilter</filter-name>
+        <filter-class>by.epam.jwd.cyberbets.filter.UrlFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UrlFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <filter>
         <filter-name>AuthorizatoionFilter</filter-name>
         <filter-class>by.epam.jwd.cyberbets.filter.AuthorizationFilter</filter-class>
@@ -24,6 +31,26 @@
     <filter-mapping>
         <filter-name>AuthorizatoionFilter</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>UserResourceAccessFilter</filter-name>
+        <filter-class>by.epam.jwd.cyberbets.filter.UserResourceAccessFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UserResourceAccessFilter</filter-name>
+        <url-pattern>/deposit/</url-pattern>
+        <url-pattern>/mybets/</url-pattern>
+        <url-pattern>/settings/</url-pattern>
+        <url-pattern>/transactions/</url-pattern>
+        <url-pattern>/withdrawal/</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>AdminResourceAccessFilter</filter-name>
+        <filter-class>by.epam.jwd.cyberbets.filter.AdminResourceAccessFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminResourceAccessFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
 
 

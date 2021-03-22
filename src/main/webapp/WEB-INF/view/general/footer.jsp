@@ -7,23 +7,31 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-md-3 item">
-                <h3>Services</h3>
+                <h3><fmt:message key="footer.header.resources"/></h3>
                 <ul>
-                    <li><a href="#">Web design</a></li>
+                    <li><a href="/news/"><fmt:message key="footer.link.resources.news"/></a></li>
+                    <li><a href="/rating/"><fmt:message key="footer.link.resources.team_rating"/></a></li>
                 </ul>
             </div>
             <div class="col-sm-6 col-md-3 item">
-                <h3>About</h3>
+                <h3><fmt:message key="footer.header.support"/></h3>
                 <ul>
-                    <li><a href="#">Company</a></li>
+                    <li><a href="/support/"><fmt:message key="footer.link.support.technical_support"/></a></li>
+                    <li><a href="/contacts/"><fmt:message key="footer.link.support.contacts"/></a></li>
+                    <li><a href="/privacy-policy/"><fmt:message key="footer.link.support.privacy_policy"/></a></li>
                 </ul>
             </div>
             <div class="col-md-6 item text">
                 <h3>CYBERBETS</h3>
-                <p>Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac sem lacus. Ut vehicula
-                    rhoncus
-                    elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in
-                    justo.</p>
+                <p>
+                    <fmt:message key="footer.item_text1"/>
+                </p>
+                <p>
+                    <fmt:message key="footer.item_text2"/>
+                </p>
+                <p>
+                    <fmt:message key="footer.item_text3"/>
+                </p>
             </div>
             <div class="col item social">
                 <a href="#"><i class="fab fa-vk"></i></a>

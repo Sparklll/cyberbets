@@ -31,4 +31,13 @@ public enum Role {
         }
         throw new IllegalArgumentException("Unable to find Role with id = " + id);
     }
+
+    public static Role getRoleByName(String name) {
+        for(Role role : values()) {
+            if(role.getName().equals(name)) {
+                return role;
+            }
+        }
+        throw new IllegalArgumentException("Unable to find Role with name = " + name);
+    }
 }

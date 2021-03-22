@@ -38,7 +38,7 @@ public final class Login implements Action {
             response.setContentType(JSON_CONTENT_TYPE);
             response.setCharacterEncoding(UTF8_CHARSET);
             try {
-                if (accountService.isAuthorized(loginDto)) {
+                if (accountService.isAuthorizationValid(loginDto)) {
                     HttpSession httpSession = request.getSession();
                     httpSession.setAttribute(ACCOUNT_EMAIL_ATTR, email);
                     jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
