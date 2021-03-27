@@ -15,7 +15,8 @@ public class RegisterValidator implements Validator<RegisterDto> {
     }
 
     private boolean isEmailValid(String email) {
-        return email.matches(EMAIL_REGEX);
+        return StringUtils.isNotBlank(email)
+                && email.matches(EMAIL_REGEX);
     }
 
     private boolean isPasswordsValid(String password, String repeatedPassword) {

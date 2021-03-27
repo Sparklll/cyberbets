@@ -6,14 +6,14 @@ public class EventResult extends Entity {
     private static final long serialVersionUID = -1593407726732438884L;
 
     private int eventId;
-    private int outcomeTypeId;
-    private int resultStatusId;
+    private EventOutcomeType eventOutcomeType;
+    private ResultStatus resultStatus;
 
-    public EventResult(int id, int eventId, int outcomeTypeId, int resultStatusId) {
+    public EventResult(int id, int eventId, EventOutcomeType eventOutcomeType, ResultStatus resultStatus) {
         super(id);
         this.eventId = eventId;
-        this.outcomeTypeId = outcomeTypeId;
-        this.resultStatusId = resultStatusId;
+        this.eventOutcomeType = eventOutcomeType;
+        this.resultStatus = resultStatus;
     }
 
     public int getEventId() {
@@ -24,20 +24,20 @@ public class EventResult extends Entity {
         this.eventId = eventId;
     }
 
-    public int getOutcomeTypeId() {
-        return outcomeTypeId;
+    public EventOutcomeType getEventOutcomeType() {
+        return eventOutcomeType;
     }
 
-    public void setOutcomeTypeId(int outcomeTypeId) {
-        this.outcomeTypeId = outcomeTypeId;
+    public void setEventOutcomeType(EventOutcomeType eventOutcomeType) {
+        this.eventOutcomeType = eventOutcomeType;
     }
 
-    public int getResultStatusId() {
-        return resultStatusId;
+    public ResultStatus getResultStatus() {
+        return resultStatus;
     }
 
-    public void setResultStatusId(int resultStatusId) {
-        this.resultStatusId = resultStatusId;
+    public void setResultStatus(ResultStatus resultStatus) {
+        this.resultStatus = resultStatus;
     }
 
     @Override
@@ -46,21 +46,21 @@ public class EventResult extends Entity {
         if (o == null || getClass() != o.getClass()) return false;
         EventResult that = (EventResult) o;
         return eventId == that.eventId
-                && outcomeTypeId == that.outcomeTypeId
-                && resultStatusId == that.resultStatusId;
+                && eventOutcomeType == that.eventOutcomeType
+                && resultStatus == that.resultStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventId, outcomeTypeId, resultStatusId);
+        return Objects.hash(eventId, eventOutcomeType, resultStatus);
     }
 
     @Override
     public String toString() {
         return "EventResult{" +
                 "eventId=" + eventId +
-                ", outcomeTypeId=" + outcomeTypeId +
-                ", resultStatusId=" + resultStatusId +
+                ", eventOutcomeType=" + eventOutcomeType +
+                ", resultStatus=" + resultStatus +
                 '}';
     }
 }

@@ -7,16 +7,15 @@ import java.util.Objects;
 public class Bet extends Entity {
     private static final long serialVersionUID = -848437283670389073L;
 
-
     private int accountId;
-    private int eventResultId;
+    private EventResult eventResult;
     private BigDecimal amount;
     private Instant date;
 
-    public Bet(int id, int accountId, int eventResultId, BigDecimal amount, Instant date) {
+    public Bet(int id, int accountId, EventResult eventResult, BigDecimal amount, Instant date) {
         super(id);
         this.accountId = accountId;
-        this.eventResultId = eventResultId;
+        this.eventResult = eventResult;
         this.amount = amount;
         this.date = date;
     }
@@ -29,12 +28,12 @@ public class Bet extends Entity {
         this.accountId = accountId;
     }
 
-    public int getEventResultId() {
-        return eventResultId;
+    public EventResult getEventResult() {
+        return eventResult;
     }
 
-    public void setEventResultId(int eventResultId) {
-        this.eventResultId = eventResultId;
+    public void setEventResult(EventResult eventResult) {
+        this.eventResult = eventResult;
     }
 
     public BigDecimal getAmount() {
@@ -59,21 +58,21 @@ public class Bet extends Entity {
         if (o == null || getClass() != o.getClass()) return false;
         Bet bet = (Bet) o;
         return accountId == bet.accountId
-                && eventResultId == bet.eventResultId
+                && Objects.equals(eventResult, bet.eventResult)
                 && Objects.equals(amount, bet.amount)
                 && Objects.equals(date, bet.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountId, eventResultId, amount, date);
+        return Objects.hash(accountId, eventResult, amount, date);
     }
 
     @Override
     public String toString() {
         return "Bet{" +
                 "accountId=" + accountId +
-                ", eventResultId=" + eventResultId +
+                ", eventResult=" + eventResult +
                 ", amount=" + amount +
                 ", date=" + date +
                 '}';

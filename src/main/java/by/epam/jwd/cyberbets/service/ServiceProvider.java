@@ -13,11 +13,8 @@ public enum ServiceProvider {
     private final EventOutcomeTypeService eventOutcomeTypeService = new EventOutcomeTypeServiceImpl();
     private final EventResultService eventResultService = new EventResultServiceImpl();
     private final ResourceService resourceService = new ResourceServiceImpl();
-    private final ResultStatusService resultStatusService = new ResultStatusServiceImpl();
-    private final RoleService roleService = new RoleServiceImpl();
     private final TeamService teamService = new TeamServiceImpl();
     private final TransactionService transactionService = new TransactionServiceImpl();
-    private final TransactionTypeService transactionTypeService = new TransactionTypeServiceImpl();
 
     public AccountService getAccountService() {
         return accountService;
@@ -51,23 +48,11 @@ public enum ServiceProvider {
         return resourceService;
     }
 
-    public ResultStatusService getResultStatusService() {
-        return resultStatusService;
-    }
-
-    public RoleService getRoleService() {
-        return roleService;
-    }
-
     public TeamService getTeamService() {
         return teamService;
     }
 
     public TransactionService getTransactionService() {
         return transactionService;
-    }
-
-    public TransactionTypeService getTransactionTypeService() {
-        return transactionTypeService;
     }
 }

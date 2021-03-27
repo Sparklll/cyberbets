@@ -13,11 +13,9 @@ public enum DaoProvider {
     private final EventOutcomeTypeDao eventOutcomeTypeDao = new EventOutcomeTypeDaoImpl();
     private final EventResultDao eventResultDao = new EventResultDaoImpl();
     private final ResourceDao resourceDao = new ResourceDaoImpl();
-    private final ResultStatusDao resultStatusDao = new ResultStatusDaoImpl();
-    private final RoleDao roleDao = new RoleDaoImpl();
     private final TeamDao teamDao = new TeamDaoImpl();
     private final TransactionDao transactionDao = new TransactionDaoImpl();
-    private final TransactionTypeDao transactionTypeDao = new TransactionTypeDaoImpl();
+
 
     public AccountDao getAccountDao() {
         return accountDao;
@@ -51,23 +49,11 @@ public enum DaoProvider {
         return resourceDao;
     }
 
-    public ResultStatusDao getResultStatusDao() {
-        return resultStatusDao;
-    }
-
-    public RoleDao getRoleDao() {
-        return roleDao;
-    }
-
     public TeamDao getTeamDao() {
         return teamDao;
     }
 
     public TransactionDao getTransactionDao() {
         return transactionDao;
-    }
-
-    public TransactionTypeDao getTransactionTypeDao() {
-        return transactionTypeDao;
     }
 }

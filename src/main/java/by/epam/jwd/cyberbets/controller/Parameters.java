@@ -18,7 +18,7 @@ public final class Parameters {
 
     // REQUEST PARAMS
     public static final String EMAIL_PARAM = "email";
-    public static final String PASSWORD_PARAM = "password";
+    public static final String PASSWORD_PARAM = "passwordHash";
     public static final String REPEATED_PASSWORD_PARAM = "repeatedPassword";
 
     // RESPONSE PARAMS

@@ -288,7 +288,9 @@ $(document).ready(function () {
         var last_scroll_top = 0;
         $(window).on('scroll', function () {
             let scroll_top = $(this).scrollTop();
-            if (scroll_top > navbarHeight) {
+            if(scroll_top == 0) {
+                $('.smart-scroll').removeClass('scrolled-down').addClass('scrolled-up');
+            } else if (scroll_top > navbarHeight) {
                 if (scroll_top < last_scroll_top) {
                     $('.smart-scroll').removeClass('scrolled-down').addClass('scrolled-up');
                 } else {

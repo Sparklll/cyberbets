@@ -9,16 +9,16 @@ public class Account extends Entity {
     private String email;
     private String passwordHash;
     private BigDecimal balance;
-    private int roleId;
-    private int avatarResourceId;
+    private Role role;
+    private Resource avatarResource;
 
-    public Account(int id, String email, String passwordHash, BigDecimal balance, int roleId, int avatarResourceId) {
+    public Account(int id, String email, String passwordHash, BigDecimal balance, Role role, Resource avatarResource) {
         super(id);
         this.email = email;
         this.passwordHash = passwordHash;
         this.balance = balance;
-        this.avatarResourceId = avatarResourceId;
-        this.roleId = roleId;
+        this.role = role;
+        this.avatarResource = avatarResource;
     }
 
     public String getEmail() {
@@ -45,20 +45,20 @@ public class Account extends Entity {
         this.balance = balance;
     }
 
-    public int getAvatarResourceId() {
-        return avatarResourceId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setAvatarResourceId(int avatarResourceId) {
-        this.avatarResourceId = avatarResourceId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public int getRoleId() {
-        return roleId;
+    public Resource getAvatarResource() {
+        return avatarResource;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setAvatarResource(Resource avatarResource) {
+        this.avatarResource = avatarResource;
     }
 
     @Override
@@ -66,16 +66,16 @@ public class Account extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
-        return roleId == account.roleId
-                && avatarResourceId == account.avatarResourceId
-                && Objects.equals(email, account.email)
+        return Objects.equals(email, account.email)
                 && Objects.equals(passwordHash, account.passwordHash)
-                && Objects.equals(balance, account.balance);
+                && Objects.equals(balance, account.balance)
+                && role == account.role
+                && Objects.equals(avatarResource, account.avatarResource);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, passwordHash, balance, roleId, avatarResourceId);
+        return Objects.hash(email, passwordHash, balance, role, avatarResource);
     }
 
     @Override
@@ -84,8 +84,8 @@ public class Account extends Entity {
                 "email='" + email + '\'' +
                 ", passwordHash='" + passwordHash + '\'' +
                 ", balance=" + balance +
-                ", roleId=" + roleId +
-                ", avatarResourceId=" + avatarResourceId +
+                ", role=" + role +
+                ", avatarResource=" + avatarResource +
                 '}';
     }
 }

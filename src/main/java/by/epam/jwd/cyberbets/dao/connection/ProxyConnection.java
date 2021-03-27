@@ -1,4 +1,4 @@
-package by.epam.jwd.cyberbets.connection;
+package by.epam.jwd.cyberbets.dao.connection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

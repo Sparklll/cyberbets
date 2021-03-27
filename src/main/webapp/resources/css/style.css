@@ -247,6 +247,130 @@ img {
     color:  #8800ff;
 }
 
+.event .team-left {
+    border-radius: 0 0 0 5px;
+}
+
+.event .team-right {
+    border-radius: 0 0 5px;
+}
+
+.event .team,
+.event .center {
+    font-weight: bold;
+    padding: 5px;
+}
+
+.event-info .team {
+    background-color: #2f353d;
+}
+.event-info .center {
+    background-color: rgba(47, 53, 61, 0.2);
+}
+
+.event-info .center .event-format {
+    background-color: rgba(41, 67, 134, 0.4);
+    border-radius: 5px;
+    width: 60px;
+    height: 60px;
+}
+
+.event-info .team .odds {
+    border-radius: 5px;
+    padding:0 5px;
+    background-color: #29864e;
+}
+
+.event-info .team-logo {
+    background-color: rgba(41, 67, 134, 0.6);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.event-info .team-logo img {
+    width: 100%;
+    min-width: 30px;
+    max-width: 70px;
+}
+
+.event-info .team:hover {
+    cursor: pointer;
+    background-color: rgba(41, 134, 75, 0.3);
+}
+
+.event .center .left-percent,
+.event .center .right-percent {
+    opacity: 0.6;
+    font-size: 1.2rem;
+}
+
+.event .event-header {
+    font-weight: bold;
+    background-color: #492986;
+    border-radius: 5px 5px 0 0;
+}
+
+.event .event-header .event-icon {
+    max-width: 35px;
+}
+
+.event .event-header .live {
+    font-size: 0.8rem;
+    animation: blinkingLive 3s infinite ease-in-out;
+}
+
+@keyframes blinkingLive {
+    0% {
+        color: rgba(255, 0, 0, 0.8);
+    }
+    25% {
+        color: rgba(255, 0, 0, 0.6);
+    }
+    50% {
+        color: rgba(255, 0, 0, 0.4);
+    }
+    75% {
+        color: rgba(255, 0, 0, 0.6);
+    }
+    100% {
+        color: rgba(255, 0, 0, 0.8);
+    }
+}
+
+.live-label, .upcoming-label {
+    font-weight: bold;
+    background-color: #444455;
+}
+
+.live-label {
+    border-radius: 0 0 5px 5px;
+}
+
+.upcoming-label {
+    border-radius: 5px 5px 0 0;
+}
+
+.event-info .center .discipline-icon {
+    border-radius: 5px;
+    max-width: 30px;
+}
+
+@media all and (max-width: 576px) {
+    .event {
+        font-size: 0.7rem;
+    }
+
+    .event-info .team-logo img {
+        max-width: 40px;
+    }
+}
+
+@media all and (max-width: 768px) {
+    .event {
+        font-size: 0.8rem;
+    }
+}
+
 /* FOOTER */
 footer {
     padding: 50px 0;
@@ -410,7 +534,7 @@ footer .copyright {
 .card .card-header {
     border-radius: 15px;
     background: #4e5061;
-    border-top: 5px solid #6618b3;
+    border-top: 5px solid #8800ff;
 }
 
 .card .card-header .close {

@@ -20,9 +20,9 @@ public class AccountServiceImpl implements AccountService {
     private final AccountDao accountDao = DaoProvider.INSTANCE.getAccountDao();
 
     @Override
-    public Optional<Account> findAccountById(int id) throws ServiceException {
+    public Optional<Account> findAccountById(int accountId) throws ServiceException {
         try {
-            return accountDao.findAccountById(id);
+            return accountDao.findAccountById(accountId);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -64,12 +64,20 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateAccount(Account account) throws ServiceException {
-
+        try {
+            accountDao.updateAccount(account);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override
-    public void updateAccountBalance(int id, BigDecimal balance) throws ServiceException {
-
+    public void updateAccountBalance(int accountId, BigDecimal balance) throws ServiceException {
+        try {
+            accountDao.updateAccountBalance(accountId, balance);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override

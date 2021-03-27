@@ -1,6 +1,6 @@
-package by.epam.jwd.cyberbets.connection;
+package by.epam.jwd.cyberbets.dao.connection;
 
-import by.epam.jwd.cyberbets.connection.exception.ConnectionPoolException;
+import by.epam.jwd.cyberbets.dao.connection.exception.ConnectionPoolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static by.epam.jwd.cyberbets.connection.ConnectionParameter.*;
+import static by.epam.jwd.cyberbets.dao.connection.ConnectionParameter.*;
 
 public enum ConnectionPool {
     INSTANCE;
@@ -36,7 +36,6 @@ public enum ConnectionPool {
 
         try {
             Class.forName(driver);
-
             for (int i = 0; i < poolSize; i++) {
                 ProxyConnection connection = new ProxyConnection(DriverManager.getConnection(url, user, password));
                 freeConnections.add(connection);

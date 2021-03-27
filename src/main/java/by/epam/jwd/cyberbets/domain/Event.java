@@ -7,53 +7,63 @@ import java.util.Objects;
 public class Event extends Entity {
     private static final long serialVersionUID = -2403733588962027773L;
 
-    private int disciplineId;
-    private int eventFormatId;
-    private int firstTeamId;
-    private int secondTeamId;
+    private Discipline discipline;
+    private EventFormat eventFormat;
+    private League league;
+    private Team firstTeam;
+    private Team secondTeam;
     private Instant startDate;
     private BigDecimal royaltyPercentage;
 
-    public Event(int id, int disciplineId, int eventFormatId, int firstTeamId, int secondTeamId, Instant startDate, BigDecimal royaltyPercentage) {
+    public Event(int id, Discipline discipline, EventFormat eventFormat, League league, Team firstTeam, Team secondTeam, Instant startDate, BigDecimal royaltyPercentage) {
         super(id);
-        this.disciplineId = disciplineId;
-        this.eventFormatId = eventFormatId;
-        this.firstTeamId = firstTeamId;
-        this.secondTeamId = secondTeamId;
+        this.discipline = discipline;
+        this.eventFormat = eventFormat;
+        this.league = league;
+        this.firstTeam = firstTeam;
+        this.secondTeam = secondTeam;
         this.startDate = startDate;
         this.royaltyPercentage = royaltyPercentage;
     }
 
-    public int getDisciplineId() {
-        return disciplineId;
+    public Discipline getDiscipline() {
+        return discipline;
     }
 
-    public void setDisciplineId(int disciplineId) {
-        this.disciplineId = disciplineId;
+    public void setDiscipline(Discipline discipline) {
+        this.discipline = discipline;
     }
 
-    public int getEventFormatId() {
-        return eventFormatId;
+    public EventFormat getEventFormat() {
+        return eventFormat;
     }
 
-    public void setEventFormatId(int eventFormatId) {
-        this.eventFormatId = eventFormatId;
+    public void setEventFormat(EventFormat eventFormat) {
+        this.eventFormat = eventFormat;
     }
 
-    public int getFirstTeamId() {
-        return firstTeamId;
+    public League getLeague() {
+        return league;
     }
 
-    public void setFirstTeamId(int firstTeamId) {
-        this.firstTeamId = firstTeamId;
+    public void setLeague(League league) {
+        this.league = league;
     }
 
-    public int getSecondTeamId() {
-        return secondTeamId;
+    public Team getFirstTeam() {
+        return firstTeam;
     }
 
-    public void setSecondTeamId(int secondTeamId) {
-        this.secondTeamId = secondTeamId;
+    public void setFirstTeam(Team firstTeam) {
+        this.firstTeam = firstTeam;
+    }
+
+    public Team getSecondTeam() {
+        return secondTeam;
+    }
+
+    public void setSecondTeam(Team secondTeam) {
+        this.secondTeam = secondTeam;
     }
 
     public Instant getStartDate() {
@@ -77,26 +87,28 @@ public class Event extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return disciplineId == event.disciplineId
-                && eventFormatId == event.eventFormatId
-                && firstTeamId == event.firstTeamId
-                && secondTeamId == event.secondTeamId
+        return discipline == event.discipline
+                && eventFormat == event.eventFormat
+                && Objects.equals(league, event.league)
+                && Objects.equals(firstTeam, event.firstTeam)
+                && Objects.equals(secondTeam, event.secondTeam)
                 && Objects.equals(startDate, event.startDate)
                 && Objects.equals(royaltyPercentage, event.royaltyPercentage);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(disciplineId, eventFormatId, firstTeamId, secondTeamId, startDate, royaltyPercentage);
+        return Objects.hash(discipline, eventFormat, league, firstTeam, secondTeam, startDate, royaltyPercentage);
     }
 
     @Override
     public String toString() {
         return "Event{" +
-                "disciplineId=" + disciplineId +
-                ", eventFormatId=" + eventFormatId +
-                ", firstTeamId=" + firstTeamId +
-                ", secondTeamId=" + secondTeamId +
+                "discipline=" + discipline +
+                ", eventFormat=" + eventFormat +
+                ", league=" + league +
+                ", firstTeam=" + firstTeam +
+                ", secondTeam=" + secondTeam +
                 ", startDate=" + startDate +
                 ", royaltyPercentage=" + royaltyPercentage +
                 '}';

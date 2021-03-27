@@ -1,4 +1,4 @@
-package by.epam.jwd.cyberbets.connection;
+package by.epam.jwd.cyberbets.dao.connection;
 
 import java.util.ResourceBundle;
 import static by.epam.jwd.cyberbets.controller.Parameters.CONNECTION_PROPERTIES;

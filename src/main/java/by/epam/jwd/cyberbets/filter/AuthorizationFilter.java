@@ -36,8 +36,9 @@ public class AuthorizationFilter implements Filter {
                     if(optionalAccount.isPresent()) {
                         Account foundAccount = optionalAccount.get();
                         BigDecimal balance = foundAccount.getBalance();
-                        Role role = Role.getRoleById(foundAccount.getRoleId());
+                        Role role = foundAccount.getRole();
                         request.setAttribute(AUTH_ATTR, true);
+                        request.setAttribute(ACCOUNT_ID_ATTR, foundAccount.getId());
                         request.setAttribute(ROLE_ATTR, role.getName());
                         request.setAttribute(BALANCE_ATTR, balance);
                     }

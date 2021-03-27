@@ -17,7 +17,7 @@ public enum ResultStatus {
         return id;
     }
 
-    public ResultStatus getResultStatusById(int id) {
+    public ResultStatus getResultStatusById(int id) throws IllegalArgumentException{
         for(ResultStatus resultStatus : values()) {
             if(resultStatus.getId() == id) {
                 return resultStatus;

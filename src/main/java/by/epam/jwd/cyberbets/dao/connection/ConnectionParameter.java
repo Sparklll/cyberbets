@@ -1,4 +1,4 @@
-package by.epam.jwd.cyberbets.connection;
+package by.epam.jwd.cyberbets.dao.connection;
 
 public final class ConnectionParameter {
     public static final String DB_DRIVER = "db.driver";
