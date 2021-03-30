@@ -16,6 +16,12 @@ public class League extends Entity {
         this.iconResource = iconResource;
     }
 
+    public League(String name, Discipline discipline, Resource iconResource) {
+        this.name = name;
+        this.discipline = discipline;
+        this.iconResource = iconResource;
+    }
+
     public String getName() {
         return name;
     }

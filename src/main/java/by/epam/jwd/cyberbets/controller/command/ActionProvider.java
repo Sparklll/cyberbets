@@ -1,5 +1,13 @@
 package by.epam.jwd.cyberbets.controller.command;
 
+import by.epam.jwd.cyberbets.controller.command.impl.admin.league.DeleteLeague;
+import by.epam.jwd.cyberbets.controller.command.impl.admin.league.InsertLeague;
+import by.epam.jwd.cyberbets.controller.command.impl.admin.league.LoadLeague;
+import by.epam.jwd.cyberbets.controller.command.impl.admin.league.UpdateLeague;
+import by.epam.jwd.cyberbets.controller.command.impl.admin.team.DeleteTeam;
+import by.epam.jwd.cyberbets.controller.command.impl.admin.team.InsertTeam;
+import by.epam.jwd.cyberbets.controller.command.impl.admin.team.LoadTeam;
+import by.epam.jwd.cyberbets.controller.command.impl.admin.team.UpdateTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.general.*;
 
 import java.util.HashMap;
@@ -14,6 +22,14 @@ public enum ActionProvider {
     private final Map<String, Action> actions = new HashMap<>();
 
     private ActionProvider() {
+        actions.put(LOAD_LEAGUE_ACTION, new LoadLeague());
+        actions.put(INSERT_LEAGUE_ACTION, new InsertLeague());
+        actions.put(UPDATE_LEAGUE_ACTION, new UpdateLeague());
+        actions.put(DELETE_LEAGUE_ACTION, new DeleteLeague());
+        actions.put(LOAD_TEAM_ACTION, new LoadTeam());
+        actions.put(INSERT_TEAM_ACTION, new InsertTeam());
+        actions.put(UPDATE_TEAM_ACTION, new UpdateTeam());
+        actions.put(DELETE_TEAM_ACTION, new DeleteTeam());
         actions.put(REGISTER_ACTION, new Register());
         actions.put(LOGIN_ACTION, new Login());
         actions.put(LOGOUT_ACTION, new Logout());

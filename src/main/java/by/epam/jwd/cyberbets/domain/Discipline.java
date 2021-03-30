@@ -1,10 +1,14 @@
 package by.epam.jwd.cyberbets.domain;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Optional;
+
 public enum Discipline {
-    CSGO(1),
-    DOTA2(2),
-    LOL(3),
-    VALORANT(4);
+    @SerializedName("1") CSGO(1),
+    @SerializedName("2") DOTA2(2),
+    @SerializedName("3") LOL(3),
+    @SerializedName("4") VALORANT(4);
 
     private final int id;
 
@@ -16,12 +20,13 @@ public enum Discipline {
         return id;
     }
 
-    public Discipline getDisciplineById(int id) {
+    public static Optional<Discipline> getDisciplineById(int id) {
+        Optional<Discipline> disciplineOptional = Optional.empty();
         for(Discipline discipline : values()) {
             if(discipline.getId() == id) {
-                return discipline;
+                disciplineOptional = Optional.of(discipline);
             }
         }
-        throw new IllegalArgumentException("Unable to find Discipline with id = " + id);
+        return disciplineOptional;
     }
 }

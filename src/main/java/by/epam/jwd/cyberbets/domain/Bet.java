@@ -20,6 +20,13 @@ public class Bet extends Entity {
         this.date = date;
     }
 
+    public Bet(int accountId, EventResult eventResult, BigDecimal amount, Instant date) {
+        this.accountId = accountId;
+        this.eventResult = eventResult;
+        this.amount = amount;
+        this.date = date;
+    }
+
     public int getAccountId() {
         return accountId;
     }

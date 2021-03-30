@@ -12,13 +12,22 @@ public final class Parameters {
 
     public static final String CONNECTION_PROPERTIES = "connection.db";
     public static final String JSON_MAP = "jsonMap";
+    public static final String JSON_UTF8_CONTENT_TYPE = "application/json; charset=UTF-8";
     public static final String JSON_CONTENT_TYPE = "application/json";
     public static final String UTF8_CHARSET = "UTF-8";
 
 
     // REQUEST PARAMS
+    public static final String DISCIPLINE_PARAM = "discipline";
+    public static final String TEAM_RATING_PARAM = "teamRating";
+    public static final String TEAM_LOGO_PARAM = "teamLogo";
+    public static final String TEAM_NAME_PARAM = "teamName";
+    public static final String PATH_PARAM = "path";
+    public static final String TEAM_PARAM = "team";
+    public static final String FILTER_PARAM = "filter";
+    public static final String ID_PARAM = "id";
     public static final String EMAIL_PARAM = "email";
-    public static final String PASSWORD_PARAM = "passwordHash";
+    public static final String PASSWORD_PARAM = "password";
     public static final String REPEATED_PASSWORD_PARAM = "repeatedPassword";
 
     // RESPONSE PARAMS
@@ -34,6 +43,14 @@ public final class Parameters {
     public static final String BALANCE_ATTR = "balance";
 
     // ACTION NAMES
+    public static final String LOAD_LEAGUE_ACTION = "loadLeague";
+    public static final String INSERT_LEAGUE_ACTION = "insertLeague";
+    public static final String UPDATE_LEAGUE_ACTION = "updateLeague";
+    public static final String DELETE_LEAGUE_ACTION = "deleteLeague";
+    public static final String LOAD_TEAM_ACTION = "loadTeam";
+    public static final String INSERT_TEAM_ACTION = "insertTeam";
+    public static final String UPDATE_TEAM_ACTION = "updateTeam";
+    public static final String DELETE_TEAM_ACTION = "deleteTeam";
     public static final String REGISTER_ACTION = "register";
     public static final String LOGIN_ACTION = "login";
     public static final String LOGOUT_ACTION = "logout";

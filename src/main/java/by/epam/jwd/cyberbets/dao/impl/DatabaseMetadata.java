@@ -21,7 +21,7 @@ public final class DatabaseMetadata {
 
     static final String PATH = "path";
     static final String NAME = "name";
-    private static final String RATING = "rating";
+    static final String RATING = "rating";
     static final String EMAIL = "email";
     static final String PASSWORD_HASH = "password_hash";
     static final String BALANCE = "balance";

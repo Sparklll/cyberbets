@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.TRANSACTIONS_PAGE;
 
-public class GoToTransactionsHistoryPage implements Action {
+public final class GoToTransactionsHistoryPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(TRANSACTIONS_PAGE);

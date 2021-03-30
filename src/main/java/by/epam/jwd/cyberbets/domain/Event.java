@@ -26,6 +26,16 @@ public class Event extends Entity {
         this.royaltyPercentage = royaltyPercentage;
     }
 
+    public Event(Discipline discipline, EventFormat eventFormat, League league, Team firstTeam, Team secondTeam, Instant startDate, BigDecimal royaltyPercentage) {
+        this.discipline = discipline;
+        this.eventFormat = eventFormat;
+        this.league = league;
+        this.firstTeam = firstTeam;
+        this.secondTeam = secondTeam;
+        this.startDate = startDate;
+        this.royaltyPercentage = royaltyPercentage;
+    }
+
     public Discipline getDiscipline() {
         return discipline;
     }

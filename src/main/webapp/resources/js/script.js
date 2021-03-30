@@ -3,6 +3,9 @@ $(document).ready(function () {
     const DEFAULT_LANG = 'en';
     const ACTION_URL = "/action/"
 
+    var isTeamEditing = false;
+
+
     function setCookie(name, value, days) {
         if (days) {
             let date = new Date();
@@ -60,12 +63,276 @@ $(document).ready(function () {
         return password1 === password2;
     }
 
+    function validateTeamRating(teamRating) {
+        const ratingFormat = /^(([1-9][0-9]{0,5})|([0]))$/;
+        return !isNaN(teamRating)
+            && ratingFormat.test(teamRating);
+    }
+
+    function validateTeamName(teamName) {
+        return teamName.length > 0 && teamName.length < 30
+    }
+
+    if ($('#leagueModal').length > 0) {
+
+    }
+
+    if ($('#teamsGrid').length > 0) {
+        var disciplines = [
+            {Name: "", Id: "0", Logo: ""},
+            {Name: "CS:GO", Id: "1", Logo: "/resources/assets/disciplines/csgo_icon.png"},
+            {Name: "DOTA 2", Id: "2", Logo: "/resources/assets/disciplines/dota2_icon.png"},
+            {Name: "LEAGUE OF LEGENDS", Id: "3", Logo: "/resources/assets/disciplines/lol_icon.png"},
+            {Name: "VALORANT", Id: "4", Logo: "/resources/assets/disciplines/valorant_icon.jpg"}
+        ];
+
+        $('#teamsGrid').jsGrid({
+            fields: [
+                {name: "id", title: "Id", type: "number", width: 50, align: "center"},
+                {
+                    name: "teamName",
+                    title: "Team",
+                    type: "text",
+                    width: 100,
+                    align: "center",
+                    itemTemplate: function (value, item) {
+                        return `<div class="d-flex flex-column flex-sm-row justify-content-center align-items-center">
+                                    <span class="me-sm-2">${item.teamName}</span>
+                                    <img src="${item.teamLogo.path}" width="60">
+                                </div>`;
+                    }
+                },
+                {
+                    name: "discipline",
+                    title: "Discipline",
+                    type: "select",
+                    items: disciplines,
+                    valueField: "Id",
+                    textField: "Name",
+                    width: 100,
+                    itemTemplate: function (value, item) {
+                        let disciplineName = disciplines.find(d => d.Id === value).Name;
+                        let disciplineLogo = disciplines.find(d => d.Id === value).Logo;
+                        return `<div class="d-flex flex-column flex-sm-row justify-content-center align-items-center">
+                                    <img src="${disciplineLogo}" width="30" class="me-sm-2" style="border-radius: 5px">
+                                    <span>${disciplineName}</span>
+                                </div>`;
+                    }
+                },
+                {name: "teamRating", title: "Rating", type: "number", width: 100, align: "center"},
+                {
+                    type: "control",
+                    editButton: false,
+                    deleteButton: false,
+                    clearFilterButton: true,
+                    modeSwitchButton: true,
+                }
+            ],
+
+            autoload: true,
+            controller: {
+                loadData: function (filter) {
+                    var data = $.Deferred();
+                    $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "loadTeam"}, filter))
+                    }).done(function (response) {
+                        data.resolve(response);
+                    }).fail(function () {
+                        data.reject();
+                    });
+                    return data.promise();
+                },
+
+                insertItem: function (item) {
+                    $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "insertTeam"}, item))
+                    }).done(function (response) {
+                        notify('success','Team was successfully added!','');
+                    }).fail(function () {
+                        notify('error','There was an error adding the team!','');
+                    });
+                },
+
+                updateItem: function (item) {
+                    return $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "updateTeam"}, item))
+                    });
+                },
+
+                deleteItem: function (item) {
+                    return $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "deleteTeam"}, item))
+                    });
+                },
+            },
+
+            width: "100%",
+            height: "auto",
+
+            heading: true,
+            filtering: true,
+            inserting: false,
+            editing: true,
+            selecting: true,
+            sorting: true,
+            paging: true,
+            pageLoading: false,
+
+            rowClick: function (args) {
+                // TODO: Add i18n <fmt>
+
+                isTeamEditing = true;
+
+                $('#teamModal').modal('show');
+                $('#teamModal .card-header h5').text('Edit team');
+                $('#teamModal #teamModalSubmit').text('Update');
+
+                let item = args.item;
+                let itemId = item.Id;
+
+                $('teamModal').data('id', itemId);
+                $('#teamModal #teamDisciplineSelect').val(item.discipline);
+                $('#teamModal #teamName').val(item.team);
+                $('#teamModal #teamRating').val(item.rating);
+                $('#teamModal #teamLogoPreview').attr('src', item.teamLogo.path).fadeIn(1000);
+            },
+
+            pageIndex: 1,
+            pageSize: 10,
+            pageButtonCount: 10,
+        });
+    }
+
+    if ($('#teamModal').length > 0) {
+        var teamLogoBase64;
+
+        $('#teamModal').off('hidden.bs.modal').on('hidden.bs.modal', function () {
+            // TODO: Add i18n <fmt>
+            $('#teamModal .card-header h5').text('Add team');
+            $('#teamModal #teamModalSubmit').text('Save');
+            $('#teamModal #teamLogoPreview').attr('src', '').hide();
+            isTeamEditing = false;
+        });
+
+        $('#teamModal #teamDisciplineSelect').off('change').on('change', function () {
+            let disciplineSelectValue = $('#teamDisciplineSelect').val();
+            if (disciplineSelectValue > 0) {
+                $('#teamDisciplineSelect').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#teamDisciplineSelect').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#teamModal #teamName').off('input').on('input', function () {
+            let teamName = $('#teamName').val();
+            if (teamName.length > 0) {
+                $('#teamName').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#teamName').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#teamModal #teamRating').off('input').on('input', function () {
+            let teamRating = $('#teamRating').val();
+            if (teamRating.length > 0) {
+                if (validateTeamRating(teamRating)) {
+                    $('#teamRating').removeClass('is-invalid').addClass('is-valid');
+                } else {
+                    $('#teamRating').removeClass('is-valid').addClass('is-invalid');
+                }
+            } else {
+                $('#teamRating').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#teamModal #teamLogo').off('change').on('change', function () {
+            let fileLength = $('#teamLogo').get(0).files.length;
+            if (fileLength > 0) {
+                let imageFile = $('#teamLogo').get(0).files[0];
+
+                let fileReader = new FileReader();
+                fileReader.onload = function () {
+                    $("#teamLogoPreview").attr('src', fileReader.result).fadeIn(1000);
+                    teamLogoBase64 = fileReader.result;
+                }
+                fileReader.readAsDataURL(imageFile);
+                $('#teamLogo').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $("#teamLogoPreview").fadeOut(1000).queue(function () {
+                    $("#teamLogoPreview").delay(1000).attr('src', '');
+                    $(this).dequeue();
+                });
+                $('#teamLogo').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#teamModal #teamModalSubmit').off('click').click(function (e) {
+            e.preventDefault();
+
+            let teamName = $('#teamName').val();
+            let teamRating = $('#teamRating').val();
+            let disciplineValue = $('#teamDisciplineSelect').val();
+            let isImageSelected = $('#teamLogo').get(0).files.length > 0;
+
+            if (validateTeamName(teamName)
+                && validateTeamRating(teamRating)
+                && disciplineValue > 0
+                && (isImageSelected || isTeamEditing)) {
+
+                let team = {
+                    "teamName": teamName,
+                    "teamRating": teamRating,
+                    "discipline": disciplineValue,
+                }
+
+                if (isImageSelected) {
+                    team.teamLogo = {
+                        "path": teamLogoBase64
+                    };
+                }
+
+                if (isTeamEditing) {
+                    // TODO: add i18n <fmt>
+                    team.teamId = $('#teamModal').data('id');
+                    $("#teamsGrid").jsGrid("updateItem", team).then(function () {
+                        $('#teamModal').modal('hide');
+                    });
+                } else {
+                    $("#teamsGrid").jsGrid("insertItem", team).then(function () {
+                        $('#teamModal').modal('hide');
+                    });
+                }
+            } else {
+                if (!$('#teamName').val()) {
+                    $('#teamName').addClass('is-invalid');
+                }
+                if (!$('#teamRating').val()) {
+                    $('#teamRating').addClass('is-invalid');
+                }
+                if (!$('#teamDisciplineSelect').val()) {
+                    $('#teamDisciplineSelect').addClass('is-invalid');
+                }
+                if (!$('#teamLogo').val() && !isTeamEditing) {
+                    $('#teamLogo').addClass('is-invalid');
+                }
+            }
+        });
+    }
+
     if ($('#registerModal').length > 0) {
         $('#registerModal #registerEmail').off('input').on('input', function () {
             let email = $('#registerEmail').val();
             if (email.length > 0) {
                 if (validateEmail(email)) {
-                    $('#registerEmail').removeClass('is-invalid').addClass('is-valid')
+                    $('#registerEmail').removeClass('is-invalid').addClass('is-valid');
                 } else {
                     $('#registerEmail').removeClass('is-valid').addClass('is-invalid');
                 }
@@ -78,7 +345,7 @@ $(document).ready(function () {
             let password = $('#registerPassword').val();
             if (password.length > 0) {
                 if (validatePasswordLength(password)) {
-                    $('#registerPassword').removeClass('is-invalid').addClass('is-valid')
+                    $('#registerPassword').removeClass('is-invalid').addClass('is-valid');
                 } else {
                     $('#registerPassword').removeClass('is-valid').addClass('is-invalid');
                 }
@@ -92,7 +359,7 @@ $(document).ready(function () {
             let repeatedPassword = $('#registerRepeatedPassword').val();
             if (repeatedPassword.length > 0) {
                 if (validatePasswordMatching(password, repeatedPassword)) {
-                    $('#registerRepeatedPassword').removeClass('is-invalid').addClass('is-valid')
+                    $('#registerRepeatedPassword').removeClass('is-invalid').addClass('is-valid');
                 } else {
                     $('#registerRepeatedPassword').removeClass('is-valid').addClass('is-invalid');
                 }
@@ -123,7 +390,7 @@ $(document).ready(function () {
                         return Promise.reject(response);
                     }
                 ).then(function (data) {
-                    if(data.status === 'ok') {
+                    if (data.status === 'ok') {
                         reloadPage();
                     } else if (data.status === 'deny') {
                         $('#emailAlreadyExist').show(200).delay(3000).hide(200);
@@ -149,7 +416,7 @@ $(document).ready(function () {
             let email = $('#loginEmail').val();
             if (email.length > 0) {
                 if (validateEmail(email)) {
-                    $('#loginEmail').removeClass('is-invalid').addClass('is-valid')
+                    $('#loginEmail').removeClass('is-invalid').addClass('is-valid');
                 } else {
                     $('#loginEmail').removeClass('is-valid').addClass('is-invalid');
                 }
@@ -162,7 +429,7 @@ $(document).ready(function () {
             let password = $('#loginPassword').val();
             if (password.length > 0) {
                 if (validatePasswordLength(password)) {
-                    $('#loginPassword').removeClass('is-invalid').addClass('is-valid')
+                    $('#loginPassword').removeClass('is-invalid').addClass('is-valid');
                 } else {
                     $('#loginPassword').removeClass('is-valid').addClass('is-invalid');
                 }
@@ -190,7 +457,7 @@ $(document).ready(function () {
                         return Promise.reject(response);
                     }
                 ).then(function (data) {
-                    if(data.status === 'ok') {
+                    if (data.status === 'ok') {
                         reloadPage();
                     } else if (data.status === 'deny') {
                         $('#wrongCredentials').show(200).delay(3000).hide(200);
@@ -208,7 +475,7 @@ $(document).ready(function () {
         });
     }
 
-    if($('#logout').length > 0) {
+    if ($('#logout').length > 0) {
         $('#logout').off('click').click(function (e) {
             e.preventDefault();
 
@@ -221,7 +488,7 @@ $(document).ready(function () {
                     return Promise.reject(response);
                 }
             ).then(function (data) {
-                if(data.status === 'ok') {
+                if (data.status === 'ok') {
                     reloadPage();
                 }
             }).catch((error) => console.log('Something went wrong.', error));
@@ -288,7 +555,7 @@ $(document).ready(function () {
         var last_scroll_top = 0;
         $(window).on('scroll', function () {
             let scroll_top = $(this).scrollTop();
-            if(scroll_top == 0) {
+            if (scroll_top == 0) {
                 $('.smart-scroll').removeClass('scrolled-down').addClass('scrolled-up');
             } else if (scroll_top > navbarHeight) {
                 if (scroll_top < last_scroll_top) {
@@ -300,4 +567,17 @@ $(document).ready(function () {
             last_scroll_top = scroll_top;
         });
     }
+
+    $('.modal').on('hidden.bs.modal', function (e) {
+        $(this)
+            .find("input,textarea,select")
+            .val('')
+            .end()
+            .find("input[type=checkbox], input[type=radio]")
+            .prop('checked', '')
+            .end()
+            .find('*')
+            .removeClass('is-invalid')
+            .removeClass('is-valid')
+    })
 });

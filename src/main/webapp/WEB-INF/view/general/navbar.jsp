@@ -174,7 +174,7 @@
                         </a>
                     </div>
                     <div class="card-body p-3">
-                        <form action="" method="POST" novalidate>
+                        <form action="" method="POST" class="custom-controls" novalidate>
                             <div class="input-field mt-3">
                                 <label for="registerEmail" class="col-sm-2 col-form-label">
                                     <i class="fas fa-user px-2"></i>
@@ -251,7 +251,7 @@
                         </a>
                     </div>
                     <div class="card-body p-3">
-                        <form action="" method="POST">
+                        <form action="" method="POST" class="custom-controls" novalidate>
                             <div class="input-field mt-3">
                                 <label for="loginEmail" class="col-sm-2 col-form-label">
                                     <i class="fas fa-user px-2"></i>

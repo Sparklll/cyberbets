@@ -35,8 +35,7 @@ public final class Login implements Action {
 
             PrintWriter out = response.getWriter();
             JsonObject jsonResponse = new JsonObject();
-            response.setContentType(JSON_CONTENT_TYPE);
-            response.setCharacterEncoding(UTF8_CHARSET);
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
             try {
                 if (accountService.isAuthorizationValid(loginDto)) {
                     HttpSession httpSession = request.getSession();

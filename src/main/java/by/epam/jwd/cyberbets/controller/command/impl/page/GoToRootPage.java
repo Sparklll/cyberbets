@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
-public class GoToRootPage implements Action {
+public final class GoToRootPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(ROOT_PAGE);

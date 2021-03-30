@@ -17,8 +17,7 @@ public final class Logout implements Action {
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         JsonObject jsonResponse = new JsonObject();
-        response.setContentType(JSON_CONTENT_TYPE);
-        response.setCharacterEncoding(UTF8_CHARSET);
+        response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
         HttpSession httpSession = request.getSession(false);
         if (httpSession != null) {

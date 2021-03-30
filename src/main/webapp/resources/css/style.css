@@ -503,23 +503,39 @@ footer .copyright {
     align-items: center;
     border: 2px solid rgba(226, 212, 232, 0.8);
 }
-.input-field input::placeholder {
+
+.custom-controls input::placeholder {
     color: rgba(255, 255, 255, 0.5);
 }
 
-.input-field input:focus {
+.custom-controls input:focus {
     color: white;
     box-shadow: none;
     background-color: #4e5061;
 }
 
-.input-field input {
+.custom-controls input {
     color: white;
     border: none;
     outline: none;
     background-color: #4e5061;
     width: 100%;
     padding-right: calc(1.5em + .75rem);
+}
+
+.custom-controls select:focus {
+    color: white;
+    box-shadow: none;
+    background-color: #4e5061;
+}
+
+
+.custom-controls select {
+    color: white;
+    border: none;
+    outline: none;
+    background-color: #4e5061;
+    width: 100%;
 }
 
 /* CARD */
@@ -595,4 +611,117 @@ footer .copyright {
 
 .flag-ru {
     background-image: url(../assets/flags/ru.svg);
+}
+
+/* ADMIN PANEL */
+/* Sidebar */
+.sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    max-height: 100%;
+    overflow-y: auto;
+    width: 100%;
+    transition: ease-out 0.1s;
+}
+
+.sidebar-logo {
+    max-width: 250px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar {
+        transition: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        width: 100%;
+        max-width: 350px;
+    }
+    /* Style page content */
+    main {
+        margin-left: 350px;
+    }
+}
+
+.sidebar .nav {
+    white-space: nowrap;
+}
+
+.sidebar .nav-item {
+    margin-bottom: .2rem;
+}
+
+.sidebar .nav-item.active > .nav-link {
+    color: #D1D5DB;
+    background-color: #2e3650;
+}
+
+.sidebar .nav-item .nav-link {
+    color: #D1D5DB;
+    cursor: pointer;
+}
+
+.sidebar .nav-item .nav-link:hover {
+    color: #D1D5DB;
+    background-color: #2e3650;
+}
+
+.sidebar .nav-link + .multi-level {
+    margin-top: .2rem;
+}
+
+.sidebar .nav-link {
+    vertical-align: middle;
+    padding: 0.55rem 0.75rem;
+    border-radius: 1rem;
+}
+
+.sidebar .nav-link .sidebar-icon {
+    margin-right: .5rem;
+    color: #ffffff;
+}
+
+.sidebar .nav-link .sidebar-icon span {
+    min-width: 22px;
+}
+
+.sidebar .nav-link .link-arrow {
+    font-size: 0.9rem;
+}
+
+.sidebar .nav-link[data-bs-toggle=collapse][aria-expanded=true] .link-arrow {
+    transform: rotate(90deg);
+    transition: all 0.2s ease;
+}
+
+.sidebar .multi-level .nav-link {
+    padding-left: 45px;
+}
+
+.sidebar .sidebar-text,
+.sidebar .link-arrow,
+.sidebar .badge,
+.sidebar .notification-count {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar .sidebar-text,
+    .sidebar .link-arrow,
+    .sidebar .badge,
+    .sidebar .notification-count {
+        transition: none;
+    }
+}
+
+.sidebar-inner {
+    position: relative;
+    overflow-y: hidden;
 }

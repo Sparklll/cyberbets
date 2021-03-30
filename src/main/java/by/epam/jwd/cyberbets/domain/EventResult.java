@@ -16,6 +16,12 @@ public class EventResult extends Entity {
         this.resultStatus = resultStatus;
     }
 
+    public EventResult(int eventId, EventOutcomeType eventOutcomeType, ResultStatus resultStatus) {
+        this.eventId = eventId;
+        this.eventOutcomeType = eventOutcomeType;
+        this.resultStatus = resultStatus;
+    }
+
     public int getEventId() {
         return eventId;
     }

@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.ADMIN_PANEL_PAGE;
 
-public class GoToAdminPanelPage implements Action {
+public final class GoToAdminPanelPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(ADMIN_PANEL_PAGE);

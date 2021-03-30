@@ -20,6 +20,13 @@ public class Transaction extends Entity {
         this.date = date;
     }
 
+    public Transaction(int accountId, TransactionType transactionType, BigDecimal amount, Instant date) {
+        this.accountId = accountId;
+        this.transactionType = transactionType;
+        this.amount = amount;
+        this.date = date;
+    }
+
     public int getAccountId() {
         return accountId;
     }

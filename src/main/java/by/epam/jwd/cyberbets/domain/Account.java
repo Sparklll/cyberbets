@@ -21,6 +21,14 @@ public class Account extends Entity {
         this.avatarResource = avatarResource;
     }
 
+    public Account(String email, String passwordHash, BigDecimal balance, Role role, Resource avatarResource) {
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.balance = balance;
+        this.role = role;
+        this.avatarResource = avatarResource;
+    }
+
     public String getEmail() {
         return email;
     }

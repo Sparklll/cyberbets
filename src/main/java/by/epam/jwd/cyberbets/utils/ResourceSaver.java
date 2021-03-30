@@ -1,11 +1,26 @@
 package by.epam.jwd.cyberbets.utils;
 
+import by.epam.jwd.cyberbets.utils.exception.UtilException;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.UUID;
+
 public final class ResourceSaver {
     private static final String LEAGUES_PATH = "/resources/application/leagues";
     private static final String TEAMS_PATH = "/resources/application/teams";
     private static final String AVATARS_PATH = "/resources/application/avatars";
+    private static String WEBAPP_ROOT_PATH;
 
     private ResourceSaver() {
+    }
+
+    public static void init(String webappRootPath){
+        WEBAPP_ROOT_PATH = webappRootPath;
     }
 
     public enum Resource {
@@ -24,8 +39,26 @@ public final class ResourceSaver {
         }
     }
 
-    public static void uploadImage(Resource resource) {
+    public static String uploadImage(Resource resource, String dataUrl) throws UtilException {
         String resourcePath = resource.getPath();
 
+        String delimiter = ",";
+        String[] dataUrlParts = dataUrl.split(delimiter);
+        String imageData = dataUrlParts[1];
+        String extension = getDataUrlExtension(dataUrl);
+
+        byte[] decodedImage = Base64.getDecoder().decode(imageData.getBytes(StandardCharsets.UTF_8));
+        String imageFileName = UUID.randomUUID() + extension;
+        Path destination = Paths.get(WEBAPP_ROOT_PATH, resourcePath, imageFileName);
+        try {
+            Files.write(destination, decodedImage);
+            return Paths.get(resourcePath, imageFileName).toString();
+        } catch (IOException e) {
+            throw new UtilException(e);
+        }
+    }
+
+    private static String getDataUrlExtension(String dataUrl) {
+        return "." + dataUrl.substring(dataUrl.indexOf("/") + 1, dataUrl.indexOf(";base64"));
     }
 }

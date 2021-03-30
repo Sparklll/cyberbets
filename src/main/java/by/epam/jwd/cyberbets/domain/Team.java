@@ -1,21 +1,34 @@
 package by.epam.jwd.cyberbets.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Objects;
 
 public class Team extends Entity {
     private static final long serialVersionUID = 1344320937736154687L;
 
-    private Discipline discipline;
+    @SerializedName("teamName")
     private String name;
-    private Resource logoResource;
+    @SerializedName("teamRating")
     private int rating;
+    private Discipline discipline;
+    @SerializedName("teamLogo")
+    private Resource logoResource;
 
-    public Team(int id, Discipline discipline, String name, Resource logoResource, int rating) {
+
+    public Team(int id, String name, int rating, Discipline discipline, Resource logoResource) {
         super(id);
-        this.discipline = discipline;
         this.name = name;
-        this.logoResource = logoResource;
         this.rating = rating;
+        this.discipline = discipline;
+        this.logoResource = logoResource;
+    }
+
+    public Team(String name, int rating, Discipline discipline, Resource logoResource) {
+        this.name = name;
+        this.rating = rating;
+        this.discipline = discipline;
+        this.logoResource = logoResource;
     }
 
     public Discipline getDiscipline() {
