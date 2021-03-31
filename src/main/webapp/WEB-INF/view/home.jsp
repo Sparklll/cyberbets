@@ -12,7 +12,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="/static/assets/favicon.ico">
+    <link rel="icon" href="/resources/assets/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css">
@@ -25,6 +25,7 @@
 <jsp:include page="general/navbar.jsp">
     <jsp:param name="auth" value="${auth}"/>
     <jsp:param name="role" value="${role}"/>
+    <jsp:param name="balance" value="${balance}"/>
 </jsp:include>
 
 <div class="discipline-filter container my-5">
@@ -70,14 +71,15 @@
 
             <nav>
                 <div class="nav nav-tabs" id="eventsTab" role="tablist">
-                    <button class="nav-link active" id="currentEventsTab" data-bs-toggle="tab"
+                    <button class="nav-link col-6 col-lg-3 active" id="currentEventsTab" data-bs-toggle="tab"
                             data-bs-target="#currentEvents" type="button" role="tab" aria-selected="true">
                         <i class="fas fa-calendar-alt me-2"></i>
                         <span class="text-uppercase">
                             <fmt:message key="events.tab.current_events"/>
                         </span>
                     </button>
-                    <button class="nav-link" id="pastEventsTab" data-bs-toggle="tab" data-bs-target="#pastEvents"
+                    <button class="nav-link col-6 col-lg-3" id="pastEventsTab" data-bs-toggle="tab"
+                            data-bs-target="#pastEvents"
                             type="button" role="tab" aria-selected="false">
                         <i class="fas fa-calendar-check me-2"></i>
                         <span class="text-uppercase">
@@ -89,12 +91,70 @@
             <div class="tab-content" id="eventsTabContent">
                 <div class="tab-pane fade show active" id="currentEvents" role="tabpanel"
                      aria-labelledby="currentEventsTab">
-                    <div class="event" data-id="">
-                        Live/Upcoming
+                    <div id="liveEvents" class="mb-4">
+                        <div class="live-label text-uppercase text-center mt-1 mb-1 p-2">Live Events</div>
+
+
+                        <div class="event mb-3" data-id="">
+                            <div class="event-header d-flex align-items-center">
+                                <span class="date ms-1">20.02.2021</span>
+                                <span class="date ms-1 text-uppercase live"><i class="fas fa-circle me-1"></i>Live</span>
+                                <img src="assets/event-icon2.png" class="event-icon ms-auto me-1">
+                                <span class="event-name float-end me-1">Faceit Pro League</span>
+                            </div>
+                            <div class="event-info d-flex">
+
+                                <div class="team team-left d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
+                                    <div class="d-flex flex-column justify-content-center align-items-center col-6">
+                                        <span class="team-name">Liquid</span>
+                                        <span class="odds m-2"><i>x</i>1.8</span>
+                                    </div>
+                                    <div class="team-logo ms-sm-2">
+                                        <img src="assets/team-2.png">
+                                    </div>
+                                </div>
+
+
+                                <div class="center d-flex flex-column flex-sm-row col-4 justify-content-center align-items-center">
+                                    <div class="left-percent d-flex col-4 justify-content-center">
+                                        <span class="odds-percentage">40%</span>
+
+                                    </div>
+
+                                    <div class="event-format d-flex flex-column col-4 justify-content-center align-items-center">
+                                        <img class="discipline-icon" src="assets/disciplines/csgo_icon.png">
+                                        <span>BO1</span>
+                                    </div>
+
+                                    <div class="right-percent d-flex col-4 justify-content-center">
+                                        <span class="odds-percentage">60%</span>
+                                    </div>
+                                </div>
+
+
+                                <div class="team team-right d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
+                                    <div class="d-flex flex-column justify-content-center align-items-center col-6">
+                                        <span class="team-name">Astralis</span>
+                                        <span class="odds m-2"><i>x</i>1.8</span>
+                                    </div>
+                                    <div class="team-logo order-last order-sm-first me-sm-2">
+                                        <img src="assets/team-1.png">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div id="upcomingEvents">
+                            <div class="upcoming-label text-uppercase text-center mt-5 mb-1 p-2">Upcoming</div>
+
+                        </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="pastEvents" role="tabpanel" aria-labelledby="pastEventsTab">
-                    Past
+                    Past events
                 </div>
             </div>
         </div>

@@ -3,6 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
+    <listener>
+        <listener-class>by.epam.jwd.cyberbets.listener.ApplicationContextListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>APP_RESOURCES_SOURCE_PATH</param-name>
+        <param-value>/home/eugene_gromadko/application</param-value>
+    </context-param>
+
+
     <servlet>
         <servlet-name>FrontController</servlet-name>
         <servlet-class>by.epam.jwd.cyberbets.controller.FrontController</servlet-class>
@@ -15,6 +24,44 @@
         <servlet-name>default</servlet-name>
         <url-pattern>/resources/*</url-pattern>
     </servlet-mapping>
+
+    <filter>
+        <filter-name>UrlFilter</filter-name>
+        <filter-class>by.epam.jwd.cyberbets.filter.UrlFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UrlFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>AuthorizatoionFilter</filter-name>
+        <filter-class>by.epam.jwd.cyberbets.filter.AuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthorizatoionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>UserResourceAccessFilter</filter-name>
+        <filter-class>by.epam.jwd.cyberbets.filter.UserResourceAccessFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UserResourceAccessFilter</filter-name>
+        <url-pattern>/deposit/</url-pattern>
+        <url-pattern>/mybets/</url-pattern>
+        <url-pattern>/settings/</url-pattern>
+        <url-pattern>/transactions/</url-pattern>
+        <url-pattern>/withdrawal/</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>AdminResourceAccessFilter</filter-name>
+        <filter-class>by.epam.jwd.cyberbets.filter.AdminResourceAccessFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminResourceAccessFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
 
     <session-config>
         <session-timeout>10080</session-timeout> <!-- 10080min - 7 days -->

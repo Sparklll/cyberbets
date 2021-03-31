@@ -7,25 +7,24 @@ import java.util.Objects;
 public class Transaction extends Entity {
     private static final long serialVersionUID = -1295554811823666533L;
 
-    private int transactionTypeId;
     private int accountId;
+    private TransactionType transactionType;
     private BigDecimal amount;
     private Instant date;
 
-    public Transaction(int id, int transactionTypeId, int accountId, BigDecimal amount, Instant date) {
+    public Transaction(int id, int accountId, TransactionType transactionType, BigDecimal amount, Instant date) {
         super(id);
-        this.transactionTypeId = transactionTypeId;
         this.accountId = accountId;
+        this.transactionType = transactionType;
         this.amount = amount;
         this.date = date;
     }
 
-    public int getTransactionTypeId() {
-        return transactionTypeId;
-    }
-
-    public void setTransactionTypeId(int transactionTypeId) {
-        this.transactionTypeId = transactionTypeId;
+    public Transaction(int accountId, TransactionType transactionType, BigDecimal amount, Instant date) {
+        this.accountId = accountId;
+        this.transactionType = transactionType;
+        this.amount = amount;
+        this.date = date;
     }
 
     public int getAccountId() {
@@ -34,6 +33,14 @@ public class Transaction extends Entity {
 
     public void setAccountId(int accountId) {
         this.accountId = accountId;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 
     public BigDecimal getAmount() {
@@ -57,22 +64,22 @@ public class Transaction extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return transactionTypeId == that.transactionTypeId
-                && accountId == that.accountId
+        return accountId == that.accountId
+                && transactionType == that.transactionType
                 && Objects.equals(amount, that.amount)
                 && Objects.equals(date, that.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(transactionTypeId, accountId, amount, date);
+        return Objects.hash(accountId, transactionType, amount, date);
     }
 
     @Override
     public String toString() {
         return "Transaction{" +
-                "transactionTypeId=" + transactionTypeId +
-                ", accountId=" + accountId +
+                "accountId=" + accountId +
+                ", transactionType=" + transactionType +
                 ", amount=" + amount +
                 ", date=" + date +
                 '}';

@@ -12,6 +12,10 @@ public class Resource extends Entity {
         this.path = path;
     }
 
+    public Resource(String path) {
+        this.path = path;
+    }
+
     public String getPath() {
         return path;
     }

@@ -1,4 +1,6 @@
 package by.epam.jwd.cyberbets.service.impl;
 
-public class TransactionServiceImpl {
+import by.epam.jwd.cyberbets.service.TransactionService;
+
+public class TransactionServiceImpl implements TransactionService {
 }

@@ -1,4 +1,8 @@
 package by.epam.jwd.cyberbets.dao.impl;
 
-public class DisciplineDaoImpl {
+import by.epam.jwd.cyberbets.dao.DisciplineDao;
+
+public class DisciplineDaoImpl implements DisciplineDao {
+
+
 }

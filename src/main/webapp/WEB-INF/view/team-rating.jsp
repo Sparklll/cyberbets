@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="/static/assets/favicon.ico">
+    <link rel="icon" href="/resources/assets/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css">
@@ -24,7 +24,20 @@
 <jsp:include page="general/navbar.jsp">
     <jsp:param name="auth" value="${auth}"/>
     <jsp:param name="role" value="${role}"/>
+    <jsp:param name="balance" value="${balance}"/>
 </jsp:include>
+
+
+<div class="support container wrapper my-5">
+    <div class="row">
+        <div class="header col-12 d-flex justify-content-start align-items-center">
+            <i class="fas fa-angle-double-right"></i>
+            <span class="ms-2 text-uppercase fw-bold">
+                <fmt:message key="page.team_rating.header"/>
+            </span>
+        </div>
+    </div>
+</div>
 
 
 <jsp:include page="general/footer.jsp"/>

@@ -1,4 +1,6 @@
 package by.epam.jwd.cyberbets.service.impl;
 
-public class EventOutcomeTypeServiceImpl {
+import by.epam.jwd.cyberbets.service.EventOutcomeTypeService;
+
+public class EventOutcomeTypeServiceImpl implements EventOutcomeTypeService {
 }

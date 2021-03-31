@@ -1,5 +1,6 @@
 package by.epam.jwd.cyberbets.domain;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Account extends Entity {
@@ -7,17 +8,25 @@ public class Account extends Entity {
 
     private String email;
     private String passwordHash;
-    private String salt;
-    private int accountDetailsId;
-    private int roleId;
+    private BigDecimal balance;
+    private Role role;
+    private Resource avatarResource;
 
-    public Account(int id, String email, String passwordHash, String salt, int accountDetailsId, int roleId) {
+    public Account(int id, String email, String passwordHash, BigDecimal balance, Role role, Resource avatarResource) {
         super(id);
         this.email = email;
         this.passwordHash = passwordHash;
-        this.salt = salt;
-        this.accountDetailsId = accountDetailsId;
-        this.roleId = roleId;
+        this.balance = balance;
+        this.role = role;
+        this.avatarResource = avatarResource;
+    }
+
+    public Account(String email, String passwordHash, BigDecimal balance, Role role, Resource avatarResource) {
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.balance = balance;
+        this.role = role;
+        this.avatarResource = avatarResource;
     }
 
     public String getEmail() {
@@ -36,28 +45,28 @@ public class Account extends Entity {
         this.passwordHash = passwordHash;
     }
 
-    public String getSalt() {
-        return salt;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
-    public void setSalt(String salt) {
-        this.salt = salt;
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
-    public int getAccountDetailsId() {
-        return accountDetailsId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setAccountDetailsId(int accountDetailsId) {
-        this.accountDetailsId = accountDetailsId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public int getRoleId() {
-        return roleId;
+    public Resource getAvatarResource() {
+        return avatarResource;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setAvatarResource(Resource avatarResource) {
+        this.avatarResource = avatarResource;
     }
 
     @Override
@@ -65,16 +74,16 @@ public class Account extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
-        return accountDetailsId == account.accountDetailsId
-                && roleId == account.roleId
-                && Objects.equals(email, account.email)
+        return Objects.equals(email, account.email)
                 && Objects.equals(passwordHash, account.passwordHash)
-                && Objects.equals(salt, account.salt);
+                && Objects.equals(balance, account.balance)
+                && role == account.role
+                && Objects.equals(avatarResource, account.avatarResource);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, passwordHash, salt, accountDetailsId, roleId);
+        return Objects.hash(email, passwordHash, balance, role, avatarResource);
     }
 
     @Override
@@ -82,9 +91,9 @@ public class Account extends Entity {
         return "Account{" +
                 "email='" + email + '\'' +
                 ", passwordHash='" + passwordHash + '\'' +
-                ", salt='" + salt + '\'' +
-                ", accountDetailsId=" + accountDetailsId +
-                ", roleId=" + roleId +
+                ", balance=" + balance +
+                ", role=" + role +
+                ", avatarResource=" + avatarResource +
                 '}';
     }
 }

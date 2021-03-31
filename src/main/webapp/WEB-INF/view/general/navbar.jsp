@@ -67,7 +67,9 @@
                                 <img src="/resources/assets/wallet.png" class="balance">
                                 <span>
                             <i class="fas fa-dollar-sign"></i>
-                            <span>10000</span>
+                            <span>
+                                <fmt:formatNumber value="${param.balance}" minIntegerDigits="1" minFractionDigits="2" groupingUsed="false"/>
+                            </span>
                         </span>
                             </a>
                         </li>
@@ -78,31 +80,31 @@
                                     class="profile-avatar rounded-circle"></a>
                             <ul class="dropdown-menu fade-down" aria-labelledby="profileDropdown">
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/mybets/">
                                         <i class="fas fa-dice me-2"></i>
                                         <fmt:message key="navbar.account.my_bets"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/deposit/">
                                         <i class="fas fa-plus-circle me-2"></i>
                                         <fmt:message key="navbar.account.deposit"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/withdrawal/">
                                         <i class="fas fa-arrow-circle-up me-2"></i>
                                         <fmt:message key="navbar.account.withdrawal"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/transactions/">
                                         <i class="fas fa-history me-2"></i>
                                         <fmt:message key="navbar.account.transaction_history"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="/settings/">
                                         <i class="fas fa-user-cog me-2"></i>
                                         <fmt:message key="navbar.account.account_settings"/>
                                     </a>
@@ -111,15 +113,15 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <c:if test="${param.role eq 'admin'}">
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-cogs me-2"></i>
-                                        <fmt:message key="navbar.account.admin_panel"/>
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/admin/">
+                                            <i class="fas fa-cogs me-2"></i>
+                                            <fmt:message key="navbar.account.admin_panel"/>
+                                        </a>
+                                    </li>
                                 </c:if>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a id="logout" class="dropdown-item" href="#">
                                         <i class="fas fa-sign-out-alt me-2"></i>
                                         <fmt:message key="navbar.account.log_out"/>
                                     </a>
@@ -151,9 +153,9 @@
     </div>
 </nav>
 
-<fmt:message key="navbar.modal.placeholder.email" var="email" />
-<fmt:message key="navbar.modal.placeholder.password" var="password" />
-<fmt:message key="navbar.modal.placeholder.repeat_password" var="repeat_password" />
+<fmt:message key="navbar.modal.placeholder.email" var="email"/>
+<fmt:message key="navbar.modal.placeholder.password" var="password"/>
+<fmt:message key="navbar.modal.placeholder.repeat_password" var="repeat_password"/>
 <div class="modal fade" id="registerModal" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="registerModalLabel"
      aria-hidden="true">
@@ -172,29 +174,53 @@
                         </a>
                     </div>
                     <div class="card-body p-3">
-                        <form action="" method="POST">
+                        <form action="" method="POST" class="custom-controls" novalidate>
                             <div class="input-field mt-3">
                                 <label for="registerEmail" class="col-sm-2 col-form-label">
                                     <i class="fas fa-user px-2"></i>
                                 </label>
-                                <input type="text" class="form-control" id="registerEmail" placeholder="${email}"
-                                       required>
+                                <div>
+                                    <input type="email" class="form-control" id="registerEmail"
+                                           placeholder="${email}"
+                                           maxlength="50"
+                                           required>
+                                    <div class="break"></div>
+                                    <div class="invalid-feedback">
+                                        <fmt:message key="navbar.register_modal.invalid_email"/>
+                                    </div>
+                                </div>
                             </div>
                             <div class="input-field my-4">
                                 <label for="registerPassword" class="col-sm-2 col-form-label">
                                     <i class="fas fa-lock px-2"></i>
                                 </label>
-                                <input type="password" class="form-control" id="registerPassword"
-                                       placeholder="${password}"
-                                       required>
+                                <div>
+                                    <input type="password" class="form-control" id="registerPassword"
+                                           placeholder="${password}"
+                                           maxlength="50"
+                                           required>
+                                    <div class="invalid-feedback">
+                                        <fmt:message key="navbar.register_modal.invalid_password_length"/>
+                                    </div>
+                                </div>
                             </div>
                             <div class="input-field my-4">
-                                <label for="registerRepeatPassword" class="col-sm-2 col-form-label">
+                                <label for="registerRepeatedPassword" class="col-sm-2 col-form-label">
                                     <i class="fas fa-lock px-2"></i>
                                 </label>
-                                <input type="password" class="form-control" id="registerRepeatPassword"
-                                       placeholder="${repeat_password}"
-                                       required>
+                                <div>
+                                    <input type="password" class="form-control" id="registerRepeatedPassword"
+                                           placeholder="${repeat_password}"
+                                           maxlength="50"
+                                           required>
+                                    <div class="invalid-feedback">
+                                        <fmt:message key="navbar.register_modal.invalid_repeated_password"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="emailAlreadyExist" class="text-center text-danger" style="display: none">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <fmt:message key="navbar.register_modal.email_already_exist"/>
                             </div>
                             <div class="d-grid gap-1 mb-4">
                                 <button type="submit" class="register btn btn-primary btn-block text-uppercase mt-3">
@@ -225,21 +251,31 @@
                         </a>
                     </div>
                     <div class="card-body p-3">
-                        <form action="" method="POST">
+                        <form action="" method="POST" class="custom-controls" novalidate>
                             <div class="input-field mt-3">
                                 <label for="loginEmail" class="col-sm-2 col-form-label">
                                     <i class="fas fa-user px-2"></i>
                                 </label>
-                                <input type="text" class="form-control" id="loginEmail" placeholder="${email}"
-                                       required>
+                                <div>
+                                    <input type="email" class="form-control" id="loginEmail" placeholder="${email}"
+                                           maxlength="50"
+                                           required>
+                                </div>
                             </div>
                             <div class="input-field my-4">
                                 <label for="loginPassword" class="col-sm-2 col-form-label">
                                     <i class="fas fa-lock px-2"></i>
                                 </label>
-                                <input type="password" class="form-control" id="loginPassword"
-                                       placeholder="${password}"
-                                       required>
+                                <div>
+                                    <input type="password" class="form-control" id="loginPassword"
+                                           placeholder="${password}"
+                                           maxlength="50"
+                                           required>
+                                </div>
+                            </div>
+                            <div id="wrongCredentials" class="text-center text-danger" style="display: none">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <fmt:message key="navbar.register_modal.wrong_credentials"/>
                             </div>
                             <div class="d-grid gap-1">
                                 <button type="submit" class="login btn btn-primary btn-block text-uppercase mt-3">
@@ -253,7 +289,7 @@
                                 <a class="fw-bold" role="button" data-bs-dismiss="modal"
                                    data-bs-toggle="modal"
                                    data-bs-target="#registerModal">
-                                    <fmt:message key="navbar.login_modal.button.log_in"/>
+                                    <fmt:message key="navbar.login_modal.button.register"/>
                                 </a>
                             </div>
                         </form>

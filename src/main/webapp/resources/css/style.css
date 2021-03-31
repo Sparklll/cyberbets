@@ -18,6 +18,11 @@ img {
     user-drag: none;
 }
 
+.break {
+    flex-basis: 100%;
+    height: 0;
+}
+
 /* SMART SCROLL */
 .smart-scroll {
     position: fixed;
@@ -242,6 +247,130 @@ img {
     color:  #8800ff;
 }
 
+.event .team-left {
+    border-radius: 0 0 0 5px;
+}
+
+.event .team-right {
+    border-radius: 0 0 5px;
+}
+
+.event .team,
+.event .center {
+    font-weight: bold;
+    padding: 5px;
+}
+
+.event-info .team {
+    background-color: #2f353d;
+}
+.event-info .center {
+    background-color: rgba(47, 53, 61, 0.2);
+}
+
+.event-info .center .event-format {
+    background-color: rgba(41, 67, 134, 0.4);
+    border-radius: 5px;
+    width: 60px;
+    height: 60px;
+}
+
+.event-info .team .odds {
+    border-radius: 5px;
+    padding:0 5px;
+    background-color: #29864e;
+}
+
+.event-info .team-logo {
+    background-color: rgba(41, 67, 134, 0.6);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.event-info .team-logo img {
+    width: 100%;
+    min-width: 30px;
+    max-width: 70px;
+}
+
+.event-info .team:hover {
+    cursor: pointer;
+    background-color: rgba(41, 134, 75, 0.3);
+}
+
+.event .center .left-percent,
+.event .center .right-percent {
+    opacity: 0.6;
+    font-size: 1.2rem;
+}
+
+.event .event-header {
+    font-weight: bold;
+    background-color: #492986;
+    border-radius: 5px 5px 0 0;
+}
+
+.event .event-header .event-icon {
+    max-width: 35px;
+}
+
+.event .event-header .live {
+    font-size: 0.8rem;
+    animation: blinkingLive 3s infinite ease-in-out;
+}
+
+@keyframes blinkingLive {
+    0% {
+        color: rgba(255, 0, 0, 0.8);
+    }
+    25% {
+        color: rgba(255, 0, 0, 0.6);
+    }
+    50% {
+        color: rgba(255, 0, 0, 0.4);
+    }
+    75% {
+        color: rgba(255, 0, 0, 0.6);
+    }
+    100% {
+        color: rgba(255, 0, 0, 0.8);
+    }
+}
+
+.live-label, .upcoming-label {
+    font-weight: bold;
+    background-color: #444455;
+}
+
+.live-label {
+    border-radius: 0 0 5px 5px;
+}
+
+.upcoming-label {
+    border-radius: 5px 5px 0 0;
+}
+
+.event-info .center .discipline-icon {
+    border-radius: 5px;
+    max-width: 30px;
+}
+
+@media all and (max-width: 576px) {
+    .event {
+        font-size: 0.7rem;
+    }
+
+    .event-info .team-logo img {
+        max-width: 40px;
+    }
+}
+
+@media all and (max-width: 768px) {
+    .event {
+        font-size: 0.8rem;
+    }
+}
+
 /* FOOTER */
 footer {
     padding: 50px 0;
@@ -261,8 +390,8 @@ footer h3 {
 footer ul {
     padding: 0;
     list-style: none;
-    line-height: 1.6;
-    font-size: 14px;
+    line-height: 2;
+    font-size: 16px;
     margin-bottom: 0;
 }
 
@@ -374,17 +503,34 @@ footer .copyright {
     align-items: center;
     border: 2px solid rgba(226, 212, 232, 0.8);
 }
-.input-field input::placeholder {
+
+.custom-controls input::placeholder {
     color: rgba(255, 255, 255, 0.5);
 }
 
-.input-field input:focus {
+.custom-controls input:focus {
     color: white;
     box-shadow: none;
     background-color: #4e5061;
 }
 
-.input-field input {
+.custom-controls input {
+    color: white;
+    border: none;
+    outline: none;
+    background-color: #4e5061;
+    width: 100%;
+    padding-right: calc(1.5em + .75rem);
+}
+
+.custom-controls select:focus {
+    color: white;
+    box-shadow: none;
+    background-color: #4e5061;
+}
+
+
+.custom-controls select {
     color: white;
     border: none;
     outline: none;
@@ -404,7 +550,7 @@ footer .copyright {
 .card .card-header {
     border-radius: 15px;
     background: #4e5061;
-    border-top: 5px solid #6618b3;
+    border-top: 5px solid #8800ff;
 }
 
 .card .card-header .close {
@@ -465,4 +611,117 @@ footer .copyright {
 
 .flag-ru {
     background-image: url(../assets/flags/ru.svg);
+}
+
+/* ADMIN PANEL */
+/* Sidebar */
+.sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    max-height: 100%;
+    overflow-y: auto;
+    width: 100%;
+    transition: ease-out 0.1s;
+}
+
+.sidebar-logo {
+    max-width: 250px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar {
+        transition: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        width: 100%;
+        max-width: 350px;
+    }
+    /* Style page content */
+    main {
+        margin-left: 350px;
+    }
+}
+
+.sidebar .nav {
+    white-space: nowrap;
+}
+
+.sidebar .nav-item {
+    margin-bottom: .2rem;
+}
+
+.sidebar .nav-item.active > .nav-link {
+    color: #D1D5DB;
+    background-color: #2e3650;
+}
+
+.sidebar .nav-item .nav-link {
+    color: #D1D5DB;
+    cursor: pointer;
+}
+
+.sidebar .nav-item .nav-link:hover {
+    color: #D1D5DB;
+    background-color: #2e3650;
+}
+
+.sidebar .nav-link + .multi-level {
+    margin-top: .2rem;
+}
+
+.sidebar .nav-link {
+    vertical-align: middle;
+    padding: 0.55rem 0.75rem;
+    border-radius: 1rem;
+}
+
+.sidebar .nav-link .sidebar-icon {
+    margin-right: .5rem;
+    color: #ffffff;
+}
+
+.sidebar .nav-link .sidebar-icon span {
+    min-width: 22px;
+}
+
+.sidebar .nav-link .link-arrow {
+    font-size: 0.9rem;
+}
+
+.sidebar .nav-link[data-bs-toggle=collapse][aria-expanded=true] .link-arrow {
+    transform: rotate(90deg);
+    transition: all 0.2s ease;
+}
+
+.sidebar .multi-level .nav-link {
+    padding-left: 45px;
+}
+
+.sidebar .sidebar-text,
+.sidebar .link-arrow,
+.sidebar .badge,
+.sidebar .notification-count {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar .sidebar-text,
+    .sidebar .link-arrow,
+    .sidebar .badge,
+    .sidebar .notification-count {
+        transition: none;
+    }
+}
+
+.sidebar-inner {
+    position: relative;
+    overflow-y: hidden;
 }

@@ -1,4 +1,8 @@
 package by.epam.jwd.cyberbets.dao.impl;
 
-public class EventResultDaoImpl {
+import by.epam.jwd.cyberbets.dao.EventResultDao;
+
+public class EventResultDaoImpl implements EventResultDao {
+
+
 }

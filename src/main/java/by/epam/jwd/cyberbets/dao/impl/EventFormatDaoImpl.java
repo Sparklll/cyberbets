@@ -1,4 +1,8 @@
 package by.epam.jwd.cyberbets.dao.impl;
 
-public class EventFormatDaoImpl {
+import by.epam.jwd.cyberbets.dao.EventFormatDao;
+
+public class EventFormatDaoImpl implements EventFormatDao {
+
+
 }
