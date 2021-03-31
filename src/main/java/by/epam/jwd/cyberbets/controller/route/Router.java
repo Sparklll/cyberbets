@@ -25,20 +25,20 @@ public enum Router {
 
     Router() {
         routes.put(ACTION_LISTENER_ROUTE, new ActionListener());
-        routes.put(ROOT_ROUTE, new GoToRootPage());
-        routes.put(CONTACTS_ROUTE, new GoToContactsPage());
-        routes.put(NEWS_ROUTE, new GoToNewsPage());
-        routes.put(PRIVACY_POLICY_ROUTE, new GoToPrivacyPolicyPage());
-        routes.put(SUPPORT_ROUTE, new GoToSupportPage());
-        routes.put(TEAM_RATING_ROUTE, new GoToTeamRatingPage());
+        routes.put(ROOT_ROUTE, new ForwardRootPage());
+        routes.put(CONTACTS_ROUTE, new ForwardContactsPage());
+        routes.put(NEWS_ROUTE, new ForwardNewsPage());
+        routes.put(PRIVACY_POLICY_ROUTE, new ForwardPrivacyPolicyPage());
+        routes.put(SUPPORT_ROUTE, new ForwardSupportPage());
+        routes.put(TEAM_RATING_ROUTE, new ForwardTeamRatingPage());
 
-        routes.put(DEPOSIT_ROUTE, new GoToDepositPage());
-        routes.put(MYBETS_ROUTE, new GoToMyBetsPage());
-        routes.put(ACCOUNT_SETTINGS_ROUTE, new GoToAccountSettingsPage());
-        routes.put(TRANSACTIONS_ROUTE, new GoToTransactionsHistoryPage());
-        routes.put(WITHDRAWAL_ROUTE, new GoToWithdrawalPage());
+        routes.put(DEPOSIT_ROUTE, new ForwardDepositPage());
+        routes.put(MYBETS_ROUTE, new ForwardMyBetsPage());
+        routes.put(ACCOUNT_SETTINGS_ROUTE, new ForwardSettingsPage());
+        routes.put(TRANSACTIONS_ROUTE, new ForwardTransactionsHistoryPage());
+        routes.put(WITHDRAWAL_ROUTE, new ForwardWithdrawalPage());
 
-        routes.put(ADMIN_PANEL_ROUTE, new GoToAdminPanelPage());
+        routes.put(ADMIN_PANEL_ROUTE, new ForwardAdminPanelPage());
     }
 
     public void resolveRoute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

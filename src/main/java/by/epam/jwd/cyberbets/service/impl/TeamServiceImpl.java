@@ -12,9 +12,12 @@ import by.epam.jwd.cyberbets.service.TeamService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import by.epam.jwd.cyberbets.utils.ResourceSaver;
 import by.epam.jwd.cyberbets.utils.exception.UtilException;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
+
+import static java.lang.Integer.parseInt;
 
 public class TeamServiceImpl implements TeamService {
     private final TeamDao teamDao = DaoProvider.INSTANCE.getTeamDao();
@@ -48,11 +51,20 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void createTeam(TeamDto teamDto) throws ServiceException {
+    public Optional<Resource> findLogoResourceByTeamId(int teamId) throws ServiceException {
+        try {
+            return teamDao.findLogoResourceByTeamId(teamId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public int createTeam(TeamDto teamDto) throws ServiceException {
         try {
             String teamName = teamDto.teamName();
-            int teamRating = Integer.parseInt(teamDto.teamRating());
-            Discipline discipline = Discipline.getDisciplineById(Integer.parseInt(teamDto.disciplineId())).get();
+            int teamRating = teamDto.teamRating();
+            Discipline discipline = Discipline.getDisciplineById(parseInt(teamDto.disciplineId())).get();
             String teamLogoDataUrl = teamDto.teamLogo();
 
             String resourcePath = ResourceSaver.uploadImage(ResourceSaver.Resource.TEAM_LOGO, teamLogoDataUrl);
@@ -64,17 +76,32 @@ public class TeamServiceImpl implements TeamService {
                     discipline,
                     new Resource(resourceId, resourcePath)
             );
-            teamDao.createTeam(team);
+            return teamDao.createTeam(team);
         } catch (DaoException | UtilException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public void updateTeam(Team team) throws ServiceException {
+    public void updateTeam(TeamDto teamDto) throws ServiceException {
         try {
+            int id = teamDto.id();
+            String name = teamDto.teamName();
+            int rating = teamDto.teamRating();
+            Discipline discipline = Discipline.getDisciplineById(
+                    parseInt(teamDto.disciplineId()
+                    )).get();
+            String teamLogo = teamDto.teamLogo();
+            Resource prevLogoResource = teamDao.findLogoResourceByTeamId(id).get();
+
+            if(StringUtils.isNotBlank(teamLogo)) {
+                String prevLogoResourcePath = prevLogoResource.getPath();
+                ResourceSaver.updateImage(prevLogoResourcePath, teamLogo);
+            }
+
+            Team team = new Team(id, name, rating, discipline, prevLogoResource);
             teamDao.updateTeam(team);
-        } catch (DaoException e) {
+        } catch (DaoException | UtilException e) {
             throw new ServiceException(e);
         }
     }

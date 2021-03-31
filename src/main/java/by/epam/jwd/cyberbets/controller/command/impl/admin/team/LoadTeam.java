@@ -11,7 +11,9 @@ import by.epam.jwd.cyberbets.service.ServiceProvider;
 import by.epam.jwd.cyberbets.service.TeamService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,16 +43,16 @@ public final class LoadTeam implements Action {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
             if (jsonMap != null) {
-
-                String filterTeamName = (String) jsonMap.get(TEAM_NAME_PARAM);
-                Double filterId = (Double) jsonMap.get(ID_PARAM);
-                Double filterTeamRating = (Double) jsonMap.get(TEAM_RATING_PARAM);
-                String filterDisciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
-
+                JsonObject jsonResponse = new JsonObject();
                 PrintWriter out = response.getWriter();
                 response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
                 try {
+                    String filterTeamName = (String) jsonMap.get(TEAM_NAME_PARAM);
+                    Double filterId = (Double) jsonMap.get(ID_PARAM);
+                    Double filterTeamRating = (Double) jsonMap.get(TEAM_RATING_PARAM);
+                    String filterDisciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
+
                     List<Team> teams = teamService.findAll();
                     teams = teams.stream()
                             .filter(t -> (filterId == null || t.getId() == filterId.intValue())
@@ -61,11 +63,16 @@ public final class LoadTeam implements Action {
                                     || t.getDiscipline().getId() == Integer.parseInt(filterDisciplineId)))
                             .collect(Collectors.toList());
 
-                    String jsonString = new Gson().toJson(teams);
-                    out.write(jsonString);
-                } catch (ServiceException e) {
+                    String jsonStrTeams = new Gson().toJson(teams);
+                    JsonElement jsonElementTeams = JsonParser.parseString(jsonStrTeams);
+
+                    jsonResponse.add(DATA_PROPERTY, jsonElementTeams);
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
+                } catch (ServiceException | ClassCastException e) {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
                     logger.info(e.getMessage(), e);
                 }
+                out.write(jsonResponse.toString());
             }
         }
     }

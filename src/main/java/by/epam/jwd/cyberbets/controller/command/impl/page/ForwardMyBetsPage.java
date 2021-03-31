@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.MYBETS_PAGE;
 
-public final class GoToMyBetsPage implements Action {
+public final class ForwardMyBetsPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(MYBETS_PAGE);

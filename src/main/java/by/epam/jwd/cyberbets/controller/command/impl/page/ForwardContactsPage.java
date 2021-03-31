@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.CONTACTS_PAGE;
 
-public final class GoToContactsPage implements Action {
+public final class ForwardContactsPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(CONTACTS_PAGE);

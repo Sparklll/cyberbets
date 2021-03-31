@@ -38,7 +38,14 @@ public class TeamDaoImpl implements TeamDao {
             inner join resource r on r.id = t.logo_resource_id
             where t.name = ?
             """;
-    private static final String CREATE_TEAM = "insert into team (name, rating, discipline_id, logo_resource_id) values (?, ?, ?, ?)";
+
+    private static final String FIND_LOGO_RESOURCE_BY_TEAM_ID = """
+            select r.id, r.path
+            from team t
+            inner join resource r on r.id = t.logo_resource_id
+            where t.id = ?
+            """;
+    private static final String CREATE_TEAM = "insert into team (name, rating, discipline_id, logo_resource_id) values (?, ?, ?, ?) returning id";
     private static final String UPDATE_TEAM = "update team set name = ?, rating = ?, discipline_id = ?, logo_resource_id = ? where id = ?";
     private static final String DELETE_TEAM = "delete from team where id = ?";
 
@@ -76,9 +83,29 @@ public class TeamDaoImpl implements TeamDao {
     @Override
     public Optional<Team> findTeamByName(String name) throws DaoException {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
-         PreparedStatement ps = connection.prepareStatement(FIND_TEAM_BY_NAME)) {
+             PreparedStatement ps = connection.prepareStatement(FIND_TEAM_BY_NAME)) {
             ps.setString(1, name);
             return getTeam(ps);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Optional<Resource> findLogoResourceByTeamId(int teamId) throws DaoException {
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement ps = connection.prepareStatement(FIND_LOGO_RESOURCE_BY_TEAM_ID)) {
+            ps.setInt(1, teamId);
+            try (ResultSet rs = ps.executeQuery()) {
+                Optional<Resource> resourceOptional = Optional.empty();
+                while (rs.next()) {
+                    Resource resource = new Resource(rs.getInt(ID), rs.getString(PATH));
+                    resourceOptional = Optional.of(resource);
+                }
+                return resourceOptional;
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -98,14 +125,20 @@ public class TeamDaoImpl implements TeamDao {
     }
 
     @Override
-    public void createTeam(Team team) throws DaoException {
+    public int createTeam(Team team) throws DaoException {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(CREATE_TEAM)) {
             ps.setString(1, team.getName());
             ps.setInt(2, team.getRating());
             ps.setInt(3, team.getDiscipline().getId());
             ps.setInt(4, team.getLogoResource().getId());
-            ps.executeUpdate();
+            ps.execute();
+            try (ResultSet rs = ps.getResultSet()) {
+                rs.next();
+                return rs.getInt(ID);
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
         } catch (SQLException e) {
             throw new DaoException(e);
         }

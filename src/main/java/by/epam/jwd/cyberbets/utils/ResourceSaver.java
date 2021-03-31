@@ -1,6 +1,7 @@
 package by.epam.jwd.cyberbets.utils;
 
 import by.epam.jwd.cyberbets.utils.exception.UtilException;
+import jdk.jshell.execution.Util;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -42,12 +43,9 @@ public final class ResourceSaver {
     public static String uploadImage(Resource resource, String dataUrl) throws UtilException {
         String resourcePath = resource.getPath();
 
-        String delimiter = ",";
-        String[] dataUrlParts = dataUrl.split(delimiter);
-        String imageData = dataUrlParts[1];
+        byte[] decodedImage = decodeBase64(dataUrl);
         String extension = getDataUrlExtension(dataUrl);
 
-        byte[] decodedImage = Base64.getDecoder().decode(imageData.getBytes(StandardCharsets.UTF_8));
         String imageFileName = UUID.randomUUID() + extension;
         Path destination = Paths.get(WEBAPP_ROOT_PATH, resourcePath, imageFileName);
         try {
@@ -56,6 +54,23 @@ public final class ResourceSaver {
         } catch (IOException e) {
             throw new UtilException(e);
         }
+    }
+
+    public static void updateImage(String imagePath, String dataUrl) throws UtilException {
+        byte[] decodedImage = decodeBase64(dataUrl);
+        Path destination = Paths.get(WEBAPP_ROOT_PATH, imagePath);
+        try {
+            Files.write(destination, decodedImage);
+        } catch (IOException e) {
+            throw new UtilException(e);
+        }
+    }
+
+    private static byte[] decodeBase64(String dataUrl) {
+        String delimiter = ",";
+        String[] dataUrlParts = dataUrl.split(delimiter);
+        String data = dataUrlParts[1];
+        return Base64.getDecoder().decode(data.getBytes(StandardCharsets.UTF_8));
     }
 
     private static String getDataUrlExtension(String dataUrl) {

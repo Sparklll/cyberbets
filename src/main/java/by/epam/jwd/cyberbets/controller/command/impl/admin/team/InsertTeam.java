@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Map;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
@@ -32,32 +31,36 @@ public final class InsertTeam implements Action {
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Role role = Role.getRoleByName((String) request.getAttribute(ROLE_ATTR));
 
-        if(role.getId() == Role.ADMIN.getId()) {
+        if (role.getId() == Role.ADMIN.getId()) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if(jsonMap != null) {
-                String teamName = (String) jsonMap.get(TEAM_NAME_PARAM);
-                String teamRating = (String) jsonMap.get(TEAM_RATING_PARAM);
-                LinkedTreeMap<String, String> teamLogoObj = (LinkedTreeMap<String, String>) jsonMap.get(TEAM_LOGO_PARAM);
-                String teamLogoBase64 = teamLogoObj.get(PATH_PARAM);
-                String disciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
+            if (jsonMap != null) {
+                JsonObject jsonResponse = new JsonObject();
+                response.setContentType(JSON_UTF8_CONTENT_TYPE);
+                PrintWriter out = response.getWriter();
 
-                TeamDto teamDto = new TeamDto(teamName, teamRating, teamLogoBase64, disciplineId);
+                try {
+                    int teamRating = ((Double) jsonMap.get(TEAM_RATING_PARAM)).intValue();
+                    String teamName = (String) jsonMap.get(TEAM_NAME_PARAM);
+                    LinkedTreeMap<String, String> teamLogoObj = (LinkedTreeMap<String, String>) jsonMap.get(TEAM_LOGO_PARAM);
+                    String teamLogoBase64 = teamLogoObj.get(PATH_PARAM);
+                    String disciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
 
-                Validator<TeamDto> teamValidator = ValidatorProvider.INSTANCE.getTeamValidator();
-                if(teamValidator.isValid(teamDto)) {
-                    PrintWriter out = response.getWriter();
-                    JsonObject jsonResponse = new JsonObject();
-                    response.setContentType(JSON_UTF8_CONTENT_TYPE);
-                    try {
-                        teamService.createTeam(teamDto);
+                    TeamDto teamDto = new TeamDto(teamName, teamRating, teamLogoBase64, disciplineId);
+
+                    Validator<TeamDto> teamValidator = ValidatorProvider.INSTANCE.getTeamValidator();
+                    if (teamValidator.isValid(teamDto)) {
+                        int id = teamService.createTeam(teamDto);
+                        jsonResponse.addProperty(ID_PARAM, id);
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                        out.write(jsonResponse.toString());
-                    } catch (ServiceException e) {
-                        logger.error(e.getMessage(), e);
+                    } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }
+                } catch (ServiceException | ClassCastException e) {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                    logger.error(e.getMessage(), e);
                 }
+                out.write(jsonResponse.toString());
             }
         }
     }

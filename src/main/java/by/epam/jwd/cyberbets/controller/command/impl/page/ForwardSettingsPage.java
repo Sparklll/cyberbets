@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.ACCOUNT_SETTINGS_PAGE;
 
-public final class GoToAccountSettingsPage implements Action {
+public final class ForwardSettingsPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(ACCOUNT_SETTINGS_PAGE);

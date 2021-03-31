@@ -1,4 +1,4 @@
-package by.epam.jwd.cyberbets.controller.command.impl.general;
+package by.epam.jwd.cyberbets.controller.command.impl.page;
 
 import by.epam.jwd.cyberbets.controller.command.Action;
 import jakarta.servlet.RequestDispatcher;

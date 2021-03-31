@@ -30,10 +30,12 @@ public final class Parameters {
     public static final String PASSWORD_PARAM = "password";
     public static final String REPEATED_PASSWORD_PARAM = "repeatedPassword";
 
-    // RESPONSE PARAMS
+    // RESPONSE PARAMS / PROPERTIES
     public static final String STATUS_PARAM = "status";
     public static final String STATUS_OK = "ok";
     public static final String STATUS_DENY = "deny";
+    public static final String STATUS_EXCEPTION = "exception";
+    public static final String DATA_PROPERTY = "data";
 
     // REQUEST & SESSION ATTRIBUTES
     public static final String ACCOUNT_ID_ATTR = "accountId";

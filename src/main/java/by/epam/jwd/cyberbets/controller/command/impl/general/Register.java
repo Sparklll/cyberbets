@@ -58,10 +58,11 @@ public final class Register implements Action {
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }
-                    out.write(jsonResponse.toString());
                 } catch (ServiceException e) {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
                     logger.error(e.getMessage(), e);
                 }
+                out.write(jsonResponse.toString());
             }
         }
     }

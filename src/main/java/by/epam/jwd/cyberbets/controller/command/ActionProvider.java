@@ -9,6 +9,7 @@ import by.epam.jwd.cyberbets.controller.command.impl.admin.team.InsertTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.team.LoadTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.team.UpdateTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.general.*;
+import by.epam.jwd.cyberbets.controller.command.impl.page.ForwardErrorPage;
 
 import java.util.HashMap;
 import java.util.Map;

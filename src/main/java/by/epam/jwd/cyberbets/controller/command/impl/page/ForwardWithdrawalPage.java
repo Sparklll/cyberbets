@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.WITHDRAWAL_PAGE;
 
-public final class GoToWithdrawalPage implements Action {
+public final class ForwardWithdrawalPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(WITHDRAWAL_PAGE);

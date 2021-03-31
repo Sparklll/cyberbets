@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.PRIVACY_POLICY_PAGE;
 
-public final class GoToPrivacyPolicyPage implements Action {
+public final class ForwardPrivacyPolicyPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(PRIVACY_POLICY_PAGE);
