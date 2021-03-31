@@ -96,8 +96,8 @@ $(document).ready(function () {
                     width: 100,
                     align: "center",
                     itemTemplate: function (value, item) {
-                        return `<div class="d-flex flex-column flex-sm-row justify-content-center align-items-center">
-                                    <span class="me-sm-2">${item.teamName}</span>
+                        return `<div class="d-flex flex-column justify-content-center align-items-center">
+                                    <span class="mb-2 fw-bold">${item.teamName}</span>
                                     <img src="${item.teamLogo.path}" width="60">
                                 </div>`;
                     }
@@ -113,9 +113,9 @@ $(document).ready(function () {
                     itemTemplate: function (value, item) {
                         let disciplineName = disciplines.find(d => d.Id === value).Name;
                         let disciplineLogo = disciplines.find(d => d.Id === value).Logo;
-                        return `<div class="d-flex flex-column flex-sm-row justify-content-center align-items-center">
-                                    <img src="${disciplineLogo}" width="30" class="me-sm-2" style="border-radius: 5px">
-                                    <span>${disciplineName}</span>
+                        return `<div class="d-flex flex-column justify-content-center align-items-center">
+                                    <span class="mb-2">${disciplineName}</span>
+                                    <img src="${disciplineLogo}" width="30" style="border-radius: 5px">
                                 </div>`;
                     }
                 },
@@ -138,8 +138,10 @@ $(document).ready(function () {
                         url: ACTION_URL,
                         data: JSON.stringify(Object.assign({}, {"action": "loadTeam"}, filter))
                     }).done(function (response) {
+                        notify('info','Info','Teams were loaded Successfully.');
                         data.resolve(response);
                     }).fail(function () {
+                        notify('error','Error','Unable to load teams from database');
                         data.reject();
                     });
                     return data.promise();
@@ -151,9 +153,9 @@ $(document).ready(function () {
                         url: ACTION_URL,
                         data: JSON.stringify(Object.assign({}, {"action": "insertTeam"}, item))
                     }).done(function (response) {
-                        notify('success','Team was successfully added!','');
+                        notify('success','Success','Team was successfully added.');
                     }).fail(function () {
-                        notify('error','There was an error adding the team!','');
+                        notify('error','Error','There was an error adding the team!');
                     });
                 },
 
@@ -162,6 +164,10 @@ $(document).ready(function () {
                         type: "POST",
                         url: ACTION_URL,
                         data: JSON.stringify(Object.assign({}, {"action": "updateTeam"}, item))
+                    }).done(function (response) {
+                        notify('success','Success','Team was successfully updated.');
+                    }).fail(function () {
+                        notify('error','Error','There was an error updating the team!');
                     });
                 },
 
@@ -170,6 +176,10 @@ $(document).ready(function () {
                         type: "POST",
                         url: ACTION_URL,
                         data: JSON.stringify(Object.assign({}, {"action": "deleteTeam"}, item))
+                    }).done(function (response) {
+                        notify('success','Success','Team was successfully deleted.');
+                    }).fail(function () {
+                        notify('error','Error','There was an error deleting the team!');
                     });
                 },
             },
