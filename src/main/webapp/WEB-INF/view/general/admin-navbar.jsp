@@ -42,7 +42,7 @@
                        data-bs-toggle="dropdown" aria-expanded="false"><img src="/resources/assets/profile-avatar.png"
                                                                             class="profile-avatar rounded-circle"></a>
                     <ul class="dropdown-menu fade-down" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</a>
+                        <li><a id="logout" class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i><fmt:message key="navbar.account.log_out"/></a>
                         </li>
                     </ul>
                 </li>

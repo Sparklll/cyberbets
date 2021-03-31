@@ -4,6 +4,7 @@ $(document).ready(function () {
     const ACTION_URL = "/action/"
 
     var isTeamEditing = false;
+    var editingItem = null;
 
 
     function setCookie(name, value, days) {
@@ -96,9 +97,11 @@ $(document).ready(function () {
                     width: 100,
                     align: "center",
                     itemTemplate: function (value, item) {
+                        let timestamp = new Date().getTime();
+                        let queryString = "?t=" + timestamp;
                         return `<div class="d-flex flex-column justify-content-center align-items-center">
                                     <span class="mb-2 fw-bold">${item.teamName}</span>
-                                    <img src="${item.teamLogo.path}" width="60">
+                                    <img src="${item.teamLogo.path + queryString}" width="60">
                                 </div>`;
                     }
                 },
@@ -132,43 +135,76 @@ $(document).ready(function () {
             autoload: true,
             controller: {
                 loadData: function (filter) {
-                    var data = $.Deferred();
+                    let d = $.Deferred();
                     $.ajax({
                         type: "POST",
                         url: ACTION_URL,
                         data: JSON.stringify(Object.assign({}, {"action": "loadTeam"}, filter))
                     }).done(function (response) {
-                        notify('info','Info','Teams were loaded Successfully.');
-                        data.resolve(response);
+                        if (response.status === 'ok') {
+                            notify('info', 'Success', 'Teams were successfully loaded.');
+                            d.resolve(response.data);
+                        } else if (response.status === 'exception') {
+                            notify('error', 'Error', 'Unable to load teams from database');
+                            d.reject();
+                        }
                     }).fail(function () {
-                        notify('error','Error','Unable to load teams from database');
-                        data.reject();
+                        notify('error', 'Error', 'Unable to load teams from database');
+                        d.reject();
                     });
-                    return data.promise();
+                    return d.promise();
                 },
 
                 insertItem: function (item) {
+                    let d = $.Deferred();
                     $.ajax({
                         type: "POST",
                         url: ACTION_URL,
                         data: JSON.stringify(Object.assign({}, {"action": "insertTeam"}, item))
                     }).done(function (response) {
-                        notify('success','Success','Team was successfully added.');
+                        if (response.status === 'ok') {
+                            notify('success', 'Success', 'Team was successfully added.');
+                            item.id = response.id;
+                            d.resolve(item);
+                        } else if (response.status === 'deny') {
+                            notify('warning', 'Warning', 'Incorrect data was sent!');
+                            d.reject();
+                        } else if (response.status === 'exception') {
+                            notify('error', 'Error', 'There was an error adding the team!');
+                            d.reject();
+                        }
                     }).fail(function () {
-                        notify('error','Error','There was an error adding the team!');
+                        notify('error', 'Error', 'There was an error adding the team!');
+                        d.reject();
                     });
+                    return d.promise();
                 },
 
                 updateItem: function (item) {
-                    return $.ajax({
+                    let d = $.Deferred();
+                    $.ajax({
                         type: "POST",
                         url: ACTION_URL,
                         data: JSON.stringify(Object.assign({}, {"action": "updateTeam"}, item))
                     }).done(function (response) {
-                        notify('success','Success','Team was successfully updated.');
+                        if (response.status === 'ok') {
+                            notify('success', 'Success', 'Team was successfully updated.');
+                            item.teamLogo = {
+                                "path": response.path
+                            };
+                            d.resolve(item);
+                        } else if (response.status === 'deny') {
+                            notify('warning', 'Warning', 'Incorrect data was sent!');
+                            d.reject();
+                        } else if (response.status === 'exception') {
+                            notify('error', 'Error', 'There was an error updating the team!');
+                            d.reject();
+                        }
                     }).fail(function () {
-                        notify('error','Error','There was an error updating the team!');
+                        notify('error', 'Error', 'There was an error updating the team!');
+                        d.reject();
                     });
+                    return d.promise();
                 },
 
                 deleteItem: function (item) {
@@ -177,9 +213,9 @@ $(document).ready(function () {
                         url: ACTION_URL,
                         data: JSON.stringify(Object.assign({}, {"action": "deleteTeam"}, item))
                     }).done(function (response) {
-                        notify('success','Success','Team was successfully deleted.');
+                        notify('success', 'Success', 'Team was successfully deleted.');
                     }).fail(function () {
-                        notify('error','Error','There was an error deleting the team!');
+                        notify('error', 'Error', 'There was an error deleting the team!');
                     });
                 },
             },
@@ -197,22 +233,26 @@ $(document).ready(function () {
             pageLoading: false,
 
             rowClick: function (args) {
-                // TODO: Add i18n <fmt>
+                // TODO: Add i18n
 
                 isTeamEditing = true;
+                editingItem = args.item;
+
+                let timestamp = new Date().getTime();
+                let queryString = "?t=" + timestamp;
 
                 $('#teamModal').modal('show');
                 $('#teamModal .card-header h5').text('Edit team');
                 $('#teamModal #teamModalSubmit').text('Update');
 
-                let item = args.item;
-                let itemId = item.Id;
+                let team = args.item;
+                let teamId = team.id;
 
-                $('teamModal').data('id', itemId);
-                $('#teamModal #teamDisciplineSelect').val(item.discipline);
-                $('#teamModal #teamName').val(item.team);
-                $('#teamModal #teamRating').val(item.rating);
-                $('#teamModal #teamLogoPreview').attr('src', item.teamLogo.path).fadeIn(1000);
+                $('#teamModal').data('id', teamId);
+                $('#teamModal #teamDisciplineSelect').val(team.discipline);
+                $('#teamModal #teamName').val(team.teamName);
+                $('#teamModal #teamRating').val(team.teamRating);
+                $('#teamModal #teamLogoPreview').attr('src', team.teamLogo.path + queryString).fadeIn(1000);
             },
 
             pageIndex: 1,
@@ -225,7 +265,7 @@ $(document).ready(function () {
         var teamLogoBase64;
 
         $('#teamModal').off('hidden.bs.modal').on('hidden.bs.modal', function () {
-            // TODO: Add i18n <fmt>
+            // TODO: Add i18n
             $('#teamModal .card-header h5').text('Add team');
             $('#teamModal #teamModalSubmit').text('Save');
             $('#teamModal #teamLogoPreview').attr('src', '').hide();
@@ -299,7 +339,7 @@ $(document).ready(function () {
 
                 let team = {
                     "teamName": teamName,
-                    "teamRating": teamRating,
+                    "teamRating": parseFloat(teamRating),
                     "discipline": disciplineValue,
                 }
 
@@ -307,12 +347,15 @@ $(document).ready(function () {
                     team.teamLogo = {
                         "path": teamLogoBase64
                     };
+                } else {
+                    team.teamLogo = {
+                        "path": ""
+                    };
                 }
 
                 if (isTeamEditing) {
-                    // TODO: add i18n <fmt>
-                    team.teamId = $('#teamModal').data('id');
-                    $("#teamsGrid").jsGrid("updateItem", team).then(function () {
+                    team.id = $('#teamModal').data('id');
+                    $("#teamsGrid").jsGrid("updateItem", editingItem, team).then(function () {
                         $('#teamModal').modal('hide');
                     });
                 } else {
