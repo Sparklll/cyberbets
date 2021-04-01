@@ -8,12 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static by.epam.jwd.cyberbets.controller.Parameters.SUPPORT_PAGE;
+import static by.epam.jwd.cyberbets.controller.Parameters.ADMIN_LOGS_SECTION;
 
-public final class ForwardSupportPage implements Action {
+public class AdminLogsSection implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(SUPPORT_PAGE);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(ADMIN_LOGS_SECTION);
         requestDispatcher.forward(request, response);
     }
 }

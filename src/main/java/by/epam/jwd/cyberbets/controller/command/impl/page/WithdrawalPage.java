@@ -8,12 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static by.epam.jwd.cyberbets.controller.Parameters.DEPOSIT_PAGE;
+import static by.epam.jwd.cyberbets.controller.Parameters.WITHDRAWAL_PAGE;
 
-public final class ForwardDepositPage implements Action {
+public final class WithdrawalPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(DEPOSIT_PAGE);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(WITHDRAWAL_PAGE);
         requestDispatcher.forward(request, response);
     }
 }

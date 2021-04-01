@@ -8,12 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static by.epam.jwd.cyberbets.controller.Parameters.ERROR_PAGE;
+import static by.epam.jwd.cyberbets.controller.Parameters.SUPPORT_PAGE;
 
-public final class ForwardErrorPage implements Action {
+public final class SupportPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(ERROR_PAGE);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(SUPPORT_PAGE);
         requestDispatcher.forward(request, response);
     }
 }

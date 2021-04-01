@@ -9,7 +9,7 @@ import by.epam.jwd.cyberbets.controller.command.impl.admin.team.InsertTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.team.LoadTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.team.UpdateTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.general.*;
-import by.epam.jwd.cyberbets.controller.command.impl.page.ForwardErrorPage;
+import by.epam.jwd.cyberbets.controller.command.impl.page.ErrorPage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ public enum ActionProvider {
         actions.put(LOGIN_ACTION, new Login());
         actions.put(LOGOUT_ACTION, new Logout());
         actions.put(IGNORE_ACTION, new Ignore());
-        actions.put(FORWARD_ERROR_PAGE_ACTION, new ForwardErrorPage());
+        actions.put(FORWARD_ERROR_PAGE_ACTION, new ErrorPage());
     }
 
     public Action getAction(String actionName) {

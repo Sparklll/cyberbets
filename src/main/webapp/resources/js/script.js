@@ -632,5 +632,5 @@ $(document).ready(function () {
             .find('*')
             .removeClass('is-invalid')
             .removeClass('is-valid')
-    })
+    });
 });

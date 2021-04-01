@@ -59,7 +59,7 @@ public final class Parameters {
     public static final String IGNORE_ACTION = "ignore";
     public static final String FORWARD_ERROR_PAGE_ACTION = "forwardErrorPage";
 
-    // PAGES
+    // PAGES / SECTIONS
     public static final String ERROR_PAGE = "/WEB-INF/view/error404.jsp";
     public static final String ROOT_PAGE = "/WEB-INF/view/home.jsp";
     public static final String NEWS_PAGE = "/WEB-INF/view/news.jsp";
@@ -73,6 +73,16 @@ public final class Parameters {
     public static final String TRANSACTIONS_PAGE = "/WEB-INF/view/user/transactions.jsp";
     public static final String WITHDRAWAL_PAGE = "/WEB-INF/view/user/withdrawal.jsp";
     public static final String ADMIN_PANEL_PAGE = "/WEB-INF/view/admin/admin.jsp";
+    public static final String ADMIN_DASHBOARD_SECTION = "/WEB-INF/view/admin/dashboard.jsp";
+    public static final String ADMIN_EVENTS_SECTION = "/WEB-INF/view/admin/events.jsp";
+    public static final String ADMIN_LEAGUES_SECTION = "/WEB-INF/view/admin/leagues.jsp";
+    public static final String ADMIN_TEAMS_SECTION = "/WEB-INF/view/admin/teams.jsp";
+    public static final String ADMIN_NEWS_SECTION = "/WEB-INF/view/admin/news.jsp";
+    public static final String ADMIN_ACCOUNTS_SECTION = "/WEB-INF/view/admin/accounts.jsp";
+    public static final String ADMIN_TRANSACTIONS_SECTION = "/WEB-INF/view/admin/transactions.jsp";
+    public static final String ADMIN_SUPPORT_SECTION = "/WEB-INF/view/admin/support.jsp";
+    public static final String ADMIN_LOGS_SECTION = "/WEB-INF/view/admin/logs.jsp";
+
 
     // ROUTES
     public static final String ACTION_LISTENER_ROUTE = "/action/";
@@ -87,5 +97,14 @@ public final class Parameters {
     public static final String ACCOUNT_SETTINGS_ROUTE = "/settings/";
     public static final String TRANSACTIONS_ROUTE = "/transactions/";
     public static final String WITHDRAWAL_ROUTE = "/withdrawal/";
+
     public static final String ADMIN_PANEL_ROUTE = "/admin/";
+    public static final String ADMIN_EVENTS_ROUTE = "/admin/events/";
+    public static final String ADMIN_LEAGUES_ROUTE = "/admin/leagues/";
+    public static final String ADMIN_TEAMS_ROUTE = "/admin/teams/";
+    public static final String ADMIN_NEWS_ROUTE = "/admin/news/";
+    public static final String ADMIN_ACCOUNTS_ROUTE = "/admin/accounts/";
+    public static final String ADMIN_TRANSACTIONS_ROUTE = "/admin/transactions/";
+    public static final String ADMIN_SUPPORT_ROUTE = "/admin/support/";
+    public static final String ADMIN_LOGS_ROUTE = "/admin/logs/";
 }

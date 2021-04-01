@@ -1,5 +1,6 @@
 package by.epam.jwd.cyberbets.controller.command.impl.page;
 
+
 import by.epam.jwd.cyberbets.controller.command.Action;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -8,12 +9,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static by.epam.jwd.cyberbets.controller.Parameters.TRANSACTIONS_PAGE;
+import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
-public final class ForwardTransactionsHistoryPage implements Action {
+public final class RootPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(TRANSACTIONS_PAGE);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(ROOT_PAGE);
         requestDispatcher.forward(request, response);
+
     }
 }

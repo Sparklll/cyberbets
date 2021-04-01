@@ -8,12 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static by.epam.jwd.cyberbets.controller.Parameters.MYBETS_PAGE;
+import static by.epam.jwd.cyberbets.controller.Parameters.TEAM_RATING_PAGE;
 
-public final class ForwardMyBetsPage implements Action {
+public final class TeamRatingPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(MYBETS_PAGE);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(TEAM_RATING_PAGE);
         requestDispatcher.forward(request, response);
     }
 }
