@@ -1,6 +1,6 @@
 package by.epam.jwd.cyberbets.service.impl;
 
-import by.epam.jwd.cyberbets.dao.DaoProvider;
+import by.epam.jwd.cyberbets.dao.impl.DaoProvider;
 import by.epam.jwd.cyberbets.dao.ResourceDao;
 import by.epam.jwd.cyberbets.dao.TeamDao;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
@@ -10,18 +10,21 @@ import by.epam.jwd.cyberbets.domain.Team;
 import by.epam.jwd.cyberbets.domain.dto.TeamDto;
 import by.epam.jwd.cyberbets.service.TeamService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
-import by.epam.jwd.cyberbets.utils.ResourceSaver;
+import by.epam.jwd.cyberbets.utils.ResourceManager;
+import by.epam.jwd.cyberbets.utils.ResourceManager.ResourceType;
 import by.epam.jwd.cyberbets.utils.exception.UtilException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
 
-import static java.lang.Integer.parseInt;
-
 public class TeamServiceImpl implements TeamService {
     private final TeamDao teamDao = DaoProvider.INSTANCE.getTeamDao();
     private final ResourceDao resourceDao = DaoProvider.INSTANCE.getResourceDao();
+
+    TeamServiceImpl() {
+
+    }
 
     @Override
     public List<Team> findAll() throws ServiceException {
@@ -64,10 +67,10 @@ public class TeamServiceImpl implements TeamService {
         try {
             String teamName = teamDto.teamName();
             int teamRating = teamDto.teamRating();
-            Discipline discipline = Discipline.getDisciplineById(parseInt(teamDto.disciplineId())).get();
+            Discipline discipline = Discipline.getDisciplineById(Integer.parseInt(teamDto.disciplineId())).get();
             String teamLogoDataUrl = teamDto.teamLogo();
 
-            String resourcePath = ResourceSaver.uploadImage(ResourceSaver.Resource.TEAM_LOGO, teamLogoDataUrl);
+            String resourcePath = ResourceManager.uploadImage(ResourceType.TEAM_LOGO, teamLogoDataUrl);
             int resourceId = resourceDao.createResource(resourcePath);
 
             Team team = new Team(
@@ -89,17 +92,17 @@ public class TeamServiceImpl implements TeamService {
             String name = teamDto.teamName();
             int rating = teamDto.teamRating();
             Discipline discipline = Discipline.getDisciplineById(
-                    parseInt(teamDto.disciplineId()
+                    Integer.parseInt(teamDto.disciplineId()
                     )).get();
-            String teamLogo = teamDto.teamLogo();
-            Resource prevLogoResource = teamDao.findLogoResourceByTeamId(id).get();
+            String teamLogoDataUrl = teamDto.teamLogo();
+            Resource teamLogoResource = teamDao.findLogoResourceByTeamId(id).get();
 
-            if(StringUtils.isNotBlank(teamLogo)) {
-                String prevLogoResourcePath = prevLogoResource.getPath();
-                ResourceSaver.updateImage(prevLogoResourcePath, teamLogo);
+            if (StringUtils.isNotBlank(teamLogoDataUrl)) {
+                ResourceManager.updateImage(ResourceType.TEAM_LOGO, teamLogoResource, teamLogoDataUrl);
+                resourceDao.updateResource(teamLogoResource);
             }
 
-            Team team = new Team(id, name, rating, discipline, prevLogoResource);
+            Team team = new Team(id, name, rating, discipline, teamLogoResource);
             teamDao.updateTeam(team);
         } catch (DaoException | UtilException e) {
             throw new ServiceException(e);

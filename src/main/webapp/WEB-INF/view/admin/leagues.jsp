@@ -10,7 +10,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <%@ include file="../general/admin-head.html" %>
+    <%@ include file="../general/html/admin-head.html" %>
     <title>CYBERBETS | ADMIN PANEL</title>
 </head>
 
@@ -29,12 +29,74 @@
                 <span class="ms-2 text-uppercase fw-bold">Leagues</span>
             </div>
 
+            <div class="league-control-panel">
+                <button type="button" class="add-team btn btn-primary btn-block text-uppercase mt-3"
+                        data-bs-toggle="modal"
+                        data-bs-target="#leagueModal">
+                    <i class="fas fa-plus me-1"></i>
+                    Add League
+                </button>
+            </div>
+
+            <div class="leagues mt-2">
+                <div id="leaguesGrid"></div>
+            </div>
         </div>
     </div>
 
     <jsp:include page="../general/admin-footer.jsp"/>
 </main>
 
-<%@ include file="../general/admin-scripts.html" %>
+<div class="modal fade" id="leagueModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="leagueModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered justify-content-center">
+        <div class="modal-content">
+                <div class="card">
+                    <div class="card-header d-inline-flex align-items-center">
+                        <h5 class="mt-3 text-uppercase fw-bold">Add League</h5>
+                        <a class="close ms-auto" role="button"
+                           data-bs-dismiss="modal"
+                           data-bs-toggle="modal">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="card-body p-3">
+                        <form action="" method="POST" class="custom-controls">
+                            <div class="mb-3 d-flex justify-content-center align-items-center">
+                                <img id="leagueIconPreview" src="" width="80" style="display: none">
+                            </div>
+                            <div class="mb-3">
+                                <label for="leagueDisciplineSelect" class="form-label">Discipline</label>
+                                <select id="leagueDisciplineSelect" class="form-select" aria-label="teamNameLabel">
+                                    <option selected></option>
+                                    <option value="1">CS:GO</option>
+                                    <option value="2">DOTA2</option>
+                                    <option value="3">LEAGUE OF LEGENDS</option>
+                                    <option value="4">VALORANT</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="leagueName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="leagueName" maxlength="30">
+                            </div>
+                            <div class="mb-3">
+                                <label for="leagueIcon" class="form-label">Icon</label>
+                                <input class="form-control" type="file" id="leagueIcon" accept=".png,.jpg">
+                            </div>
+                            <div class="d-grid gap-1">
+                                <button type="submit" id="leagueModalSubmit"
+                                        class="btn btn-primary btn-block text-uppercase mt-3">
+                                    Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+<%@ include file="../general/html/admin-scripts.html" %>
 </body>
 </html>

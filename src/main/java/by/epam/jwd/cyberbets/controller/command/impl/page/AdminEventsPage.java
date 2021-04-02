@@ -8,12 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static by.epam.jwd.cyberbets.controller.Parameters.ADMIN_ACCOUNTS_SECTION;
+import static by.epam.jwd.cyberbets.controller.Parameters.ADMIN_EVENTS_SECTION;
 
-public class AdminAccountsSection implements Action {
+public class AdminEventsPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(ADMIN_ACCOUNTS_SECTION);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(ADMIN_EVENTS_SECTION);
         requestDispatcher.forward(request, response);
     }
 }

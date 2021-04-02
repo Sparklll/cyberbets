@@ -17,6 +17,7 @@ public final class DatabaseMetadata {
     static final String OUTCOME_TYPE_ID = "outcome_type_id";
     static final String RESULT_STATUS_ID = "result_status_id";
     static final String LOGO_RESOURCE_ID = "logo_resource_id";
+    static final String ICON_RESOURCE_ID = "icon_resource_id";
     static final String TYPE_ID = "type_id";
 
     static final String PATH = "path";

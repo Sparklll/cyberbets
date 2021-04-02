@@ -3,7 +3,7 @@ package by.epam.jwd.cyberbets.filter;
 import by.epam.jwd.cyberbets.domain.Account;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.service.AccountService;
-import by.epam.jwd.cyberbets.service.ServiceProvider;
+import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

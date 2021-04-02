@@ -6,7 +6,7 @@ import by.epam.jwd.cyberbets.controller.validator.ValidatorProvider;
 import by.epam.jwd.cyberbets.domain.Account;
 import by.epam.jwd.cyberbets.domain.dto.RegisterDto;
 import by.epam.jwd.cyberbets.service.AccountService;
-import by.epam.jwd.cyberbets.service.ServiceProvider;
+import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletException;

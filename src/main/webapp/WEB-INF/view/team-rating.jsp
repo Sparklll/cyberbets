@@ -9,7 +9,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <%@ include file="general/head.html" %>
+    <%@ include file="general/html/head.html" %>
     <title>CYBERBETS | HOME</title>
 </head>
 
@@ -37,6 +37,6 @@
 
 <jsp:include page="general/footer.jsp"/>
 
-<%@ include file="general/scripts.html" %>
+<%@ include file="general/html/scripts.html" %>
 </body>
 </html>

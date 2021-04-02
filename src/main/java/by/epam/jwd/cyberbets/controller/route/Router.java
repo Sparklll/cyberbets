@@ -38,15 +38,15 @@ public enum Router {
         routes.put(TRANSACTIONS_ROUTE, new TransactionsHistoryPage());
         routes.put(WITHDRAWAL_ROUTE, new WithdrawalPage());
 
-        routes.put(ADMIN_PANEL_ROUTE, new AdminPanelPage());
-        routes.put(ADMIN_EVENTS_ROUTE, new AdminEventsSection());
-        routes.put(ADMIN_LEAGUES_ROUTE, new AdminLeaguesSection());
-        routes.put(ADMIN_TEAMS_ROUTE, new AdminTeamsSection());
-        routes.put(ADMIN_NEWS_ROUTE, new AdminNewsSection());
-        routes.put(ADMIN_ACCOUNTS_ROUTE, new AdminAccountsSection());
-        routes.put(ADMIN_TRANSACTIONS_ROUTE, new AdminTransactionsSection());
-        routes.put(ADMIN_SUPPORT_ROUTE, new AdminSupportSection());
-        routes.put(ADMIN_LOGS_ROUTE, new AdminLogsSection());
+        routes.put(ADMIN_DASHBOARD_ROUTE, new AdminDashboardPage());
+        routes.put(ADMIN_EVENTS_ROUTE, new AdminEventsPage());
+        routes.put(ADMIN_LEAGUES_ROUTE, new AdminLeaguesPage());
+        routes.put(ADMIN_TEAMS_ROUTE, new AdminTeamsPage());
+        routes.put(ADMIN_NEWS_ROUTE, new AdminNewsPage());
+        routes.put(ADMIN_ACCOUNTS_ROUTE, new AdminAccountsPage());
+        routes.put(ADMIN_TRANSACTIONS_ROUTE, new AdminTransactionsPage());
+        routes.put(ADMIN_SUPPORT_ROUTE, new AdminSupportPage());
+        routes.put(ADMIN_LOGS_ROUTE, new AdminLogsPage());
     }
 
     public void resolveRoute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

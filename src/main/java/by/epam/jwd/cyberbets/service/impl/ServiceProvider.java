@@ -1,5 +1,6 @@
-package by.epam.jwd.cyberbets.service;
+package by.epam.jwd.cyberbets.service.impl;
 
+import by.epam.jwd.cyberbets.service.*;
 import by.epam.jwd.cyberbets.service.impl.*;
 
 public enum ServiceProvider {
@@ -7,13 +8,12 @@ public enum ServiceProvider {
 
     private final AccountService accountService = new AccountServiceImpl();
     private final BetService betService = new BetServiceImpl();
-    private final DisciplineService disciplineDisciplineService = new DisciplineServiceImpl();
     private final EventService eventService = new EventServiceImpl();
-    private final EventFormatService eventFormatService = new EventFormatServiceImpl();
     private final EventOutcomeTypeService eventOutcomeTypeService = new EventOutcomeTypeServiceImpl();
     private final EventResultService eventResultService = new EventResultServiceImpl();
     private final ResourceService resourceService = new ResourceServiceImpl();
     private final TeamService teamService = new TeamServiceImpl();
+    private final LeagueService leagueService = new LeagueServiceImpl();
     private final TransactionService transactionService = new TransactionServiceImpl();
 
     public AccountService getAccountService() {
@@ -24,16 +24,8 @@ public enum ServiceProvider {
         return betService;
     }
 
-    public DisciplineService getDisciplineDisciplineService() {
-        return disciplineDisciplineService;
-    }
-
     public EventService getEventService() {
         return eventService;
-    }
-
-    public EventFormatService getEventFormatService() {
-        return eventFormatService;
     }
 
     public EventOutcomeTypeService getEventOutcomeTypeService() {
@@ -50,6 +42,10 @@ public enum ServiceProvider {
 
     public TeamService getTeamService() {
         return teamService;
+    }
+
+    public LeagueService getLeagueService() {
+        return leagueService;
     }
 
     public TransactionService getTransactionService() {

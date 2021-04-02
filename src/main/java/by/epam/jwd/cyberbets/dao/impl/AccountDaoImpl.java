@@ -19,6 +19,10 @@ import java.util.OptionalInt;
 import static by.epam.jwd.cyberbets.dao.impl.DatabaseMetadata.*;
 
 public class AccountDaoImpl implements AccountDao {
+    AccountDaoImpl() {
+
+    }
+
     private static final String FIND_ACCOUNT_BY_ID = """
             select a.id, a.email, a.password_hash, a.role_id, a.balance, a.avatar_resource_id, r.path
             from account a
@@ -58,7 +62,7 @@ public class AccountDaoImpl implements AccountDao {
         }
     }
 
-    private Optional<Account> getAccount(PreparedStatement ps) throws DaoException {
+    private Optional<Account> getAccount(PreparedStatement ps) throws SQLException {
         try (ResultSet rs = ps.executeQuery()) {
             Optional<Account> accountOptional = Optional.empty();
             if (rs.next()) {
@@ -66,8 +70,6 @@ public class AccountDaoImpl implements AccountDao {
                 accountOptional = Optional.of(account);
             }
             return accountOptional;
-        } catch (SQLException e) {
-            throw new DaoException(e);
         }
     }
 
@@ -83,8 +85,6 @@ public class AccountDaoImpl implements AccountDao {
                     idOptional = OptionalInt.of(id);
                 }
                 return idOptional;
-            } catch (SQLException e) {
-                throw new DaoException(e);
             }
         } catch (SQLException e) {
             throw new DaoException(e);

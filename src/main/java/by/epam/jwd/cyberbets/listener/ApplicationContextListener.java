@@ -1,7 +1,7 @@
 package by.epam.jwd.cyberbets.listener;
 
 import by.epam.jwd.cyberbets.dao.connection.ConnectionPool;
-import by.epam.jwd.cyberbets.utils.ResourceSaver;
+import by.epam.jwd.cyberbets.utils.ResourceManager;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
@@ -30,7 +30,7 @@ public class ApplicationContextListener implements ServletContextListener {
         Path applicationResourcesSourcePath = Path.of(servletContext.getInitParameter("APP_RESOURCES_SOURCE_PATH"));
         Path webappApplicationResourcesPath = Path.of(servletContext.getRealPath(WEBAPP_APPLICATION_RESOURCES_PATH));
         Path webappRootPath = Path.of(servletContext.getRealPath("/"));
-        ResourceSaver.init(webappRootPath.toString());
+        ResourceManager.init(webappRootPath.toString());
 
         if (Files.isSymbolicLink(webappApplicationResourcesPath)) {
             logger.info("Application resources are already linked to webapp resource path");
@@ -47,7 +47,18 @@ public class ApplicationContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        ServletContext servletContext = servletContextEvent.getServletContext();
+
         ConnectionPool.INSTANCE.destroyPool();
         logger.info("Connection pool was successfully destroyed");
+
+        Path link = Paths.get(servletContext.getRealPath("/"),
+                WEBAPP_APPLICATION_RESOURCES_PATH);
+        try {
+            Files.deleteIfExists(link);
+            logger.info("Successfully remove symbolic link to app resources source on shutdown");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

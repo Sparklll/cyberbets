@@ -21,6 +21,7 @@ public enum TransactionType {
         for(TransactionType transactionType : values()) {
             if(transactionType.getId() == id) {
                 transactionTypeOptional = Optional.of(transactionType);
+                return transactionTypeOptional;
             }
         }
         return transactionTypeOptional;

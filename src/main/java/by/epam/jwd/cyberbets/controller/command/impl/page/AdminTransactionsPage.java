@@ -8,12 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static by.epam.jwd.cyberbets.controller.Parameters.ADMIN_LEAGUES_SECTION;
+import static by.epam.jwd.cyberbets.controller.Parameters.ADMIN_TRANSACTIONS_SECTION;
 
-public class AdminLeaguesSection implements Action {
+public class AdminTransactionsPage implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(ADMIN_LEAGUES_SECTION);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(ADMIN_TRANSACTIONS_SECTION);
         requestDispatcher.forward(request, response);
     }
 }

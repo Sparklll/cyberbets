@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 
 public class TeamValidator implements Validator<TeamDto> {
-    private static final int MAX_NAME_LENGTH = 30;
+    private static final int MAX_NAME_LENGTH = 50;
     private static final int MAX_TEAM_RATING = 1000000;
 
     @Override
@@ -17,17 +17,17 @@ public class TeamValidator implements Validator<TeamDto> {
     }
 
 
-    private static boolean isTeamRatingValid(int teamRating) {
+    private boolean isTeamRatingValid(int teamRating) {
         return teamRating >= 0
                 && teamRating <= MAX_TEAM_RATING;
     }
 
-    private static boolean isTeamNameValid(String teamName) {
+    private boolean isTeamNameValid(String teamName) {
         return StringUtils.isNotBlank(teamName)
                 && teamName.length() <= MAX_NAME_LENGTH;
     }
 
-    private static boolean isTeamDisciplineValid(String disciplineId) {
+    private boolean isTeamDisciplineValid(String disciplineId) {
         return StringUtils.isNumeric(disciplineId)
                 && Discipline.getDisciplineById(Integer.parseInt(disciplineId)).isPresent();
     }

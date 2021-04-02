@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class BetDaoImpl implements BetDao {
+    BetDaoImpl() {
+
+    }
+
     @Override
     public List<Bet> findBetsByAccountId(int accountId) {
         return null;

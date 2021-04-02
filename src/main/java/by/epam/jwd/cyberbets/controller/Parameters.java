@@ -19,12 +19,12 @@ public final class Parameters {
 
     // REQUEST PARAMS
     public static final String DISCIPLINE_PARAM = "discipline";
+    public static final String LEAGUE_ICON_PARAM = "leagueIcon";
+    public static final String LEAGUE_NAME_PARAM = "leagueName";
     public static final String TEAM_RATING_PARAM = "teamRating";
     public static final String TEAM_LOGO_PARAM = "teamLogo";
     public static final String TEAM_NAME_PARAM = "teamName";
     public static final String PATH_PARAM = "path";
-    public static final String TEAM_PARAM = "team";
-    public static final String FILTER_PARAM = "filter";
     public static final String ID_PARAM = "id";
     public static final String EMAIL_PARAM = "email";
     public static final String PASSWORD_PARAM = "password";
@@ -98,7 +98,7 @@ public final class Parameters {
     public static final String TRANSACTIONS_ROUTE = "/transactions/";
     public static final String WITHDRAWAL_ROUTE = "/withdrawal/";
 
-    public static final String ADMIN_PANEL_ROUTE = "/admin/";
+    public static final String ADMIN_DASHBOARD_ROUTE = "/admin/";
     public static final String ADMIN_EVENTS_ROUTE = "/admin/events/";
     public static final String ADMIN_LEAGUES_ROUTE = "/admin/leagues/";
     public static final String ADMIN_TEAMS_ROUTE = "/admin/teams/";

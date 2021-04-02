@@ -1,8 +1,9 @@
 package by.epam.jwd.cyberbets.utils;
 
+import by.epam.jwd.cyberbets.domain.Resource;
 import by.epam.jwd.cyberbets.utils.exception.UtilException;
-import jdk.jshell.execution.Util;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -11,27 +12,27 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.UUID;
 
-public final class ResourceSaver {
+public final class ResourceManager {
     private static final String LEAGUES_PATH = "/resources/application/leagues";
     private static final String TEAMS_PATH = "/resources/application/teams";
     private static final String AVATARS_PATH = "/resources/application/avatars";
     private static String WEBAPP_ROOT_PATH;
 
-    private ResourceSaver() {
+    private ResourceManager() {
     }
 
     public static void init(String webappRootPath){
         WEBAPP_ROOT_PATH = webappRootPath;
     }
 
-    public enum Resource {
-        LEAGUE_LOGO(LEAGUES_PATH),
+    public enum ResourceType {
+        LEAGUE_ICON(LEAGUES_PATH),
         TEAM_LOGO(TEAMS_PATH),
         ACCOUNT_AVATAR(AVATARS_PATH);
 
         private final String path;
 
-        Resource(String path) {
+        ResourceType(String path) {
             this.path = path;
         }
 
@@ -40,8 +41,8 @@ public final class ResourceSaver {
         }
     }
 
-    public static String uploadImage(Resource resource, String dataUrl) throws UtilException {
-        String resourcePath = resource.getPath();
+    public static String uploadImage(ResourceType resourceType, String dataUrl) throws UtilException {
+        String resourcePath = resourceType.getPath();
 
         byte[] decodedImage = decodeBase64(dataUrl);
         String extension = getDataUrlExtension(dataUrl);
@@ -56,11 +57,17 @@ public final class ResourceSaver {
         }
     }
 
-    public static void updateImage(String imagePath, String dataUrl) throws UtilException {
-        byte[] decodedImage = decodeBase64(dataUrl);
-        Path destination = Paths.get(WEBAPP_ROOT_PATH, imagePath);
+    public static void updateImage(ResourceType resourceType, Resource imageResource, String dataUrl) throws UtilException {
+        String oldImageResourcePath = imageResource.getPath();
+        removeResource(oldImageResourcePath);
+        String newImageResourcePath = ResourceManager.uploadImage(resourceType, dataUrl);
+        imageResource.setPath(newImageResourcePath);
+    }
+
+    public static void removeResource(String resourcePath) throws UtilException {
+        Path target = Paths.get(WEBAPP_ROOT_PATH, resourcePath);
         try {
-            Files.write(destination, decodedImage);
+            Files.deleteIfExists(target);
         } catch (IOException e) {
             throw new UtilException(e);
         }

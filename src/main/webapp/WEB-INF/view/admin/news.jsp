@@ -10,7 +10,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <%@ include file="../general/admin-scripts.html" %>
+    <%@ include file="../general/html/admin-head.html" %>
     <title>CYBERBETS | ADMIN PANEL</title>
 </head>
 
@@ -35,6 +35,6 @@
     <jsp:include page="../general/admin-footer.jsp"/>
 </main>
 
-<%@ include file="../general/admin-scripts.html" %>
+<%@ include file="../general/html/admin-scripts.html" %>
 </body>
 </html>

@@ -6,7 +6,7 @@ import by.epam.jwd.cyberbets.controller.validator.ValidatorProvider;
 import by.epam.jwd.cyberbets.domain.Resource;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.dto.TeamDto;
-import by.epam.jwd.cyberbets.service.ServiceProvider;
+import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.service.TeamService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import com.google.gson.JsonObject;
@@ -57,13 +57,13 @@ public final class UpdateTeam implements Action {
                     if (teamValidator.isValid(teamDto)) {
                         teamService.updateTeam(teamDto);
 
-                        String resourcePath = "";
+                        String teamLogoPath = "";
                         Optional<Resource> resourceOptional = teamService.findLogoResourceByTeamId(id);
                         if(resourceOptional.isPresent()) {
-                            resourcePath += resourceOptional.get().getPath();
+                            teamLogoPath += resourceOptional.get().getPath();
                         }
 
-                        jsonResponse.addProperty(PATH_PARAM, resourcePath);
+                        jsonResponse.addProperty(PATH_PARAM, teamLogoPath);
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);

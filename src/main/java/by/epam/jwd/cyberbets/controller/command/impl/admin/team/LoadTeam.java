@@ -1,13 +1,9 @@
 package by.epam.jwd.cyberbets.controller.command.impl.admin.team;
 
 import by.epam.jwd.cyberbets.controller.command.Action;
-import by.epam.jwd.cyberbets.controller.validator.Validator;
-import by.epam.jwd.cyberbets.controller.validator.ValidatorProvider;
-import by.epam.jwd.cyberbets.domain.Discipline;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.Team;
-import by.epam.jwd.cyberbets.domain.dto.TeamDto;
-import by.epam.jwd.cyberbets.service.ServiceProvider;
+import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.service.TeamService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import com.google.gson.Gson;
@@ -48,8 +44,8 @@ public final class LoadTeam implements Action {
                 response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
                 try {
-                    String filterTeamName = (String) jsonMap.get(TEAM_NAME_PARAM);
                     Double filterId = (Double) jsonMap.get(ID_PARAM);
+                    String filterTeamName = (String) jsonMap.get(TEAM_NAME_PARAM);
                     Double filterTeamRating = (Double) jsonMap.get(TEAM_RATING_PARAM);
                     String filterDisciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
 

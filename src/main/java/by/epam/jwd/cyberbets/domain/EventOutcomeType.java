@@ -1,5 +1,7 @@
 package by.epam.jwd.cyberbets.domain;
 
+import java.util.Optional;
+
 public enum EventOutcomeType {
     // GENERAL
     FIRST_TEAM_TOTAL_WINNER(1),
@@ -33,12 +35,14 @@ public enum EventOutcomeType {
         return id;
     }
 
-    public EventOutcomeType getEventOutcomeTypeById(int id) {
+    public Optional<EventOutcomeType> getEventOutcomeTypeById(int id) {
+        Optional<EventOutcomeType> eventOutcomeTypeOptional = Optional.empty();
         for(EventOutcomeType eventOutcomeType : values()) {
             if(eventOutcomeType.getId() == id) {
-                return eventOutcomeType;
+                eventOutcomeTypeOptional = Optional.of(eventOutcomeType);
+                return eventOutcomeTypeOptional;
             }
         }
-        throw new IllegalArgumentException("Unable to find EventOutcomeType with id = " + id);
+        return eventOutcomeTypeOptional;
     }
 }

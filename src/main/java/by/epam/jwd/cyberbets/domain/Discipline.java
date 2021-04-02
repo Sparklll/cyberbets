@@ -25,6 +25,7 @@ public enum Discipline {
         for(Discipline discipline : values()) {
             if(discipline.getId() == id) {
                 disciplineOptional = Optional.of(discipline);
+                return disciplineOptional;
             }
         }
         return disciplineOptional;

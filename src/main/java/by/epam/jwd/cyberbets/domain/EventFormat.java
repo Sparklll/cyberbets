@@ -1,5 +1,7 @@
 package by.epam.jwd.cyberbets.domain;
 
+import java.util.Optional;
+
 public enum EventFormat {
     // GENERAL
     BO1(1),
@@ -17,12 +19,14 @@ public enum EventFormat {
         return id;
     }
 
-    public EventFormat getEventFormatById(int id) {
+    public Optional<EventFormat> getEventFormatById(int id) {
+        Optional<EventFormat> eventFormatOptional = Optional.empty();
         for(EventFormat eventFormat : values()) {
             if(eventFormat.getId() == id) {
-                return eventFormat;
+                eventFormatOptional = Optional.of(eventFormat);
+                return eventFormatOptional;
             }
         }
-        throw new IllegalArgumentException("Unable to find EventFormat with id = " + id);
+        return eventFormatOptional;
     }
 }

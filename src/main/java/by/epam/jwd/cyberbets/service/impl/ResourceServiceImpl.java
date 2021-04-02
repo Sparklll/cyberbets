@@ -1,6 +1,6 @@
 package by.epam.jwd.cyberbets.service.impl;
 
-import by.epam.jwd.cyberbets.dao.DaoProvider;
+import by.epam.jwd.cyberbets.dao.impl.DaoProvider;
 import by.epam.jwd.cyberbets.dao.ResourceDao;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.domain.Resource;
@@ -11,6 +11,10 @@ import java.util.Optional;
 
 public class ResourceServiceImpl implements ResourceService {
     private final ResourceDao resourceDao = DaoProvider.INSTANCE.getResourceDao();
+
+    ResourceServiceImpl() {
+
+    }
 
     @Override
     public Optional<Resource> findResourceById(int resourceId) throws ServiceException {

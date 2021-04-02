@@ -1,5 +1,7 @@
 package by.epam.jwd.cyberbets.domain;
 
+import java.util.Optional;
+
 public enum ResultStatus {
     UNBLOCKED(1),
     BLOCKED(2),
@@ -17,12 +19,14 @@ public enum ResultStatus {
         return id;
     }
 
-    public ResultStatus getResultStatusById(int id) throws IllegalArgumentException{
+    public Optional<ResultStatus> getResultStatusById(int id) throws IllegalArgumentException{
+        Optional<ResultStatus> resultStatusOptional = Optional.empty();
         for(ResultStatus resultStatus : values()) {
             if(resultStatus.getId() == id) {
-                return resultStatus;
+                resultStatusOptional = Optional.of(resultStatus);
+                return resultStatusOptional;
             }
         }
-        throw new IllegalArgumentException("Unable to find ResultStatus with id = " + id);
+        return resultStatusOptional;
     }
 }
