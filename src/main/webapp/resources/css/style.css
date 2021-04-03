@@ -529,13 +529,47 @@ footer .copyright {
     background-color: #4e5061;
 }
 
-
 .custom-controls select {
     color: white;
     border: none;
     outline: none;
     background-color: #4e5061;
     width: 100%;
+}
+
+/* BOOTSTRAP SELECT */
+.bootstrap-select {
+    background: none;
+    color: white !important;
+}
+
+.bootstrap-select .btn {
+    background-color: #4e5061;
+    font-weight: 500;
+}
+
+.bootstrap-select .dropdown-menu {
+    background-color: #4e5061;
+}
+
+.bootstrap-select .bs-searchbox input {
+    background-color: #2a2f36;
+}
+
+.bootstrap-select .dropdown-menu li a.selected {
+    background-color: #645fa8;
+}
+
+.bootstrap-select .dropdown-menu li a:hover,
+.bootstrap-select .no-results {
+    background-color: #6b6b7d;
+}
+
+.bootstrap-select .filter-option,
+.bootstrap-select .dropdown-menu,
+.bootstrap-select .dropdown-menu li a,
+.bootstrap-select > .dropdown-toggle:after {
+    color: white;
 }
 
 /* CARD */
@@ -561,6 +595,25 @@ footer .copyright {
 
 .card .card-header .close:hover {
     transform: rotate(180deg);
+}
+
+/* ACCORDION*/
+.accordion-body {
+    background-color: #2a2f36;
+}
+
+.accordion-item {
+    background-color: transparent;
+}
+
+.accordion-header .accordion-button::after {
+    color: white;
+}
+
+.accordion-header .accordion-button {
+    color: white;
+    border: none;
+    background-color: #4e5061;
 }
 
 /* MODALS GLOBAL */

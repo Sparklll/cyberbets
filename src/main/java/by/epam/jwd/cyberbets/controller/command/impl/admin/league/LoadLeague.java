@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -55,6 +56,7 @@ public final class LoadLeague implements Action {
                                     && (StringUtils.isBlank(filterDisciplineId)
                                     || filterDisciplineId.equals("0")
                                     || l.getDiscipline().getId() == Integer.parseInt(filterDisciplineId)))
+                            .sorted(Comparator.comparing(League::getId))
                             .collect(Collectors.toList());
 
                     String jsonStrLeagues = new Gson().toJson(leagues);

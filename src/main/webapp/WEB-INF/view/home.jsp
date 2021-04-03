@@ -95,7 +95,7 @@
                                 <span class="date ms-1">20.02.2021</span>
                                 <span class="date ms-1 text-uppercase live"><i class="fas fa-circle me-1"></i>Live</span>
                                 <img src="assets/event-icon2.png" class="event-icon ms-auto me-1">
-                                <span class="event-name float-end me-1">Faceit Pro League</span>
+                                <span class="league-name float-end me-1">Faceit Pro League</span>
                             </div>
                             <div class="event-info d-flex">
 

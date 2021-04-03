@@ -30,7 +30,7 @@
             </div>
 
             <div class="league-control-panel">
-                <button type="button" class="add-team btn btn-primary btn-block text-uppercase mt-3"
+                <button type="button" class="add-league btn btn-primary btn-block text-uppercase mt-3"
                         data-bs-toggle="modal"
                         data-bs-target="#leagueModal">
                     <i class="fas fa-plus me-1"></i>
@@ -67,7 +67,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="leagueDisciplineSelect" class="form-label">Discipline</label>
-                                <select id="leagueDisciplineSelect" class="form-select" aria-label="teamNameLabel">
+                                <select id="leagueDisciplineSelect" class="form-select">
                                     <option selected></option>
                                     <option value="1">CS:GO</option>
                                     <option value="2">DOTA2</option>

@@ -64,7 +64,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="teamDisciplineSelect" class="form-label">Discipline</label>
-                            <select id="teamDisciplineSelect" class="form-select" aria-label="teamNameLabel">
+                            <select id="teamDisciplineSelect" class="form-select">
                                 <option selected></option>
                                 <option value="1">CS:GO</option>
                                 <option value="2">DOTA2</option>

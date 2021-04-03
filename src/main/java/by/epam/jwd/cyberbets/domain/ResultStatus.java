@@ -3,9 +3,9 @@ package by.epam.jwd.cyberbets.domain;
 import java.util.Optional;
 
 public enum ResultStatus {
-    UNBLOCKED(1),
-    BLOCKED(2),
-    CANCELED(3),
+    DISABLED(1),
+    UNBLOCKED(2),
+    BLOCKED(3),
     SUCCESS(4),
     FAILURE(5);
 

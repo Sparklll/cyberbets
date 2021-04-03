@@ -1,13 +1,15 @@
 package by.epam.jwd.cyberbets.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Optional;
 
 public enum EventFormat {
     // GENERAL
-    BO1(1),
-    BO2(2),
-    BO3(3),
-    BO5(4);
+    @SerializedName("1") BO1(1),
+    @SerializedName("2") BO2(2),
+    @SerializedName("3") BO3(3),
+    @SerializedName("4") BO5(4);
 
     private final int id;
 

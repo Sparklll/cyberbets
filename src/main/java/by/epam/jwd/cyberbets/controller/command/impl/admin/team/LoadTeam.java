@@ -1,6 +1,7 @@
 package by.epam.jwd.cyberbets.controller.command.impl.admin.team;
 
 import by.epam.jwd.cyberbets.controller.command.Action;
+import by.epam.jwd.cyberbets.domain.League;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.Team;
 import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -57,6 +59,7 @@ public final class LoadTeam implements Action {
                                     && (StringUtils.isBlank(filterDisciplineId)
                                     || filterDisciplineId.equals("0")
                                     || t.getDiscipline().getId() == Integer.parseInt(filterDisciplineId)))
+                            .sorted(Comparator.comparing(Team::getId))
                             .collect(Collectors.toList());
 
                     String jsonStrTeams = new Gson().toJson(teams);
