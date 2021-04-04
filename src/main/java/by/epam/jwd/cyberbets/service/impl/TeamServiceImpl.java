@@ -67,7 +67,7 @@ public class TeamServiceImpl implements TeamService {
         try {
             String teamName = teamDto.teamName();
             int teamRating = teamDto.teamRating();
-            Discipline discipline = Discipline.getDisciplineById(Integer.parseInt(teamDto.disciplineId())).get();
+            Discipline discipline = Discipline.getDisciplineById(teamDto.disciplineId()).get();
             String teamLogoDataUrl = teamDto.teamLogo();
 
             String resourcePath = ResourceManager.uploadImage(ResourceType.TEAM_LOGO, teamLogoDataUrl);
@@ -91,9 +91,7 @@ public class TeamServiceImpl implements TeamService {
             int id = teamDto.id();
             String name = teamDto.teamName();
             int rating = teamDto.teamRating();
-            Discipline discipline = Discipline.getDisciplineById(
-                    Integer.parseInt(teamDto.disciplineId()
-                    )).get();
+            Discipline discipline = Discipline.getDisciplineById(teamDto.disciplineId()).get();
             String teamLogoDataUrl = teamDto.teamLogo();
             Resource teamLogoResource = teamDao.findLogoResourceByTeamId(id).get();
 

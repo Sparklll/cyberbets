@@ -27,8 +27,7 @@ public class TeamValidator implements Validator<TeamDto> {
                 && teamName.length() <= MAX_NAME_LENGTH;
     }
 
-    private boolean isTeamDisciplineValid(String disciplineId) {
-        return StringUtils.isNumeric(disciplineId)
-                && Discipline.getDisciplineById(Integer.parseInt(disciplineId)).isPresent();
+    private boolean isTeamDisciplineValid(int disciplineId) {
+        return Discipline.getDisciplineById(disciplineId).isPresent();
     }
 }

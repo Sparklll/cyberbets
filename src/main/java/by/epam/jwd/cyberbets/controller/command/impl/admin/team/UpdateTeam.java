@@ -46,10 +46,10 @@ public final class UpdateTeam implements Action {
                 try {
                     int id  = ((Double) jsonMap.get(ID_PARAM)).intValue();
                     int teamRating = ((Double) jsonMap.get(TEAM_RATING_PARAM)).intValue();
+                    int disciplineId = ((Double) jsonMap.get(DISCIPLINE_PARAM)).intValue();
                     String teamName = (String) jsonMap.get(TEAM_NAME_PARAM);
                     LinkedTreeMap<String, String> teamLogoObj = (LinkedTreeMap<String, String>) jsonMap.get(TEAM_LOGO_PARAM);
                     String teamLogoBase64 = teamLogoObj != null ? teamLogoObj.get(PATH_PARAM) : "";
-                    String disciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
 
                     TeamDto teamDto = new TeamDto(id, teamName, teamRating, teamLogoBase64, disciplineId);
 

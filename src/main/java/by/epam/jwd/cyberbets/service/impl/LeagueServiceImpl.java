@@ -67,7 +67,7 @@ public class LeagueServiceImpl implements LeagueService {
         try {
             String name = leagueDto.leagueName();
             String leagueIconDataUrl = leagueDto.leagueIcon();
-            Discipline discipline = Discipline.getDisciplineById(Integer.parseInt(leagueDto.disciplineId())).get();
+            Discipline discipline = Discipline.getDisciplineById(leagueDto.disciplineId()).get();
 
             String resourcePath = ResourceManager.uploadImage(ResourceType.LEAGUE_ICON, leagueIconDataUrl);
             int resourceId = resourceDao.createResource(resourcePath);
@@ -88,9 +88,7 @@ public class LeagueServiceImpl implements LeagueService {
         try {
             int id = leagueDto.id();
             String name = leagueDto.leagueName();
-            Discipline discipline = Discipline.getDisciplineById(
-                    Integer.parseInt(leagueDto.disciplineId()
-                    )).get();
+            Discipline discipline = Discipline.getDisciplineById(leagueDto.disciplineId()).get();
             String leagueIconDataUrl = leagueDto.leagueIcon();
             Resource leagueIconResource = leagueDao.findIconResourceByLeagueId(id).get();
 

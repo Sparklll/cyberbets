@@ -9,7 +9,6 @@ public enum DaoProvider {
     private final AccountDao accountDao = new AccountDaoImpl();
     private final BetDao betDao = new BetDaoImpl();
     private final EventDao eventDao = new EventDaoImpl();
-    private final EventOutcomeTypeDao eventOutcomeTypeDao = new EventOutcomeTypeDaoImpl();
     private final EventResultDao eventResultDao = new EventResultDaoImpl();
     private final ResourceDao resourceDao = new ResourceDaoImpl();
     private final TeamDao teamDao = new TeamDaoImpl();
@@ -29,24 +28,20 @@ public enum DaoProvider {
         return eventDao;
     }
 
-    public EventOutcomeTypeDao getEventOutcomeTypeDao() {
-        return eventOutcomeTypeDao;
-    }
-
     public EventResultDao getEventResultDao() {
         return eventResultDao;
     }
 
-    public ResourceDao getResourceDao() {
-        return resourceDao;
+    public LeagueDao getLeagueDao() {
+        return leagueDao;
     }
 
     public TeamDao getTeamDao() {
         return teamDao;
     }
 
-    public LeagueDao getLeagueDao() {
-        return leagueDao;
+    public ResourceDao getResourceDao() {
+        return resourceDao;
     }
 
     public TransactionDao getTransactionDao() {

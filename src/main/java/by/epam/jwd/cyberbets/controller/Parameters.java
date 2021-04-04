@@ -18,6 +18,14 @@ public final class Parameters {
 
 
     // REQUEST PARAMS
+    public static final String DISCIPLINE_ID_PARAM = "disciplineId";
+    public static final String LEAGUE_ID_PARAM = "leagueId";
+    public static final String FIRST_TEAM_ID_PARAM = "firstTeamId";
+    public static final String SECOND_TEAM_ID_PARAM = "secondTeamId";
+    public static final String FORMAT_ID_PARAM = "formatId";
+    public static final String ROYALTY_PARAM = "royalty";
+    public static final String START_DATE_PARAM = "startDate";
+
     public static final String DISCIPLINE_PARAM = "discipline";
     public static final String LEAGUE_ICON_PARAM = "leagueIcon";
     public static final String LEAGUE_NAME_PARAM = "leagueName";

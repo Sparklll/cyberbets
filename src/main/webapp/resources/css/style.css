@@ -310,7 +310,7 @@ img {
     border-radius: 5px 5px 0 0;
 }
 
-.event .event-header .event-icon {
+.event .event-header .league-icon {
     max-width: 35px;
 }
 
@@ -493,6 +493,11 @@ footer .copyright {
 .btn.btn-secondary:hover {
     background: rgba(130, 126, 144, 0.5);
 
+}
+
+.btn-check:active+.btn-secondary,
+.btn-check:checked+.btn-secondary {
+    background-color: #29864e;
 }
 
 /* INPUT FIELD */

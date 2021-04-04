@@ -8,32 +8,37 @@ public class Event extends Entity {
     private static final long serialVersionUID = -2403733588962027773L;
 
     private Discipline discipline;
-    private EventFormat eventFormat;
     private League league;
     private Team firstTeam;
     private Team secondTeam;
+    private EventFormat eventFormat;
     private Instant startDate;
     private BigDecimal royaltyPercentage;
+    private EventStatus status;
 
-    public Event(int id, Discipline discipline, EventFormat eventFormat, League league, Team firstTeam, Team secondTeam, Instant startDate, BigDecimal royaltyPercentage) {
-        super(id);
+    public Event(Discipline discipline, League league, Team firstTeam, Team secondTeam,
+                 EventFormat eventFormat, Instant startDate, BigDecimal royaltyPercentage, EventStatus status) {
         this.discipline = discipline;
-        this.eventFormat = eventFormat;
         this.league = league;
         this.firstTeam = firstTeam;
         this.secondTeam = secondTeam;
+        this.eventFormat = eventFormat;
         this.startDate = startDate;
         this.royaltyPercentage = royaltyPercentage;
+        this.status = status;
     }
 
-    public Event(Discipline discipline, EventFormat eventFormat, League league, Team firstTeam, Team secondTeam, Instant startDate, BigDecimal royaltyPercentage) {
+    public Event(int id, Discipline discipline, League league, Team firstTeam, Team secondTeam,
+                 EventFormat eventFormat, Instant startDate, BigDecimal royaltyPercentage, EventStatus status) {
+        super(id);
         this.discipline = discipline;
-        this.eventFormat = eventFormat;
         this.league = league;
         this.firstTeam = firstTeam;
         this.secondTeam = secondTeam;
+        this.eventFormat = eventFormat;
         this.startDate = startDate;
         this.royaltyPercentage = royaltyPercentage;
+        this.status = status;
     }
 
     public Discipline getDiscipline() {
@@ -92,35 +97,45 @@ public class Event extends Entity {
         this.royaltyPercentage = royaltyPercentage;
     }
 
+    public EventStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EventStatus status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
         return discipline == event.discipline
-                && eventFormat == event.eventFormat
                 && Objects.equals(league, event.league)
                 && Objects.equals(firstTeam, event.firstTeam)
                 && Objects.equals(secondTeam, event.secondTeam)
+                && eventFormat == event.eventFormat
                 && Objects.equals(startDate, event.startDate)
-                && Objects.equals(royaltyPercentage, event.royaltyPercentage);
+                && Objects.equals(royaltyPercentage, event.royaltyPercentage)
+                && status == event.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(discipline, eventFormat, league, firstTeam, secondTeam, startDate, royaltyPercentage);
+        return Objects.hash(discipline, league, firstTeam, secondTeam, eventFormat, startDate, royaltyPercentage, status);
     }
 
     @Override
     public String toString() {
         return "Event{" +
                 "discipline=" + discipline +
-                ", eventFormat=" + eventFormat +
                 ", league=" + league +
                 ", firstTeam=" + firstTeam +
                 ", secondTeam=" + secondTeam +
+                ", eventFormat=" + eventFormat +
                 ", startDate=" + startDate +
                 ", royaltyPercentage=" + royaltyPercentage +
+                ", status=" + status +
                 '}';
     }
 }

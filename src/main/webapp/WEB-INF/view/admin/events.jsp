@@ -62,20 +62,21 @@
                 </div>
                 <div class="card-body p-3">
                     <div class="row">
-                        <div class="event-preview  mb-2">
+                        <div class="event-preview">
                             <div class="text-center fw-bold mb-2">Preview</div>
                             <div class="event mb-3" data-id="">
                                 <div class="event-header d-flex align-items-center">
                                     <span class="date ms-1">Date</span>
-
-                                    <img src="" class="league-icon ms-auto me-1" style="display: none">
-                                    <span class="league-name ms-auto me-1">League</span>
+                                    <div class="d-flex justify-content-center align-items-center ms-auto">
+                                        <img src="" class="league-icon me-1 my-1" style="display: none">
+                                        <span class="league-name me-1">League</span>
+                                    </div>
                                 </div>
                                 <div class="event-info d-flex">
 
                                     <div class="team team-left d-flex flex-column justify-content-center align-items-center col-4">
                                         <div class="d-flex flex-column justify-content-center align-items-center col-6">
-                                            <span class="team-name">Team 1</span>
+                                            <span class="team-name text-nowrap">Team 1</span>
                                             <span class="odds m-2"><i>x</i>1</span>
                                         </div>
                                         <div class="team-logo">
@@ -103,7 +104,7 @@
 
                                     <div class="team team-right d-flex flex-column justify-content-center align-items-center col-4">
                                         <div class="d-flex flex-column justify-content-center align-items-center col-6">
-                                            <span class="team-name">Team 2</span>
+                                            <span class="team-name text-nowrap">Team 2</span>
                                             <span class="odds m-2"><i>x</i>1</span>
                                         </div>
                                         <div class="team-logo order-last">
@@ -113,6 +114,31 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div id="eventStatus" class="d-flex justify-content-center mb-2">
+                            <div class="btn-group" role="group">
+                                <input type="radio" class="btn-check" id="pendingOption"
+                                       name="eventStatus"
+                                       value="1"
+                                       autocomplete="off"
+                                       checked/>
+                                <label class="btn btn-secondary btn-sm text-uppercase" for="pendingOption">Pending</label>
+
+                                <input type="radio" class="btn-check" id="finishedOption"
+                                       name="eventStatus"
+                                       value="2"
+                                       autocomplete="off"/>
+                                <label class="btn btn-secondary btn-sm text-uppercase" for="finishedOption">Finished</label>
+
+                                <input type="radio" class="btn-check" id="canceledOption"
+                                       name="eventStatus"
+                                       value="3"
+                                       autocomplete="off"/>
+                                <label class="btn btn-secondary btn-sm text-uppercase" for="canceledOption">Canceled</label>
+                            </div>
+                        </div>
+                    </div>
+
                         <div class="accordion accordion-flush" id="eventAccordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="eventInfoHeading">
@@ -188,7 +214,7 @@
                                             <div class="mb-3 col-12">
                                                 <label for="eventDatetimeStart" class="form-label">Start</label>
                                                 <input id="eventDatetimeStart" class="form-control"
-                                                       type="datetime-local" step="1">
+                                                       type="datetime-local">
                                             </div>
 
                                             <div class="mb-3 col-12">

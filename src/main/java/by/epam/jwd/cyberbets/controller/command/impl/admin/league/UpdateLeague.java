@@ -45,8 +45,8 @@ public final class UpdateLeague implements Action {
 
                 try {
                     int id = ((Double) jsonMap.get(ID_PARAM)).intValue();
+                    int disciplineId = ((Double) jsonMap.get(DISCIPLINE_PARAM)).intValue();
                     String leagueName = (String) jsonMap.get(LEAGUE_NAME_PARAM);
-                    String disciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
                     LinkedTreeMap<String, String> leagueIconObj = (LinkedTreeMap<String, String>) jsonMap.get(LEAGUE_ICON_PARAM);
                     String leagueIconBase64 = leagueIconObj != null ? leagueIconObj.get(PATH_PARAM) : "";
 

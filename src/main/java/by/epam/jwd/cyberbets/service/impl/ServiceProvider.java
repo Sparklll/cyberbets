@@ -9,7 +9,6 @@ public enum ServiceProvider {
     private final AccountService accountService = new AccountServiceImpl();
     private final BetService betService = new BetServiceImpl();
     private final EventService eventService = new EventServiceImpl();
-    private final EventOutcomeTypeService eventOutcomeTypeService = new EventOutcomeTypeServiceImpl();
     private final EventResultService eventResultService = new EventResultServiceImpl();
     private final ResourceService resourceService = new ResourceServiceImpl();
     private final TeamService teamService = new TeamServiceImpl();
@@ -26,10 +25,6 @@ public enum ServiceProvider {
 
     public EventService getEventService() {
         return eventService;
-    }
-
-    public EventOutcomeTypeService getEventOutcomeTypeService() {
-        return eventOutcomeTypeService;
     }
 
     public EventResultService getEventResultService() {

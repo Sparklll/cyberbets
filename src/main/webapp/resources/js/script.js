@@ -84,7 +84,7 @@ $(document).ready(function () {
     }
 
     if ($('#eventsGrid').length > 0) {
-        var eventFormat = [
+        let eventFormat = [
             {Name: "", Id: "0"},
             {Name: "BO1", Id: "1"},
             {Name: "BO2", Id: "2"},
@@ -92,25 +92,38 @@ $(document).ready(function () {
             {Name: "BO5", Id: "4"}
         ];
 
+        let eventStatus = [
+            {Name: "Pending", Id: "1", Logo: "/resources/assets/status/pending.png"},
+            {Name: "Finished", Id: "2", Logo: "/resources/assets/status/finished.png"},
+            {Name: "Canceled", Id: "3", Logo: "/resources/assets/status/canceled.png"},
+        ];
+
         $('#eventsGrid').jsGrid({
             fields: [
                 {name: "id", title: "Id", type: "number", width: 50, align: "center"},
                 {
-                    name: "Event",
+                    title: "Event",
                     type: "text",
                     width: 100,
                     align: "center",
                     itemTemplate: function (value, item) {
-                        let timestamp = new Date().getTime();
-                        let queryString = "?t=" + timestamp;
-                        return `<div class="d-flex flex-column justify-content-center align-items-center">
-                                    <span class="mb-2 fw-bold"></span>
-                                    <img src="" width="60">
+                        return `<div class="d-flex justify-content-center align-items-center">
+                                    <div class="d-flex flex-column justify-content-center align-items-center me-auto ms-2">
+                                        <span class="mb-2 fw-bold">${item.firstTeam.teamName}</span>
+                                        <img src="${item.firstTeam.teamLogo.path}" width="50">
+                                    </div>
+                                   
+                                   <i class="fw-bold">VS</i> 
+                                   
+                                   <div class="d-flex flex-column justify-content-center align-items-center ms-auto me-2">
+                                        <span class="mb-2 fw-bold">${item.secondTeam.teamName}</span>
+                                        <img src="${item.secondTeam.teamLogo.path}" width="50">
+                                    </div>
                                 </div>`;
                     }
                 },
                 {
-                    name: "format",
+                    name: "eventFormat",
                     title: "Format",
                     type: "select",
                     items: eventFormat,
@@ -118,26 +131,18 @@ $(document).ready(function () {
                     textField: "Name",
                     width: 50,
                     itemTemplate: function (value, item) {
-                        let timestamp = new Date().getTime();
-                        let queryString = "?t=" + timestamp;
-                        return `<div class="d-flex flex-column justify-content-center align-items-center">
-                                    <span class="mb-2 fw-bold"></span>
-                                    <img src="" width="60">
-                                </div>`;
+                        return eventFormat.find(f => f.Id == value).Name;
                     }
                 },
                 {
-                    name: "",
                     title: "League",
                     type: "text",
                     width: 100,
                     align: "center",
                     itemTemplate: function (value, item) {
-                        let timestamp = new Date().getTime();
-                        let queryString = "?t=" + timestamp;
                         return `<div class="d-flex flex-column justify-content-center align-items-center">
-                                    <span class="mb-2 fw-bold"></span>
-                                    <img src="" width="60">
+                                    <span class="mb-2">${item.league.leagueName}</span>
+                                    <img src="${item.league.leagueIcon.path}" width="30">
                                 </div>`;
                     }
                 },
@@ -150,8 +155,8 @@ $(document).ready(function () {
                     textField: "Name",
                     width: 100,
                     itemTemplate: function (value, item) {
-                        let disciplineName = disciplines.find(d => d.Id === value).Name;
-                        let disciplineLogo = disciplines.find(d => d.Id === value).Logo;
+                        let disciplineName = disciplines.find(d => d.Id == value).Name;
+                        let disciplineLogo = disciplines.find(d => d.Id == value).Logo;
                         return `<div class="d-flex flex-column justify-content-center align-items-center">
                                     <span class="mb-2">${disciplineName}</span>
                                     <img src="${disciplineLogo}" width="30" style="border-radius: 5px">
@@ -159,33 +164,36 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    name: "",
+                    name: "startDate",
                     title: "Start",
                     type: "",
                     width: 50,
                     align: "center",
                     itemTemplate: function (value, item) {
-                        let disciplineName = disciplines.find(d => d.Id === value).Name;
-                        let disciplineLogo = disciplines.find(d => d.Id === value).Logo;
-                        return `<div class="d-flex flex-column justify-content-center align-items-center">
-                                    <span class="mb-2">${disciplineName}</span>
-                                    <img src="${disciplineLogo}" width="30" style="border-radius: 5px">
-                                </div>`;
+                        return `<span class="mb-2">${dayjs.unix(value).format('ddd, DD MMM YYYY HH:mm')}</span>`;
                     }
                 },
                 {
-                    name: "",
+                    name: "royaltyPercentage",
                     title: "Royalty",
                     type: "number",
                     width: 50,
                     align: "center",
                     itemTemplate: function (value, item) {
-                        let disciplineName = disciplines.find(d => d.Id === value).Name;
-                        let disciplineLogo = disciplines.find(d => d.Id === value).Logo;
-                        return `<div class="d-flex flex-column justify-content-center align-items-center">
-                                    <span class="mb-2">${disciplineName}</span>
-                                    <img src="${disciplineLogo}" width="30" style="border-radius: 5px">
-                                </div>`;
+                        return `<span class="mb-2">${value}%</span>`
+                    }
+                },
+                {
+                    name: "status",
+                    title: "Status",
+                    type: "select",
+                    items: eventStatus,
+                    valueField: "Id",
+                    textField: "Name",
+                    width: 50,
+                    itemTemplate: function (value, item) {
+                        let eventStatusIcon = eventStatus.find(s => s.Id == value).Logo;
+                        return `<img src="${eventStatusIcon}" width="30" style="border-radius: 5px">`;
                     }
                 },
                 {
@@ -194,6 +202,7 @@ $(document).ready(function () {
                     deleteButton: false,
                     clearFilterButton: true,
                     modeSwitchButton: true,
+                    width: 50,
                 }
             ],
 
@@ -207,14 +216,14 @@ $(document).ready(function () {
                         data: JSON.stringify(Object.assign({}, {"action": "loadEvent"}, filter))
                     }).done(function (response) {
                         if (response.status === 'ok') {
-                            notify('info', 'Success', 'Leagues were successfully loaded.');
+                            notify('info', 'Success', 'Events were successfully loaded.');
                             d.resolve(response.data);
                         } else if (response.status === 'exception') {
-                            notify('error', 'Error', 'Unable to load leagues from database');
+                            notify('error', 'Error', 'Unable to load events from database');
                             d.reject();
                         }
                     }).fail(function () {
-                        notify('error', 'Error', 'Unable to load leagues from database');
+                        notify('error', 'Error', 'Unable to load events from database');
                         d.reject();
                     });
                     return d.promise();
@@ -228,21 +237,18 @@ $(document).ready(function () {
                         data: JSON.stringify(Object.assign({}, {"action": "insertEvent"}, item))
                     }).done(function (response) {
                         if (response.status === 'ok') {
-                            notify('success', 'Success', 'League was successfully added.');
+                            notify('success', 'Success', 'Event was successfully added.');
                             item.id = response.id;
-                            item.leagueIcon = {
-                                "path": response.path
-                            };
                             d.resolve(item);
                         } else if (response.status === 'deny') {
                             notify('warning', 'Warning', 'Incorrect data was sent!');
                             d.reject();
                         } else if (response.status === 'exception') {
-                            notify('error', 'Error', 'There was an error adding the league!');
+                            notify('error', 'Error', 'There was an error adding the event!');
                             d.reject();
                         }
                     }).fail(function () {
-                        notify('error', 'Error', 'There was an error adding the league!');
+                        notify('error', 'Error', 'There was an error adding the event!');
                         d.reject();
                     });
                     return d.promise();
@@ -256,20 +262,17 @@ $(document).ready(function () {
                         data: JSON.stringify(Object.assign({}, {"action": "updateEvent"}, item))
                     }).done(function (response) {
                         if (response.status === 'ok') {
-                            notify('success', 'Success', 'League was successfully updated.');
-                            item.leagueIcon = {
-                                "path": response.path
-                            };
+                            notify('success', 'Success', 'Event was successfully updated.');
                             d.resolve(item);
                         } else if (response.status === 'deny') {
                             notify('warning', 'Warning', 'Incorrect data was sent!');
                             d.reject();
                         } else if (response.status === 'exception') {
-                            notify('error', 'Error', 'There was an error updating the league!');
+                            notify('error', 'Error', 'There was an error updating the event!');
                             d.reject();
                         }
                     }).fail(function () {
-                        notify('error', 'Error', 'There was an error updating the league!');
+                        notify('error', 'Error', 'There was an error updating the event!');
                         d.reject();
                     });
                     return d.promise();
@@ -282,10 +285,10 @@ $(document).ready(function () {
                         url: ACTION_URL,
                         data: JSON.stringify(Object.assign({}, {"action": "deleteEvent"}, item))
                     }).done(function (response) {
-                        notify('success', 'Success', 'League was successfully deleted.');
+                        notify('success', 'Success', 'Event was successfully deleted.');
                         d.resolve(item);
                     }).fail(function () {
-                        notify('error', 'Error', 'There was an error deleting the league!');
+                        notify('error', 'Error', 'There was an error deleting the Event!');
                         d.reject();
                     });
                     return d.promise();
@@ -340,18 +343,15 @@ $(document).ready(function () {
             $('#eventModal .event-preview .event-header .league-icon').attr('src', '').hide();
             $('#eventModal .event-preview .event-header .league-name').text('League');
 
+            $('#eventModal .event-preview .event-info .team .team-logo img').attr('src', '').hide();
             $('#eventModal .event-preview .event-info .team-left .team-name').text('Team 1');
             $('#eventModal .event-preview .event-info .team-right .team-name').text('Team 2');
             $('#eventModal .event-preview .event-info .team .odds').empty().append('<i>x</i>1');
 
-
             $('#eventModal .event-preview .event-info .center .odds-percentage').text('50%');
             $('#eventModal .event-preview .event-info .center .event-format span').empty();
             $('#eventModal .event-preview .event-info .center .event-format .discipline-icon').attr('src', '').hide();
-            $('#eventModal .event-preview .event-info .center .event-format span').empty();
 
-
-            $('#leagueModal #leagueIconPreview').attr('src', '').hide();
             isEventEditing = false;
         });
 
@@ -359,9 +359,13 @@ $(document).ready(function () {
             $('#eventLeagueSelect option, #eventSecondTeamSelect option, #eventFirstTeamSelect option').remove();
             $(`<option value="0"></option>`).appendTo($('#eventLeagueSelect, #eventSecondTeamSelect, #eventFirstTeamSelect'));
 
-
             $('#eventFirstTeamSelect, #eventSecondTeamSelect').attr('disabled', true);
 
+            $('#eventModal .event-preview .event-header .league-icon').attr('src', '').hide();
+            $('#eventModal .event-preview .event-header .league-name').text('League');
+            $('#eventModal .event-info .team .team-logo img').attr('src', '').hide();
+            $('#eventModal .event-preview .event-info .team-left .team-name').text('Team 1');
+            $('#eventModal .event-preview .event-info .team-right .team-name').text('Team 2');
 
             if ($('#eventDisciplineSelect').val() > 0) {
                 $('#eventLeagueSelect').attr('disabled', false);
@@ -400,12 +404,18 @@ $(document).ready(function () {
             $('#eventFirstTeamSelect option, #eventSecondTeamSelect option').remove();
             $(`<option value="0"></option>`).appendTo($('#eventFirstTeamSelect, #eventSecondTeamSelect'));
 
+            $('#eventModal .event-info .team .team-logo img').attr('src', '').hide();
+            $('#eventModal .event-preview .event-info .team-left .team-name').text('Team 1');
+            $('#eventModal .event-preview .event-info .team-right .team-name').text('Team 2');
+
             if ($('#eventLeagueSelect').val() > 0) {
                 $('#eventFirstTeamSelect, #eventSecondTeamSelect').attr('disabled', false);
 
                 let leagueId = $('#eventLeagueSelect').val();
+                let leagueName = $(`#eventLeagueSelect option[value=${leagueId}]`).text();
                 let leagueIcon = $(`#eventLeagueSelect option[value=${leagueId}]`).data('icon');
                 $('#eventModal .event-preview .event-header .league-icon').hide().attr('src', leagueIcon).fadeIn(1000);
+                $('#eventModal .event-preview .event-header .league-name').text(leagueName);
 
                 postData(ACTION_URL, {
                     action: 'loadTeam',
@@ -418,7 +428,7 @@ $(document).ready(function () {
                 }).then(function (response) {
                     if (response.status === 'ok') {
                         response.data.forEach(team => {
-                            $(`<option value="${team.id}" data-logo="${team.teamLogo}">${team.teamName}</option>`).appendTo($('#eventFirstTeamSelect, #eventSecondTeamSelect'));
+                            $(`<option value="${team.id}" data-logo="${team.teamLogo.path}">${team.teamName}</option>`).appendTo($('#eventFirstTeamSelect, #eventSecondTeamSelect'));
                         });
                         $('.selectpicker').selectpicker('refresh');
                     } else if (response.status === 'exception') {
@@ -427,17 +437,57 @@ $(document).ready(function () {
                 }).catch((error) => console.log('Something went wrong.', error));
             } else {
                 $('#eventFirstTeamSelect, #eventSecondTeamSelect').attr('disabled', true);
+                $('#eventModal .event-preview .event-header .league-name').text('League');
                 $('#eventModal .event-preview .event-header .league-icon').attr('src', '').hide();
             }
 
             $('.selectpicker').selectpicker('refresh');
         });
 
+        $('#eventFirstTeamSelect').change(function () {
+            if ($('#eventFirstTeamSelect').val() > 0) {
+                let firstTeamId = $('#eventFirstTeamSelect').val();
+                let firstTeamName = $(`#eventFirstTeamSelect option[value=${firstTeamId}]`).text();
+                let firstTeamLogo = $(`#eventFirstTeamSelect option[value=${firstTeamId}]`).data('logo');
+
+                $('#eventModal .event-preview .event-info .team-left .team-name').text(firstTeamName);
+                $('#eventModal .event-info .team-left .team-logo img').hide().attr('src', firstTeamLogo).fadeIn(1000);
+            } else {
+                $('#eventModal .event-preview .event-info .team-left .team-name').text('Team 1');
+                $('#eventModal .event-info .team-left .team-logo img').attr('src', '').hide();
+            }
+        });
+
+        $('#eventSecondTeamSelect').change(function () {
+            if ($('#eventSecondTeamSelect').val() > 0) {
+                let secondTeamId = $('#eventSecondTeamSelect').val();
+                let secondTeamName = $(`#eventFirstTeamSelect option[value=${secondTeamId}]`).text();
+                let secondTeamLogo = $(`#eventSecondTeamSelect option[value=${secondTeamId}]`).data('logo');
+
+                $('#eventModal .event-preview .event-info .team-right .team-name').text(secondTeamName);
+                $('#eventModal .event-info .team-right .team-logo img').hide().attr('src', secondTeamLogo).fadeIn(1000);
+            } else {
+                $('#eventModal .event-preview .event-info .team-right .team-name').text('Team 2');
+                $('#eventModal .event-info .team-right .team-logo img').attr('src', '').hide();
+            }
+        });
+
         $('#eventFormatSelect').change(function () {
             if ($('#eventFormatSelect').val() > 0) {
-
+                let eventFormatId = $('#eventFormatSelect').val();
+                let eventFormatName = eventFormat.find(f => f.Id === eventFormatId).Name;
+                $('#eventModal .event-preview .event-info .center .event-format span').text(eventFormatName);
             } else {
+                $('#eventModal .event-preview .event-info .center .event-format span').empty();
+            }
+        });
 
+        $('#eventDatetimeStart').change(function () {
+            if ($('#eventDatetimeStart').val()) {
+                let formattedDate = dayjs($('#eventDatetimeStart').val()).format('ddd, DD MMM YYYY HH:mm');
+                $('#eventModal .event-preview .event-header .date').text(formattedDate);
+            } else {
+                $('#eventModal .event-preview .event-header .date').text('Date');
             }
         });
 
@@ -449,7 +499,7 @@ $(document).ready(function () {
             let firstTeamSelectValue = $('#eventFirstTeamSelect').val();
             let secondTeamSelectValue = $('#eventSecondTeamSelect').val();
             let formatSelectValue = $('#eventFormatSelect').val();
-            let startValue = $('#eventDatetimeStart').val();
+            let startDateValue = $('#eventDatetimeStart').val();
             let royalty = $('#eventRoyalty').val();
 
 
@@ -459,26 +509,31 @@ $(document).ready(function () {
                 && secondTeamSelectValue > 0
                 && firstTeamSelectValue !== secondTeamSelectValue
                 && formatSelectValue > 0
-                && startValue
+                && startDateValue
                 && (royalty >= 0 && royalty <= 100)
             ) {
+                let startDateTimestamp = dayjs($('#eventDatetimeStart').val()).unix();
+                let eventStatusValue = $('#eventStatus input:radio:checked').val();
 
                 let event = {
-                    "leagueName": leagueName,
-                    "discipline": disciplineValue,
-                    "leagueIcon": {
-                        "path": isImageSelected ? leagueIconBase64 : ""
-                    }
+                    "disciplineId": parseFloat(disciplineSelectValue),
+                    "leagueId": parseFloat(leagueSelectValue),
+                    "firstTeamId": parseFloat(firstTeamSelectValue),
+                    "secondTeamId": parseFloat(secondTeamSelectValue),
+                    "formatId": parseFloat(formatSelectValue),
+                    "startDate": startDateTimestamp,
+                    "royalty": parseFloat(royalty),
+                    "status": parseFloat(eventStatusValue)
                 }
 
                 if (isEventEditing) {
-                    league.id = $('#eventModal').data('id');
-                    $("#leaguesGrid").jsGrid("updateItem", editingItem, league).then(function () {
-                        $('#leagueModal').modal('hide');
+                    event.id = $('#eventModal').data('id');
+                    $("#eventsGrid").jsGrid("updateItem", editingItem, event).then(function () {
+                        $('#eventModal').modal('hide');
                     });
                 } else {
-                    $("#leaguesGrid").jsGrid("insertItem", league).then(function () {
-                        $('#leagueModal').modal('hide');
+                    $("#eventsGrid").jsGrid("insertItem", event).then(function () {
+                        $('#eventModal').modal('hide');
                     });
                 }
             } else {
@@ -517,8 +572,8 @@ $(document).ready(function () {
                     textField: "Name",
                     width: 100,
                     itemTemplate: function (value, item) {
-                        let disciplineName = disciplines.find(d => d.Id === value).Name;
-                        let disciplineLogo = disciplines.find(d => d.Id === value).Logo;
+                        let disciplineName = disciplines.find(d => d.Id == value).Name;
+                        let disciplineLogo = disciplines.find(d => d.Id == value).Logo;
                         return `<div class="d-flex flex-column justify-content-center align-items-center">
                                     <span class="mb-2">${disciplineName}</span>
                                     <img src="${disciplineLogo}" width="30" style="border-radius: 5px">
@@ -730,7 +785,7 @@ $(document).ready(function () {
 
                 let league = {
                     "leagueName": leagueName,
-                    "discipline": disciplineValue,
+                    "discipline": parseFloat(disciplineValue),
                     "leagueIcon": {
                         "path": isImageSelected ? leagueIconBase64 : ""
                     }
@@ -788,8 +843,8 @@ $(document).ready(function () {
                     textField: "Name",
                     width: 100,
                     itemTemplate: function (value, item) {
-                        let disciplineName = disciplines.find(d => d.Id === value).Name;
-                        let disciplineLogo = disciplines.find(d => d.Id === value).Logo;
+                        let disciplineName = disciplines.find(d => d.Id == value).Name;
+                        let disciplineLogo = disciplines.find(d => d.Id == value).Logo;
                         return `<div class="d-flex flex-column justify-content-center align-items-center">
                                     <span class="mb-2">${disciplineName}</span>
                                     <img src="${disciplineLogo}" width="30" style="border-radius: 5px">
@@ -1020,7 +1075,7 @@ $(document).ready(function () {
                 let team = {
                     "teamName": teamName,
                     "teamRating": parseFloat(teamRating),
-                    "discipline": disciplineValue,
+                    "discipline": parseFloat(disciplineValue),
                     "teamLogo": {
                         "path": isImageSelected ? teamLogoBase64 : ""
                     }

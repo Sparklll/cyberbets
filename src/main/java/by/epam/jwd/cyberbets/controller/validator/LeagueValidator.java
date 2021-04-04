@@ -23,8 +23,7 @@ public class LeagueValidator implements Validator<LeagueDto> {
                 && leagueName.length() <= MAX_NAME_LENGTH;
     }
 
-    private static boolean isLeagueDisciplineValid(String disciplineId) {
-        return StringUtils.isNumeric(disciplineId)
-                && Discipline.getDisciplineById(Integer.parseInt(disciplineId)).isPresent();
+    private static boolean isLeagueDisciplineValid(int disciplineId) {
+        return Discipline.getDisciplineById(disciplineId).isPresent();
     }
 }

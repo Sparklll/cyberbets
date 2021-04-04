@@ -21,7 +21,7 @@ public enum EventFormat {
         return id;
     }
 
-    public Optional<EventFormat> getEventFormatById(int id) {
+    public static Optional<EventFormat> getEventFormatById(int id) {
         Optional<EventFormat> eventFormatOptional = Optional.empty();
         for(EventFormat eventFormat : values()) {
             if(eventFormat.getId() == id) {

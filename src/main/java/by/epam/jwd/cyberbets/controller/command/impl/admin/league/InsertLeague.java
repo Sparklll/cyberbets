@@ -43,9 +43,9 @@ public final class InsertLeague implements Action {
 
                 try {
                     String leagueName = (String) jsonMap.get(LEAGUE_NAME_PARAM);
-                    String disciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
                     LinkedTreeMap<String, String> leagueIconObj = (LinkedTreeMap<String, String>) jsonMap.get(LEAGUE_ICON_PARAM);
                     String leagueIconBase64 = leagueIconObj.get(PATH_PARAM);
+                    int disciplineId = ((Double) jsonMap.get(DISCIPLINE_PARAM)).intValue();
 
                     LeagueDto leagueDto = new LeagueDto(leagueName, leagueIconBase64, disciplineId);
 
