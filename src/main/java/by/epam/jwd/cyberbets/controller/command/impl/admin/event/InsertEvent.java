@@ -3,12 +3,14 @@ package by.epam.jwd.cyberbets.controller.command.impl.admin.event;
 import by.epam.jwd.cyberbets.controller.command.Action;
 import by.epam.jwd.cyberbets.controller.validator.Validator;
 import by.epam.jwd.cyberbets.controller.validator.ValidatorProvider;
+import by.epam.jwd.cyberbets.domain.Event;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.dto.EventDto;
 import by.epam.jwd.cyberbets.service.EventService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
-import com.google.gson.JsonObject;
+import by.epam.jwd.cyberbets.utils.gson.InstantAdapter;
+import com.google.gson.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +22,7 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Map;
+import java.util.Optional;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
@@ -57,9 +60,13 @@ public class InsertEvent implements Action {
                     Validator<EventDto> eventValidator = ValidatorProvider.INSTANCE.getEventValidator();
                     if (eventValidator.isValid(eventDto)) {
                         int id = eventService.createEvent(eventDto);
+                        Event createdEvent = eventService.findEventById(id).get();
 
+                        Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
+                        String jsonStrEvent = gson.toJson(createdEvent);
+                        JsonElement jsonElementEvent = JsonParser.parseString(jsonStrEvent);
 
-                        jsonResponse.addProperty(ID_PARAM, id);
+                        jsonResponse.add(DATA_PROPERTY, jsonElementEvent);
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);

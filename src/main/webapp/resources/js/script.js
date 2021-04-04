@@ -3,14 +3,6 @@ $(document).ready(function () {
     const DEFAULT_LANG = 'en';
     const ACTION_URL = "/action/"
 
-    var disciplines = [
-        {Name: "", Id: "0", Logo: ""},
-        {Name: "CS:GO", Id: "1", Logo: "/resources/assets/disciplines/csgo_icon.png"},
-        {Name: "DOTA 2", Id: "2", Logo: "/resources/assets/disciplines/dota2_icon.png"},
-        {Name: "LEAGUE OF LEGENDS", Id: "3", Logo: "/resources/assets/disciplines/lol_icon.png"},
-        {Name: "VALORANT", Id: "4", Logo: "/resources/assets/disciplines/valorant_icon.jpg"}
-    ];
-
     var isEventEditing = false;
     var isTeamEditing = false;
     var isLeagueEditing = false;
@@ -84,7 +76,15 @@ $(document).ready(function () {
     }
 
     if ($('#eventsGrid').length > 0) {
-        let eventFormat = [
+        var disciplines = [
+            {Name: "", Id: "0", Logo: ""},
+            {Name: "CS:GO", Id: "1", Logo: "/resources/assets/disciplines/csgo_icon.png"},
+            {Name: "DOTA 2", Id: "2", Logo: "/resources/assets/disciplines/dota2_icon.png"},
+            {Name: "LEAGUE OF LEGENDS", Id: "3", Logo: "/resources/assets/disciplines/lol_icon.png"},
+            {Name: "VALORANT", Id: "4", Logo: "/resources/assets/disciplines/valorant_icon.jpg"}
+        ];
+
+        var eventFormat = [
             {Name: "", Id: "0"},
             {Name: "BO1", Id: "1"},
             {Name: "BO2", Id: "2"},
@@ -92,7 +92,7 @@ $(document).ready(function () {
             {Name: "BO5", Id: "4"}
         ];
 
-        let eventStatus = [
+        var eventStatus = [
             {Name: "Pending", Id: "1", Logo: "/resources/assets/status/pending.png"},
             {Name: "Finished", Id: "2", Logo: "/resources/assets/status/finished.png"},
             {Name: "Canceled", Id: "3", Logo: "/resources/assets/status/canceled.png"},
@@ -238,8 +238,7 @@ $(document).ready(function () {
                     }).done(function (response) {
                         if (response.status === 'ok') {
                             notify('success', 'Success', 'Event was successfully added.');
-                            item.id = response.id;
-                            d.resolve(item);
+                            d.resolve(response.data);
                         } else if (response.status === 'deny') {
                             notify('warning', 'Warning', 'Incorrect data was sent!');
                             d.reject();
@@ -313,16 +312,24 @@ $(document).ready(function () {
                 isEventEditing = true;
                 editingItem = args.item;
 
-                let timestamp = new Date().getTime();
-                let queryString = "?t=" + timestamp;
-
                 $('#eventModal').modal('show');
                 $('#eventModal .card-header h5').text('Edit event');
                 $('#eventModal #eventModalSubmit').text('Update');
 
                 let event = args.item;
                 $('#eventModal').data('id', event.id);
-                $('#eventModal #eventDisciplineSelect').val(event.discipline);
+
+                $('#eventDisciplineSelect').val(event.discipline);
+                $('#eventLeagueSelect').val(event.league.id);
+                $('#eventFirstTeamSelect').val(event.firstTeam.id);
+                $('#eventSecondTeamSelect').val(event.secondTeam.id);
+                $('#eventFormatSelect').val();
+                $('#eventDatetimeStart').val();
+                $('#eventRoyalty').val();
+                $('#eventStatus input:radio:checked').val();
+
+                $('.selectpicker').selectpicker('refresh');
+
 
 
                 $('#eventModal #eventIconPreview').attr('src', league.leagueIcon.path + queryString).fadeIn(1000);

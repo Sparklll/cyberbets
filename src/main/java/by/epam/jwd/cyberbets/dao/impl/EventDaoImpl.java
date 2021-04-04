@@ -90,7 +90,6 @@ public class EventDaoImpl implements EventDao {
 
                    e.start,
                    e.royalty_percentage,
-                   
                    e.status
                    
             from event e
@@ -104,11 +103,12 @@ public class EventDaoImpl implements EventDao {
             inner join resource t2r on t2r.id = t2.logo_resource_id
 
             inner join event_format ef on ef.id = e.event_format_id
+            where e.id = ?
             """;
 
     private static final String CREATE_EVENT = """
             insert into event (discipline_id, league_id, first_team_id, second_team_id, event_format_id, start, royalty_percentage, status) 
-            values  (?, ?, ?, ?, ?, ?, ?)
+            values  (?, ?, ?, ?, ?, ?, ?, ?)
             returning id
             """;
     private static final String UPDATE_EVENT = """
