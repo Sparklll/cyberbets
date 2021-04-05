@@ -23,8 +23,8 @@ public enum EventFormat {
 
     public static Optional<EventFormat> getEventFormatById(int id) {
         Optional<EventFormat> eventFormatOptional = Optional.empty();
-        for(EventFormat eventFormat : values()) {
-            if(eventFormat.getId() == id) {
+        for (EventFormat eventFormat : values()) {
+            if (eventFormat.getId() == id) {
                 eventFormatOptional = Optional.of(eventFormat);
                 return eventFormatOptional;
             }

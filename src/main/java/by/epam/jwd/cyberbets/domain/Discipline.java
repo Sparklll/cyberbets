@@ -1,5 +1,6 @@
 package by.epam.jwd.cyberbets.domain;
 
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Optional;
@@ -22,8 +23,8 @@ public enum Discipline {
 
     public static Optional<Discipline> getDisciplineById(int id) {
         Optional<Discipline> disciplineOptional = Optional.empty();
-        for(Discipline discipline : values()) {
-            if(discipline.getId() == id) {
+        for (Discipline discipline : values()) {
+            if (discipline.getId() == id) {
                 disciplineOptional = Optional.of(discipline);
                 return disciplineOptional;
             }

@@ -3,7 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page session="false" %>
 
-<nav id="sidebarMenu" class="sidebar bg-dark text-white" data-simplebar>
+<nav id="sidebarMenu" class="sidebar d-lg-block bg-dark text-white collapse" data-simplebar>
     <div class="sidebar-inner px-4 pt-3">
         <ul class="nav flex-column pt-3 pt-md-0">
             <li class="nav-item d-flex justify-content-center">

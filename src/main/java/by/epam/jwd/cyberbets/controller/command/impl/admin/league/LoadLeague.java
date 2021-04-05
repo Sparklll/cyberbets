@@ -46,16 +46,16 @@ public final class LoadLeague implements Action {
 
                 try {
                     Double filterId = (Double) jsonMap.get(ID_PARAM);
+                    Double filterDisciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
                     String filterLeagueName = (String) jsonMap.get(LEAGUE_NAME_PARAM);
-                    String filterDisciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
 
                     List<League> leagues = leagueService.findAll();
                     leagues = leagues.stream()
                             .filter(l -> (filterId == null || l.getId() == filterId.intValue())
                                     && (StringUtils.isBlank(filterLeagueName) || l.getName().toLowerCase().contains(filterLeagueName.toLowerCase()))
-                                    && (StringUtils.isBlank(filterDisciplineId)
-                                    || filterDisciplineId.equals("0")
-                                    || l.getDiscipline().getId() == Integer.parseInt(filterDisciplineId)))
+                                    && (filterDisciplineId == null
+                                    || filterDisciplineId.intValue() == 0
+                                    || l.getDiscipline().getId() == filterDisciplineId.intValue()))
                             .sorted(Comparator.comparing(League::getId))
                             .collect(Collectors.toList());
 

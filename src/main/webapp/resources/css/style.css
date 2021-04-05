@@ -696,7 +696,7 @@ footer .copyright {
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
     .sidebar {
         width: 100%;
         max-width: 350px;

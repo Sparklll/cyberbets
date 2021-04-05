@@ -46,19 +46,19 @@ public final class LoadTeam implements Action {
                 response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
                 try {
-                    Double filterId = (Double) jsonMap.get(ID_PARAM);
                     String filterTeamName = (String) jsonMap.get(TEAM_NAME_PARAM);
+                    Double filterId = (Double) jsonMap.get(ID_PARAM);
                     Double filterTeamRating = (Double) jsonMap.get(TEAM_RATING_PARAM);
-                    String filterDisciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
+                    Double filterDisciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
 
                     List<Team> teams = teamService.findAll();
                     teams = teams.stream()
                             .filter(t -> (filterId == null || t.getId() == filterId.intValue())
                                     && (filterTeamRating == null || t.getRating() == filterTeamRating.intValue())
                                     && (StringUtils.isBlank(filterTeamName) || t.getName().toLowerCase().contains(filterTeamName.toLowerCase()))
-                                    && (StringUtils.isBlank(filterDisciplineId)
-                                    || filterDisciplineId.equals("0")
-                                    || t.getDiscipline().getId() == Integer.parseInt(filterDisciplineId)))
+                                    && (filterDisciplineId == null
+                                    || filterDisciplineId.intValue() == 0
+                                    || t.getDiscipline().getId() == filterDisciplineId.intValue()))
                             .sorted(Comparator.comparing(Team::getId))
                             .collect(Collectors.toList());
 

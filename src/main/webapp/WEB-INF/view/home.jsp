@@ -70,7 +70,7 @@
                             data-bs-target="#currentEvents" type="button" role="tab" aria-selected="true">
                         <i class="fas fa-calendar-alt me-2"></i>
                         <span class="text-uppercase">
-                            <fmt:message key="events.tab.current_events"/>
+                            <fmt:message key="events.container.tab.current_events"/>
                         </span>
                     </button>
                     <button class="nav-link col-6 col-lg-3" id="pastEventsTab" data-bs-toggle="tab"
@@ -78,7 +78,7 @@
                             type="button" role="tab" aria-selected="false">
                         <i class="fas fa-calendar-check me-2"></i>
                         <span class="text-uppercase">
-                            <fmt:message key="events.tab.past_events"/>
+                            <fmt:message key="events.container.tab.past_events"/>
                         </span>
                     </button>
                 </div>
@@ -87,7 +87,7 @@
                 <div class="tab-pane fade show active" id="currentEvents" role="tabpanel"
                      aria-labelledby="currentEventsTab">
                     <div id="liveEvents" class="mb-4">
-                        <div class="live-label text-uppercase text-center mt-1 mb-1 p-2">Live Events</div>
+                        <div class="live-label text-uppercase text-center mt-1 mb-1 p-2"><fmt:message key="events.container.live_label"/></div>
 
 
                         <div class="event mb-3" data-id="">
@@ -143,13 +143,13 @@
 
 
                         <div id="upcomingEvents">
-                            <div class="upcoming-label text-uppercase text-center mt-5 mb-1 p-2">Upcoming</div>
+                            <div class="upcoming-label text-uppercase text-center mt-5 mb-1 p-2"><fmt:message key="events.container.upcoming_label"/></div>
 
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="pastEvents" role="tabpanel" aria-labelledby="pastEventsTab">
-                    Past events
+
                 </div>
             </div>
         </div>

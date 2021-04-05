@@ -23,9 +23,10 @@ public final class Parameters {
     public static final String FIRST_TEAM_ID_PARAM = "firstTeamId";
     public static final String SECOND_TEAM_ID_PARAM = "secondTeamId";
     public static final String FORMAT_ID_PARAM = "formatId";
-    public static final String ROYALTY_PARAM = "royalty";
+    public static final String ROYALTY_PERCENTAGE_PARAM = "royaltyPercentage";
     public static final String START_DATE_PARAM = "startDate";
-
+    public static final String EVENT_FORMAT_PARAM = "eventFormat";
+    public static final String EVENT_PARAM = "event";
     public static final String DISCIPLINE_PARAM = "discipline";
     public static final String LEAGUE_ICON_PARAM = "leagueIcon";
     public static final String LEAGUE_NAME_PARAM = "leagueName";

@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
@@ -45,22 +46,33 @@ public class LoadEvent implements Action {
 
                 try {
                     Double filterId = (Double) jsonMap.get(ID_PARAM);
-                    String filterTeamName = (String) jsonMap.get(TEAM_NAME_PARAM);
-                    Double filterTeamRating = (Double) jsonMap.get(TEAM_RATING_PARAM);
-                    String filterDisciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
-
+                    Double filterDisciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
+                    Double filterEventFormat = (Double) jsonMap.get(EVENT_FORMAT_PARAM);
+                    Double filterRoyalty = (Double) jsonMap.get(ROYALTY_PERCENTAGE_PARAM);
+                    Double filterStatus = (Double) jsonMap.get(STATUS_PARAM);
+                    String filterEvent = (String) jsonMap.get(EVENT_PARAM);
+                    String filterLeagueName = (String) jsonMap.get(LEAGUE_NAME_PARAM);
 
                     List<Event> events = eventService.findAll();
-
-//                    events = events.stream()
-//                            .filter(t -> (filterId == null || t.getId() == filterId.intValue())
-//                                    && (filterTeamRating == null || t.getRating() == filterTeamRating.intValue())
-//                                    && (StringUtils.isBlank(filterTeamName) || t.getName().toLowerCase().contains(filterTeamName.toLowerCase()))
-//                                    && (StringUtils.isBlank(filterDisciplineId)
-//                                    || filterDisciplineId.equals("0")
-//                                    || t.getDiscipline().getId() == Integer.parseInt(filterDisciplineId)))
-//                            .sorted(Comparator.comparing(Event::getStartDate))
-//                            .collect(Collectors.toList());
+                    events = events.stream()
+                            .filter(e -> {
+                                String eventInfo = (e.getFirstTeam().getName() + e.getSecondTeam().getName()).toLowerCase();
+                                return (filterId == null || e.getId() == filterId.intValue())
+                                        && (filterRoyalty == null || e.getRoyaltyPercentage().equals(BigDecimal.valueOf(filterRoyalty)))
+                                        && (StringUtils.isBlank(filterEvent) || eventInfo.contains(filterEvent.toLowerCase()))
+                                        && (StringUtils.isBlank(filterLeagueName) || e.getLeague().getName().toLowerCase().contains(filterLeagueName.toLowerCase()))
+                                        && (filterEventFormat == null
+                                        || filterEventFormat.intValue() == 0
+                                        || e.getEventFormat().getId() == filterEventFormat.intValue())
+                                        && (filterDisciplineId == null
+                                        || filterDisciplineId.intValue() == 0
+                                        || e.getDiscipline().getId() == filterDisciplineId.intValue())
+                                        && (filterStatus == null
+                                        || filterStatus.intValue() == 0
+                                        || e.getStatus().getId() == filterStatus.intValue());
+                            })
+                            .sorted(Comparator.comparing(Event::getStartDate))
+                            .collect(Collectors.toList());
 
                     Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
                     String jsonStrEvents = gson.toJson(events);

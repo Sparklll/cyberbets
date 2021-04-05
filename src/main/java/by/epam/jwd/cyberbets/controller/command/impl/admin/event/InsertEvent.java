@@ -22,7 +22,6 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Map;
-import java.util.Optional;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
@@ -50,7 +49,7 @@ public class InsertEvent implements Action {
                     int secondTeamId = ((Double) jsonMap.get(SECOND_TEAM_ID_PARAM)).intValue();
                     int formatId = ((Double) jsonMap.get(FORMAT_ID_PARAM)).intValue();
                     int eventStatusId = ((Double) jsonMap.get(STATUS_PARAM)).intValue();
-                    BigDecimal royalty = new BigDecimal((Double) jsonMap.get(ROYALTY_PARAM));
+                    BigDecimal royalty = new BigDecimal((Double) jsonMap.get(ROYALTY_PERCENTAGE_PARAM));
                     Instant startDate = Instant.ofEpochSecond(((Double) jsonMap.get(START_DATE_PARAM)).longValue());
 
 

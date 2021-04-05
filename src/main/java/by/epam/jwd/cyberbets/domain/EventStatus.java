@@ -21,8 +21,8 @@ public enum EventStatus {
 
     public static Optional<EventStatus> getEventStatusById(int id) {
         Optional<EventStatus> eventStatusOptional = Optional.empty();
-        for(EventStatus eventStatus : values()) {
-            if(eventStatus.getId() == id) {
+        for (EventStatus eventStatus : values()) {
+            if (eventStatus.getId() == id) {
                 eventStatusOptional = Optional.of(eventStatus);
                 return eventStatusOptional;
             }

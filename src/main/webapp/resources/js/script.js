@@ -75,33 +75,67 @@ $(document).ready(function () {
             && ratingFormat.test(teamRating);
     }
 
+    var disciplines = [
+        {Name: "", Id: 0, Logo: ""},
+        {Name: "CS:GO", Id: 1, Logo: "/resources/assets/disciplines/csgo_icon.png"},
+        {Name: "DOTA 2", Id: 2, Logo: "/resources/assets/disciplines/dota2_icon.png"},
+        {Name: "LEAGUE OF LEGENDS", Id: 3, Logo: "/resources/assets/disciplines/lol_icon.png"},
+        {Name: "VALORANT", Id: 4, Logo: "/resources/assets/disciplines/valorant_icon.jpg"}
+    ];
+
     if ($('#eventsGrid').length > 0) {
-        var disciplines = [
-            {Name: "", Id: "0", Logo: ""},
-            {Name: "CS:GO", Id: "1", Logo: "/resources/assets/disciplines/csgo_icon.png"},
-            {Name: "DOTA 2", Id: "2", Logo: "/resources/assets/disciplines/dota2_icon.png"},
-            {Name: "LEAGUE OF LEGENDS", Id: "3", Logo: "/resources/assets/disciplines/lol_icon.png"},
-            {Name: "VALORANT", Id: "4", Logo: "/resources/assets/disciplines/valorant_icon.jpg"}
-        ];
+
 
         var eventFormat = [
-            {Name: "", Id: "0"},
-            {Name: "BO1", Id: "1"},
-            {Name: "BO2", Id: "2"},
-            {Name: "BO3", Id: "3"},
-            {Name: "BO5", Id: "4"}
+            {Name: "", Id: 0},
+            {Name: "BO1", Id: 1},
+            {Name: "BO2", Id: 2},
+            {Name: "BO3", Id: 3},
+            {Name: "BO5", Id: 4}
         ];
 
         var eventStatus = [
-            {Name: "Pending", Id: "1", Logo: "/resources/assets/status/pending.png"},
-            {Name: "Finished", Id: "2", Logo: "/resources/assets/status/finished.png"},
-            {Name: "Canceled", Id: "3", Logo: "/resources/assets/status/canceled.png"},
+            {Name: "", Id: 0},
+            {Name: "Pending", Id: 1, Logo: "/resources/assets/status/pending.png"},
+            {Name: "Finished", Id: 2, Logo: "/resources/assets/status/finished.png"},
+            {Name: "Canceled", Id: 3, Logo: "/resources/assets/status/canceled.png"},
+        ];
+
+        var eventOutcome = [
+            all = [
+                {Name: "", Id: ""}
+            ],
+            csgo = [
+                bo1 = [],
+                bo2 = [],
+                bo3 = [],
+                bo5 = [],
+            ],
+            dota2 = [
+                bo1 = [],
+                bo2 = [],
+                bo3 = [],
+                bo5 = [],
+            ],
+            lol = [
+                bo1 = [],
+                bo2 = [],
+                bo3 = [],
+                bo5 = [],
+            ],
+            valorant = [
+                bo1 = [],
+                bo2 = [],
+                bo3 = [],
+                bo5 = [],
+            ]
         ];
 
         $('#eventsGrid').jsGrid({
             fields: [
                 {name: "id", title: "Id", type: "number", width: 50, align: "center"},
                 {
+                    name: "event",
                     title: "Event",
                     type: "text",
                     width: 100,
@@ -135,6 +169,7 @@ $(document).ready(function () {
                     }
                 },
                 {
+                    name: "leagueName",
                     title: "League",
                     type: "text",
                     width: 100,
@@ -169,8 +204,9 @@ $(document).ready(function () {
                     type: "",
                     width: 50,
                     align: "center",
+                    filtering: false,
                     itemTemplate: function (value, item) {
-                        return `<span class="mb-2">${dayjs.unix(value).format('ddd, DD MMM YYYY HH:mm')}</span>`;
+                        return `<span class="mb-2 fw-bold text-info">${dayjs.unix(value).format('ddd, DD MMM YYYY HH:mm')}</span>`;
                     }
                 },
                 {
@@ -317,22 +353,48 @@ $(document).ready(function () {
                 $('#eventModal #eventModalSubmit').text('Update');
 
                 let event = args.item;
-                $('#eventModal').data('id', event.id);
 
+                $('#eventModal .event-preview .event-header .date')
+                    .text(dayjs.unix(event.startDate).format('ddd, DD MMM YYYY HH:mm'));
+                $('#eventModal .event-preview .event-header .league-icon')
+                    .attr('src', event.league.leagueIcon.path).fadeIn(500);
+
+                $('#eventModal .event-preview .event-header .league-name').text(event.league.leagueName);
+
+                $('#eventModal .event-preview .team-left .team-logo img')
+                    .attr('src', event.firstTeam.teamLogo.path).fadeIn(500);
+                $('#eventModal .event-preview .team-right .team-logo img')
+                    .attr('src', event.secondTeam.teamLogo.path).fadeIn(500);
+
+                $('#eventModal .event-preview .team-left .team-name').text(event.firstTeam.teamName);
+                $('#eventModal .event-preview .team-right .team-name').text(event.secondTeam.teamName);
+
+                // $('#eventModal .event-preview .team-left .odds').empty().append('<i>x</i>1');
+                // $('#eventModal .event-preview .team-right .odds').empty().append('<i>x</i>1');
+                // $('#eventModal .event-preview .event-info .center .left-percent .odds-percentage').text('50%');
+                // $('#eventModal .event-preview .event-info .center .right-percent .odds-percentage').text('50%');
+
+                $('#eventModal .event-preview .event-info .center .event-format span')
+                    .text(eventFormat.find(e => e.Id == event.eventFormat).Name);
+                $('#eventModal .event-preview .event-info .center .event-format .discipline-icon')
+                    .hide().attr('src', disciplines.find(d => d.Id == event.discipline).Logo).fadeIn(1000);
+
+                $(`#eventStatus input[value="${event.status}"]:radio`).prop('checked', true);
+
+
+                $(`<option value="0"></option>`).appendTo($('#eventLeagueSelect, #eventSecondTeamSelect, #eventFirstTeamSelect'));
                 $('#eventDisciplineSelect').val(event.discipline);
-                $('#eventLeagueSelect').val(event.league.id);
-                $('#eventFirstTeamSelect').val(event.firstTeam.id);
-                $('#eventSecondTeamSelect').val(event.secondTeam.id);
-                $('#eventFormatSelect').val();
-                $('#eventDatetimeStart').val();
-                $('#eventRoyalty').val();
-                $('#eventStatus input:radio:checked').val();
+                $('#eventLeagueSelect option').val(event.league.id).data('icon', event.league.leagueIcon.path).text(event.league.leagueName);
+
+                $('#eventFirstTeamSelect option').val(event.firstTeam.id).data('icon', event.firstTeam.teamLogo.path).text(event.firstTeam.teamName);
+                $('#eventSecondTeamSelect option').val(event.secondTeam.id).data('icon', event.secondTeam.teamLogo.path).text(event.secondTeam.teamName);
+
+
+                $('#eventFormatSelect').val(event.eventFormat);
+                $('#eventDatetimeStart').val(dayjs.unix(event.startDate).format('YYYY-MM-DDTHH:mm'));
+                $('#eventRoyalty').val(event.royaltyPercentage);
 
                 $('.selectpicker').selectpicker('refresh');
-
-
-
-                $('#eventModal #eventIconPreview').attr('src', league.leagueIcon.path + queryString).fadeIn(1000);
             },
 
             pageIndex: 1,
@@ -342,6 +404,10 @@ $(document).ready(function () {
     }
 
     if ($('#eventModal').length > 0) {
+        $('#eventModal').off('show.bs.modal').on('show.bs.modal', function () {
+            $('#eventStatus input[value="1"]:radio').prop('checked', true);
+        });
+
         $('#eventModal').off('hidden.bs.modal').on('hidden.bs.modal', function () {
             // TODO: Add i18n
             $('#eventModal .card-header h5').text('Add Event');
@@ -350,14 +416,18 @@ $(document).ready(function () {
             $('#eventModal .event-preview .event-header .league-icon').attr('src', '').hide();
             $('#eventModal .event-preview .event-header .league-name').text('League');
 
-            $('#eventModal .event-preview .event-info .team .team-logo img').attr('src', '').hide();
-            $('#eventModal .event-preview .event-info .team-left .team-name').text('Team 1');
-            $('#eventModal .event-preview .event-info .team-right .team-name').text('Team 2');
-            $('#eventModal .event-preview .event-info .team .odds').empty().append('<i>x</i>1');
+            $('#eventModal .event-preview  .team-logo img').attr('src', '').hide();
+            $('#eventModal .event-preview  .team-left .team-name').text('Team 1');
+            $('#eventModal .event-preview  .team-right .team-name').text('Team 2');
+            $('#eventModal .event-preview  .team .odds').empty().append('<i>x</i>1');
 
             $('#eventModal .event-preview .event-info .center .odds-percentage').text('50%');
             $('#eventModal .event-preview .event-info .center .event-format span').empty();
             $('#eventModal .event-preview .event-info .center .event-format .discipline-icon').attr('src', '').hide();
+
+            $('#eventLeagueSelect option, #eventSecondTeamSelect option, #eventFirstTeamSelect option').remove();
+            $('#eventLeagueSelect, #eventFirstTeamSelect, #eventSecondTeamSelect').attr('disabled', true);
+
 
             isEventEditing = false;
         });
@@ -378,12 +448,12 @@ $(document).ready(function () {
                 $('#eventLeagueSelect').attr('disabled', false);
 
                 let disciplineId = $('#eventDisciplineSelect').val();
-                let disciplineLogo = disciplines.find(d => d.Id === disciplineId).Logo;
+                let disciplineLogo = disciplines.find(d => d.Id == disciplineId).Logo;
                 $('#eventModal .event-preview .event-info .discipline-icon').hide().attr('src', disciplineLogo).fadeIn(1000);
 
                 postData(ACTION_URL, {
                     action: 'loadLeague',
-                    discipline: $('#eventDisciplineSelect').val()
+                    discipline: parseInt($('#eventDisciplineSelect').val())
                 }).then((response) => {
                     if (response.ok) {
                         return response.json();
@@ -426,7 +496,7 @@ $(document).ready(function () {
 
                 postData(ACTION_URL, {
                     action: 'loadTeam',
-                    discipline: $('#eventDisciplineSelect').val()
+                    discipline: parseInt($('#eventDisciplineSelect').val())
                 }).then((response) => {
                     if (response.ok) {
                         return response.json();
@@ -482,7 +552,7 @@ $(document).ready(function () {
         $('#eventFormatSelect').change(function () {
             if ($('#eventFormatSelect').val() > 0) {
                 let eventFormatId = $('#eventFormatSelect').val();
-                let eventFormatName = eventFormat.find(f => f.Id === eventFormatId).Name;
+                let eventFormatName = eventFormat.find(f => f.Id == eventFormatId).Name;
                 $('#eventModal .event-preview .event-info .center .event-format span').text(eventFormatName);
             } else {
                 $('#eventModal .event-preview .event-info .center .event-format span').empty();
@@ -501,6 +571,7 @@ $(document).ready(function () {
         $('#eventModal #eventModalSubmit').off('click').click(function (e) {
             e.preventDefault();
 
+            let eventStatus = $('#eventStatus input:radio:checked').val();
             let disciplineSelectValue = $('#eventDisciplineSelect').val();
             let leagueSelectValue = $('#eventLeagueSelect').val();
             let firstTeamSelectValue = $('#eventFirstTeamSelect').val();
@@ -510,7 +581,8 @@ $(document).ready(function () {
             let royalty = $('#eventRoyalty').val();
 
 
-            if (disciplineSelectValue > 0
+            if (eventStatus > 0
+                && disciplineSelectValue > 0
                 && leagueSelectValue > 0
                 && firstTeamSelectValue > 0
                 && secondTeamSelectValue > 0
@@ -534,7 +606,6 @@ $(document).ready(function () {
                 }
 
                 if (isEventEditing) {
-                    event.id = $('#eventModal').data('id');
                     $("#eventsGrid").jsGrid("updateItem", editingItem, event).then(function () {
                         $('#eventModal').modal('hide');
                     });
@@ -717,7 +788,6 @@ $(document).ready(function () {
                 $('#leagueModal #leagueModalSubmit').text('Update');
 
                 let league = args.item;
-                $('#leagueModal').data('id', league.id);
                 $('#leagueModal #leagueDisciplineSelect').val(league.discipline);
                 $('#leagueModal #leagueName').val(league.leagueName);
                 $('#leagueModal #leagueIconPreview').attr('src', league.leagueIcon.path + queryString).fadeIn(1000);
@@ -799,7 +869,6 @@ $(document).ready(function () {
                 }
 
                 if (isLeagueEditing) {
-                    league.id = $('#leagueModal').data('id');
                     $("#leaguesGrid").jsGrid("updateItem", editingItem, league).then(function () {
                         $('#leagueModal').modal('hide');
                     });
@@ -990,7 +1059,6 @@ $(document).ready(function () {
 
                 let team = args.item;
 
-                $('#teamModal').data('id', team.id);
                 $('#teamModal #teamDisciplineSelect').val(team.discipline);
                 $('#teamModal #teamName').val(team.teamName);
                 $('#teamModal #teamRating').val(team.teamRating);
@@ -1089,7 +1157,6 @@ $(document).ready(function () {
                 }
 
                 if (isTeamEditing) {
-                    team.id = $('#teamModal').data('id');
                     $("#teamsGrid").jsGrid("updateItem", editingItem, team).then(function () {
                         $('#teamModal').modal('hide');
                     });
@@ -1358,7 +1425,7 @@ $(document).ready(function () {
 
     $('.modal').on('hidden.bs.modal', function (e) {
         $(this)
-            .find("input,textarea,select")
+            .find("input[type!=radio][type!=checkbox], textarea, select")
             .val('')
             .end()
             .find("input[type=checkbox], input[type=radio]")
