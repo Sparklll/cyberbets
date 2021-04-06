@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class EventServiceImpl implements EventService {
-    private EventDao eventDao = DaoProvider.INSTANCE.getEventDao();
+    private final EventDao eventDao = DaoProvider.INSTANCE.getEventDao();
 
     EventServiceImpl() {
 
@@ -46,9 +46,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void updateEvent(Event event) throws ServiceException {
+    public void updateEvent(EventDto eventDto) throws ServiceException {
         try {
-            eventDao.updateEvent(event); ;
+            eventDao.updateEvent(eventDto); ;
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

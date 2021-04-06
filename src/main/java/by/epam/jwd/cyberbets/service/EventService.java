@@ -11,6 +11,6 @@ public interface EventService {
     List<Event> findAll() throws ServiceException;
     Optional<Event> findEventById(int eventId) throws ServiceException;
     int createEvent(EventDto eventDto) throws ServiceException;
-    void updateEvent(Event event) throws ServiceException;
+    void updateEvent(EventDto eventDto) throws ServiceException;
     void deleteEvent(int eventId) throws ServiceException;
 }

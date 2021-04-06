@@ -183,18 +183,18 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
-    public void updateEvent(Event event) throws DaoException {
+    public void updateEvent(EventDto eventDto) throws DaoException {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE_EVENT)) {
-            ps.setInt(1, event.getDiscipline().getId());
-            ps.setInt(2, event.getLeague().getId());
-            ps.setInt(3, event.getFirstTeam().getId());
-            ps.setInt(4, event.getSecondTeam().getId());
-            ps.setInt(5, event.getEventFormat().getId());
-            ps.setTimestamp(6, Timestamp.from(event.getStartDate()));
-            ps.setBigDecimal(7, event.getRoyaltyPercentage());
-            ps.setInt(8, event.getStatus().getId());
-            ps.setInt(9, event.getId());
+            ps.setInt(1, eventDto.disciplineId());
+            ps.setInt(2, eventDto.leagueId());
+            ps.setInt(3, eventDto.firstTeamId());
+            ps.setInt(4, eventDto.secondTeamId());
+            ps.setInt(5, eventDto.formatId());
+            ps.setTimestamp(6, Timestamp.from(eventDto.startDate()));
+            ps.setBigDecimal(7, eventDto.royalty());
+            ps.setInt(8, eventDto.eventStatusId());
+            ps.setInt(9, eventDto.eventId());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);

@@ -11,6 +11,6 @@ public interface EventDao {
     List<Event> findAll() throws DaoException;
     Optional<Event> findEventById(int eventId) throws DaoException;
     int createEvent(EventDto eventDto) throws DaoException;
-    void updateEvent(Event event) throws DaoException;
+    void updateEvent(EventDto eventDto) throws DaoException;
     void deleteEvent(int eventId) throws DaoException;
 }

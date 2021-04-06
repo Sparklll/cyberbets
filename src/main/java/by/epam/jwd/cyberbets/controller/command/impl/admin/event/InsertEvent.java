@@ -43,7 +43,7 @@ public class InsertEvent implements Action {
                 PrintWriter out = response.getWriter();
 
                 try {
-                    int disciplineId = ((Double) jsonMap.get(DISCIPLINE_ID_PARAM)).intValue();
+                    int disciplineId = ((Double) jsonMap.get(DISCIPLINE_PARAM)).intValue();
                     int leagueId = ((Double) jsonMap.get(LEAGUE_ID_PARAM)).intValue();
                     int firstTeamId = ((Double) jsonMap.get(FIRST_TEAM_ID_PARAM)).intValue();
                     int secondTeamId = ((Double) jsonMap.get(SECOND_TEAM_ID_PARAM)).intValue();
@@ -51,7 +51,6 @@ public class InsertEvent implements Action {
                     int eventStatusId = ((Double) jsonMap.get(STATUS_PARAM)).intValue();
                     BigDecimal royalty = new BigDecimal((Double) jsonMap.get(ROYALTY_PERCENTAGE_PARAM));
                     Instant startDate = Instant.ofEpochSecond(((Double) jsonMap.get(START_DATE_PARAM)).longValue());
-
 
                     EventDto eventDto = new EventDto(disciplineId, leagueId,
                             firstTeamId, secondTeamId, formatId, royalty, startDate, eventStatusId);

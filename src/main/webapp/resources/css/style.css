@@ -633,6 +633,10 @@ footer .copyright {
     border: none;
 }
 
+body.modal-open {
+    position: inherit;
+}
+
 /* SPECIAL MODALS */
 .login-form a {
     font-style: italic;

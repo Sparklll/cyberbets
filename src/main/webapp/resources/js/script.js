@@ -84,8 +84,6 @@ $(document).ready(function () {
     ];
 
     if ($('#eventsGrid').length > 0) {
-
-
         var eventFormat = [
             {Name: "", Id: 0},
             {Name: "BO1", Id: 1},
@@ -102,6 +100,7 @@ $(document).ready(function () {
         ];
 
         var eventOutcome = [
+            // TODO: i18n
             all = [
                 {Name: "", Id: ""}
             ],
@@ -298,7 +297,7 @@ $(document).ready(function () {
                     }).done(function (response) {
                         if (response.status === 'ok') {
                             notify('success', 'Success', 'Event was successfully updated.');
-                            d.resolve(item);
+                            d.resolve(response.data);
                         } else if (response.status === 'deny') {
                             notify('warning', 'Warning', 'Incorrect data was sent!');
                             d.reject();
@@ -595,13 +594,13 @@ $(document).ready(function () {
                 let eventStatusValue = $('#eventStatus input:radio:checked').val();
 
                 let event = {
-                    "disciplineId": parseFloat(disciplineSelectValue),
+                    "discipline": parseFloat(disciplineSelectValue),
                     "leagueId": parseFloat(leagueSelectValue),
                     "firstTeamId": parseFloat(firstTeamSelectValue),
                     "secondTeamId": parseFloat(secondTeamSelectValue),
                     "formatId": parseFloat(formatSelectValue),
                     "startDate": startDateTimestamp,
-                    "royalty": parseFloat(royalty),
+                    "royaltyPercentage": parseFloat(royalty),
                     "status": parseFloat(eventStatusValue)
                 }
 

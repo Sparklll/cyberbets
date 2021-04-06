@@ -18,7 +18,6 @@ public final class Parameters {
 
 
     // REQUEST PARAMS
-    public static final String DISCIPLINE_ID_PARAM = "disciplineId";
     public static final String LEAGUE_ID_PARAM = "leagueId";
     public static final String FIRST_TEAM_ID_PARAM = "firstTeamId";
     public static final String SECOND_TEAM_ID_PARAM = "secondTeamId";
