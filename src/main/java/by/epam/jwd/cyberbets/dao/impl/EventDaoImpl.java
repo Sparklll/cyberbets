@@ -16,8 +16,14 @@ import java.util.Optional;
 import static by.epam.jwd.cyberbets.dao.impl.DatabaseMetadata.*;
 
 public class EventDaoImpl implements EventDao {
-    EventDaoImpl() {
+    private final Connection transactionConnection;
 
+    EventDaoImpl() {
+        transactionConnection = null;
+    }
+
+    EventDaoImpl(Connection connection) {
+        this.transactionConnection = connection;
     }
 
     private static final String FIND_ALL_EVENTS = """
@@ -127,7 +133,11 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public List<Event> findAll() throws DaoException {
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+        Connection connection = transactionConnection == null
+                ? ConnectionPool.INSTANCE.getConnection()
+                : transactionConnection;
+
+        try (connection;
              PreparedStatement ps = connection.prepareStatement(FIND_ALL_EVENTS)) {
             try (ResultSet rs = ps.executeQuery()) {
                 List<Event> events = new ArrayList<>();
@@ -144,7 +154,11 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public Optional<Event> findEventById(int eventId) throws DaoException {
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+        Connection connection = transactionConnection == null
+                ? ConnectionPool.INSTANCE.getConnection()
+                : transactionConnection;
+
+        try (connection;
              PreparedStatement ps = connection.prepareStatement(FIND_EVENT_BY_ID)) {
             ps.setInt(1, eventId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -162,7 +176,11 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public int createEvent(EventDto eventDto) throws DaoException {
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+        Connection connection = transactionConnection == null
+                ? ConnectionPool.INSTANCE.getConnection()
+                : transactionConnection;
+
+        try (connection;
              PreparedStatement ps = connection.prepareStatement(CREATE_EVENT)) {
             ps.setInt(1, eventDto.disciplineId());
             ps.setInt(2, eventDto.leagueId());
@@ -184,7 +202,11 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public void updateEvent(EventDto eventDto) throws DaoException {
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+        Connection connection = transactionConnection == null
+                ? ConnectionPool.INSTANCE.getConnection()
+                : transactionConnection;
+
+        try (connection;
              PreparedStatement ps = connection.prepareStatement(UPDATE_EVENT)) {
             ps.setInt(1, eventDto.disciplineId());
             ps.setInt(2, eventDto.leagueId());
@@ -203,7 +225,11 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public void deleteEvent(int eventId) throws DaoException {
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+        Connection connection = transactionConnection == null
+                ? ConnectionPool.INSTANCE.getConnection()
+                : transactionConnection;
+
+        try (connection;
              PreparedStatement ps = connection.prepareStatement(DELETE_EVENT)) {
             ps.setInt(1, eventId);
             ps.executeUpdate();

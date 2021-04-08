@@ -371,6 +371,12 @@ img {
     }
 }
 
+.event-outcome {
+    padding:5px;
+    border-radius: 5px;
+    border: 2px solid rgb(102, 24, 179);
+}
+
 /* FOOTER */
 footer {
     padding: 50px 0;

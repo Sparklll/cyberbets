@@ -16,7 +16,6 @@ public class TeamValidator implements Validator<TeamDto> {
                 && isTeamDisciplineValid(teamDto.disciplineId());
     }
 
-
     private boolean isTeamRatingValid(int teamRating) {
         return teamRating >= 0
                 && teamRating <= MAX_TEAM_RATING;

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 import static by.epam.jwd.cyberbets.controller.Parameters.STATUS_EXCEPTION;
 
-public class LoadEvent implements Action {
+public final class LoadEvent implements Action {
     private static final Logger logger = LoggerFactory.getLogger(LoadEvent.class);
 
     private final EventService eventService = ServiceProvider.INSTANCE.getEventService();

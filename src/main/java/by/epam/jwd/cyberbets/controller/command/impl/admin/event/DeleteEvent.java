@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class DeleteEvent implements Action {
+public final class DeleteEvent implements Action {
     private static final Logger logger = LoggerFactory.getLogger(DeleteEvent.class);
 
     private final EventService eventService = ServiceProvider.INSTANCE.getEventService();

@@ -1,7 +1,6 @@
 package by.epam.jwd.cyberbets.dao.impl;
 
 import by.epam.jwd.cyberbets.dao.*;
-import by.epam.jwd.cyberbets.dao.impl.*;
 
 public enum DaoProvider {
     INSTANCE;
@@ -14,6 +13,9 @@ public enum DaoProvider {
     private final TeamDao teamDao = new TeamDaoImpl();
     private final LeagueDao leagueDao = new LeagueDaoImpl();
     private final TransactionDao transactionDao = new TransactionDaoImpl();
+
+    // Transactional modules
+    private final EventManager eventManager = new EventManager();
 
 
     public AccountDao getAccountDao() {
@@ -46,5 +48,9 @@ public enum DaoProvider {
 
     public TransactionDao getTransactionDao() {
         return transactionDao;
+    }
+
+    public EventManager getEventManager() {
+        return eventManager;
     }
 }

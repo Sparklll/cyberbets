@@ -95,39 +95,25 @@ $(document).ready(function () {
         var eventStatus = [
             {Name: "", Id: 0},
             {Name: "Pending", Id: 1, Logo: "/resources/assets/status/pending.png"},
-            {Name: "Finished", Id: 2, Logo: "/resources/assets/status/finished.png"},
-            {Name: "Canceled", Id: 3, Logo: "/resources/assets/status/canceled.png"},
+            {Name: "Live", Id: 2, Logo: "/resources/assets/status/live.png"},
+            {Name: "Finished", Id: 3, Logo: "/resources/assets/status/finished.png"},
+            {Name: "Canceled", Id: 4, Logo: "/resources/assets/status/canceled.png"},
         ];
 
         var eventOutcome = [
             // TODO: i18n
-            all = [
-                {Name: "", Id: ""}
-            ],
-            csgo = [
-                bo1 = [],
-                bo2 = [],
-                bo3 = [],
-                bo5 = [],
-            ],
-            dota2 = [
-                bo1 = [],
-                bo2 = [],
-                bo3 = [],
-                bo5 = [],
-            ],
-            lol = [
-                bo1 = [],
-                bo2 = [],
-                bo3 = [],
-                bo5 = [],
-            ],
-            valorant = [
-                bo1 = [],
-                bo2 = [],
-                bo3 = [],
-                bo5 = [],
-            ]
+
+            // general
+            {Name: "Total winner", Discipline: "all", Format: "all", Id: 1},
+            {Name: "[Map #1] Victory on the map", Discipline: "all", Format: 1, Id: 2},
+            {Name: "[Map #2] Victory on the map", Discipline: "all", Format: 2, Id: 3},
+            {Name: "[Map #3] Victory on the map", Discipline: "all", Format: 3, Id: 4},
+            {Name: "[Map #5] Victory on the map", Discipline: "all", Format: 4, Id: 5},
+
+            // csgo
+            // dota2
+            // lol
+            // valorant
         ];
 
         $('#eventsGrid').jsGrid({
@@ -405,28 +391,29 @@ $(document).ready(function () {
     if ($('#eventModal').length > 0) {
         $('#eventModal').off('show.bs.modal').on('show.bs.modal', function () {
             $('#eventStatus input[value="1"]:radio').prop('checked', true);
+            $('#eventRoyalty').val('5');
         });
 
         $('#eventModal').off('hidden.bs.modal').on('hidden.bs.modal', function () {
             // TODO: Add i18n
             $('#eventModal .card-header h5').text('Add Event');
             $('#eventModal #eventModalSubmit').text('Save');
-            $('#eventModal .event-preview .event-header .date').text('Date');
-            $('#eventModal .event-preview .event-header .league-icon').attr('src', '').hide();
-            $('#eventModal .event-preview .event-header .league-name').text('League');
+            $('#eventModal .event-header .date').text('Date');
+            $('#eventModal .event-header .league-icon').attr('src', '').hide();
+            $('#eventModal .event-header .league-name').text('League');
 
             $('#eventModal .event-preview  .team-logo img').attr('src', '').hide();
             $('#eventModal .event-preview  .team-left .team-name').text('Team 1');
             $('#eventModal .event-preview  .team-right .team-name').text('Team 2');
             $('#eventModal .event-preview  .team .odds').empty().append('<i>x</i>1');
 
-            $('#eventModal .event-preview .event-info .center .odds-percentage').text('50%');
-            $('#eventModal .event-preview .event-info .center .event-format span').empty();
-            $('#eventModal .event-preview .event-info .center .event-format .discipline-icon').attr('src', '').hide();
+            $('#eventModal .event-preview .center .odds-percentage').text('50%');
+            $('#eventModal .event-preview .center .event-format span').empty();
+            $('#eventModal .event-preview .center .event-format .discipline-icon').attr('src', '').hide();
 
             $('#eventLeagueSelect option, #eventSecondTeamSelect option, #eventFirstTeamSelect option').remove();
             $('#eventLeagueSelect, #eventFirstTeamSelect, #eventSecondTeamSelect').attr('disabled', true);
-
+            $('#eventOutcomeCollapse .accordion-body').empty();
 
             isEventEditing = false;
         });
@@ -521,6 +508,8 @@ $(document).ready(function () {
         });
 
         $('#eventFirstTeamSelect').change(function () {
+            $('#eventFormatSelect').trigger('change');
+
             if ($('#eventFirstTeamSelect').val() > 0) {
                 let firstTeamId = $('#eventFirstTeamSelect').val();
                 let firstTeamName = $(`#eventFirstTeamSelect option[value=${firstTeamId}]`).text();
@@ -535,6 +524,8 @@ $(document).ready(function () {
         });
 
         $('#eventSecondTeamSelect').change(function () {
+            $('#eventFormatSelect').trigger('change');
+
             if ($('#eventSecondTeamSelect').val() > 0) {
                 let secondTeamId = $('#eventSecondTeamSelect').val();
                 let secondTeamName = $(`#eventFirstTeamSelect option[value=${secondTeamId}]`).text();
@@ -549,12 +540,47 @@ $(document).ready(function () {
         });
 
         $('#eventFormatSelect').change(function () {
+            $('#eventModal .event-preview .center .event-format span').empty();
+            $('#eventOutcomeCollapse .accordion-body').empty();
+
+
             if ($('#eventFormatSelect').val() > 0) {
+                let eventDisciplineId = $('#eventDisciplineSelect').val();
                 let eventFormatId = $('#eventFormatSelect').val();
+                let firstTeamId = $('#eventFirstTeamSelect').val();
+                let secondTeamId = $('#eventSecondTeamSelect').val();
+                let firstTeamName = $(`#eventFirstTeamSelect option[value=${firstTeamId}]`).text();
+                let secondTeamName = $(`#eventFirstTeamSelect option[value=${secondTeamId}]`).text();
+
                 let eventFormatName = eventFormat.find(f => f.Id == eventFormatId).Name;
-                $('#eventModal .event-preview .event-info .center .event-format span').text(eventFormatName);
-            } else {
-                $('#eventModal .event-preview .event-info .center .event-format span').empty();
+                $('#eventModal .event-preview .center .event-format span').text(eventFormatName);
+
+                eventOutcome.forEach(outcome => {
+                        if (eventFormatId >= outcome.Format || outcome.Format == "all") {
+                            if (eventDisciplineId == outcome.Discipline || outcome.Discipline == "all") {
+                                let eventOutcomeTemplate = $($("#eventOutcomeTemplate").html());
+
+                                eventOutcomeTemplate.attr('data-type', outcome.Id);
+                                eventOutcomeTemplate.find('label[for=firstUpshot]').text(firstTeamName);
+                                eventOutcomeTemplate.find('label[for=secondUpshot]').text(secondTeamName);
+
+                                eventOutcomeTemplate.find(':input:radio').each(function (index, item) {
+                                    $(item).attr({
+                                        'id': $(this).attr('id') + outcome.Id,
+                                        'name': outcome.Id,
+                                    });
+                                });
+                                eventOutcomeTemplate.find('label').each(function (index, item) {
+                                    $(item).attr('for', $(this).attr('for') + outcome.Id);
+                                });
+                                eventOutcomeTemplate.find('.outcome-type-name').text(outcome.Name);
+
+                                $('#eventModal #eventOutcomeCollapse .accordion-body').append(eventOutcomeTemplate);
+                            }
+                        }
+                    }
+                );
+
             }
         });
 
@@ -570,6 +596,12 @@ $(document).ready(function () {
         $('#eventModal #eventModalSubmit').off('click').click(function (e) {
             e.preventDefault();
 
+            function Result(eventOutcomeType, resultStatus) {
+                this.eventOutcomeType = eventOutcomeType;
+                this.resultStatus = resultStatus;
+            }
+
+
             let eventStatus = $('#eventStatus input:radio:checked').val();
             let disciplineSelectValue = $('#eventDisciplineSelect').val();
             let leagueSelectValue = $('#eventLeagueSelect').val();
@@ -578,7 +610,6 @@ $(document).ready(function () {
             let formatSelectValue = $('#eventFormatSelect').val();
             let startDateValue = $('#eventDatetimeStart').val();
             let royalty = $('#eventRoyalty').val();
-
 
             if (eventStatus > 0
                 && disciplineSelectValue > 0
@@ -590,6 +621,15 @@ $(document).ready(function () {
                 && startDateValue
                 && (royalty >= 0 && royalty <= 100)
             ) {
+
+                let eventResults = new Array();
+                $('#eventOutcomeCollapse .accordion-body .event-outcome').each(function () {
+                    let eventOutcomeType = $(this).data('type').toString();
+                    let resultStatus = $(this).find('input:radio:checked').val();
+                    let result = new Result(eventOutcomeType, resultStatus);
+                    eventResults.push(result);
+                });
+
                 let startDateTimestamp = dayjs($('#eventDatetimeStart').val()).unix();
                 let eventStatusValue = $('#eventStatus input:radio:checked').val();
 
@@ -601,7 +641,8 @@ $(document).ready(function () {
                     "formatId": parseFloat(formatSelectValue),
                     "startDate": startDateTimestamp,
                     "royaltyPercentage": parseFloat(royalty),
-                    "status": parseFloat(eventStatusValue)
+                    "status": parseFloat(eventStatusValue),
+                    "eventResults": eventResults
                 }
 
                 if (isEventEditing) {

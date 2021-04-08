@@ -16,19 +16,19 @@ public class EventValidator implements Validator<EventDto> {
                 && isRoyaltyValid(eventDto.royalty());
     }
 
-    private static boolean isDisciplineIdValid(int disciplineId) {
+    private boolean isDisciplineIdValid(int disciplineId) {
         return Discipline.getDisciplineById(disciplineId).isPresent();
     }
 
-    private static boolean isFormatIdValid(int formatId) {
+    private boolean isFormatIdValid(int formatId) {
         return EventFormat.getEventFormatById(formatId).isPresent();
     }
 
-    private static boolean isStatusIdValid(int statusId) {
+    private boolean isStatusIdValid(int statusId) {
         return EventStatus.getEventStatusById(statusId).isPresent();
     }
 
-    private static boolean isRoyaltyValid(BigDecimal royalty) {
+    private boolean isRoyaltyValid(BigDecimal royalty) {
         return royalty.doubleValue() >=0 && royalty.doubleValue() <= 100;
     }
 }

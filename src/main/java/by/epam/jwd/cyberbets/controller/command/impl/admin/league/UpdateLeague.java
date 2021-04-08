@@ -44,27 +44,35 @@ public final class UpdateLeague implements Action {
                 PrintWriter out = response.getWriter();
 
                 try {
-                    int id = ((Double) jsonMap.get(ID_PARAM)).intValue();
-                    int disciplineId = ((Double) jsonMap.get(DISCIPLINE_PARAM)).intValue();
+                    Double id = (Double) jsonMap.get(ID_PARAM);
+                    Double disciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
                     String leagueName = (String) jsonMap.get(LEAGUE_NAME_PARAM);
                     LinkedTreeMap<String, String> leagueIconObj = (LinkedTreeMap<String, String>) jsonMap.get(LEAGUE_ICON_PARAM);
                     String leagueIconBase64 = leagueIconObj != null ? leagueIconObj.get(PATH_PARAM) : "";
 
+                    if(id != null
+                            && disciplineId != null
+                            && leagueName != null
+                            && leagueIconObj != null) {
 
-                    LeagueDto leagueDto = new LeagueDto(id, leagueName, leagueIconBase64, disciplineId);
+                        LeagueDto leagueDto = new LeagueDto(id.intValue(), leagueName,
+                                leagueIconBase64, disciplineId.intValue());
 
-                    Validator<LeagueDto> leagueDtoValidator = ValidatorProvider.INSTANCE.getLeagueValidator();
-                    if (leagueDtoValidator.isValid(leagueDto)) {
-                        leagueService.updateLeague(leagueDto);
+                        Validator<LeagueDto> leagueDtoValidator = ValidatorProvider.INSTANCE.getLeagueValidator();
+                        if (leagueDtoValidator.isValid(leagueDto)) {
+                            leagueService.updateLeague(leagueDto);
 
-                        String leagueIconPath = "";
-                        Optional<Resource> resourceOptional = leagueService.findIconResourceByLeagueId(id);
-                        if(resourceOptional.isPresent()) {
-                            leagueIconPath += resourceOptional.get().getPath();
+                            String leagueIconPath = "";
+                            Optional<Resource> resourceOptional = leagueService.findIconResourceByLeagueId(id.intValue());
+                            if(resourceOptional.isPresent()) {
+                                leagueIconPath += resourceOptional.get().getPath();
+                            }
+
+                            jsonResponse.addProperty(PATH_PARAM, leagueIconPath);
+                            jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
+                        } else {
+                            jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                         }
-
-                        jsonResponse.addProperty(PATH_PARAM, leagueIconPath);
-                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }

@@ -1,17 +1,18 @@
 package by.epam.jwd.cyberbets.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Optional;
 
 public enum EventOutcomeType {
     // GENERAL
-    TOTAL_WINNER(1),
-    MAP1_WINNER(2),
-    MAP2_WINNER(3),
-    MAP3_WINNER(4),
-    MAP4_WINNER(5),
-    MAP5_WINNER(6);
+    @SerializedName("1") TOTAL_WINNER(1),
+    @SerializedName("2") MAP1_WINNER(2),
+    @SerializedName("3") MAP2_WINNER(3),
+    @SerializedName("4") MAP3_WINNER(4),
+    @SerializedName("5") MAP5_WINNER(5);
 
-
+    // SPECIFIC \\
     // CS:GO
 
     // DOTA2
@@ -30,7 +31,7 @@ public enum EventOutcomeType {
         return id;
     }
 
-    public Optional<EventOutcomeType> getEventOutcomeTypeById(int id) {
+    public static Optional<EventOutcomeType> getEventOutcomeTypeById(int id) {
         Optional<EventOutcomeType> eventOutcomeTypeOptional = Optional.empty();
         for(EventOutcomeType eventOutcomeType : values()) {
             if(eventOutcomeType.getId() == id) {

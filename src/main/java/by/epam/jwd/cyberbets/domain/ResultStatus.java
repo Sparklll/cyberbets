@@ -6,10 +6,10 @@ import java.util.Optional;
 
 public enum ResultStatus {
     @SerializedName("1") DISABLED(1),
-    @SerializedName("2") UNBLOCKED(2),
-    @SerializedName("3") BLOCKED(3),
-    @SerializedName("4") SUCCESS(4),
-    @SerializedName("5") FAILURE(5);
+    @SerializedName("2") BLOCKED(2),
+    @SerializedName("3") UNBLOCKED(3),
+    @SerializedName("4") FIRST_UPSHOT(4),
+    @SerializedName("5") SECOND_UPSHOT(5);
 
     private final int id;
 
@@ -21,7 +21,7 @@ public enum ResultStatus {
         return id;
     }
 
-    public Optional<ResultStatus> getResultStatusById(int id) throws IllegalArgumentException {
+    public static Optional<ResultStatus> getResultStatusById(int id) throws IllegalArgumentException {
         Optional<ResultStatus> resultStatusOptional = Optional.empty();
         for (ResultStatus resultStatus : values()) {
             if (resultStatus.getId() == id) {

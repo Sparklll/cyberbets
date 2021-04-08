@@ -6,8 +6,9 @@ import java.util.Optional;
 
 public enum EventStatus {
     @SerializedName("1") PENDING(1),
-    @SerializedName("2") FINISHED(2),
-    @SerializedName("3") CANCELED(3);
+    @SerializedName("2") LIVE(2),
+    @SerializedName("3") FINISHED(3),
+    @SerializedName("4") CANCELED(4);
 
     private final int id;
 

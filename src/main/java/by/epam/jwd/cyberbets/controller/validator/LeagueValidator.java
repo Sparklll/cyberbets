@@ -18,12 +18,12 @@ public class LeagueValidator implements Validator<LeagueDto> {
         return id >= 0;
     }
 
-    private static boolean isLeagueNameValid(String leagueName) {
+    private boolean isLeagueNameValid(String leagueName) {
         return StringUtils.isNotBlank(leagueName)
                 && leagueName.length() <= MAX_NAME_LENGTH;
     }
 
-    private static boolean isLeagueDisciplineValid(int disciplineId) {
+    private boolean isLeagueDisciplineValid(int disciplineId) {
         return Discipline.getDisciplineById(disciplineId).isPresent();
     }
 }

@@ -44,27 +44,36 @@ public final class UpdateTeam implements Action {
                 PrintWriter out = response.getWriter();
 
                 try {
-                    int id  = ((Double) jsonMap.get(ID_PARAM)).intValue();
-                    int teamRating = ((Double) jsonMap.get(TEAM_RATING_PARAM)).intValue();
-                    int disciplineId = ((Double) jsonMap.get(DISCIPLINE_PARAM)).intValue();
+                    Double id = (Double) jsonMap.get(ID_PARAM);
+                    Double teamRating = (Double) jsonMap.get(TEAM_RATING_PARAM);
+                    Double disciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
                     String teamName = (String) jsonMap.get(TEAM_NAME_PARAM);
                     LinkedTreeMap<String, String> teamLogoObj = (LinkedTreeMap<String, String>) jsonMap.get(TEAM_LOGO_PARAM);
                     String teamLogoBase64 = teamLogoObj != null ? teamLogoObj.get(PATH_PARAM) : "";
 
-                    TeamDto teamDto = new TeamDto(id, teamName, teamRating, teamLogoBase64, disciplineId);
+                    if (id != null
+                            && teamRating != null
+                            && disciplineId != null
+                            && teamName != null) {
 
-                    Validator<TeamDto> teamValidator = ValidatorProvider.INSTANCE.getTeamValidator();
-                    if (teamValidator.isValid(teamDto)) {
-                        teamService.updateTeam(teamDto);
+                        TeamDto teamDto = new TeamDto(id.intValue(), teamName,
+                                teamRating.intValue(), teamLogoBase64, disciplineId.intValue());
 
-                        String teamLogoPath = "";
-                        Optional<Resource> resourceOptional = teamService.findLogoResourceByTeamId(id);
-                        if(resourceOptional.isPresent()) {
-                            teamLogoPath += resourceOptional.get().getPath();
+                        Validator<TeamDto> teamValidator = ValidatorProvider.INSTANCE.getTeamValidator();
+                        if (teamValidator.isValid(teamDto)) {
+                            teamService.updateTeam(teamDto);
+
+                            String teamLogoPath = "";
+                            Optional<Resource> resourceOptional = teamService.findLogoResourceByTeamId(id.intValue());
+                            if (resourceOptional.isPresent()) {
+                                teamLogoPath += resourceOptional.get().getPath();
+                            }
+
+                            jsonResponse.addProperty(PATH_PARAM, teamLogoPath);
+                            jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
+                        } else {
+                            jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                         }
-
-                        jsonResponse.addProperty(PATH_PARAM, teamLogoPath);
-                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }

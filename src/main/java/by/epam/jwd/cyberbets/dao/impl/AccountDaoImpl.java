@@ -19,8 +19,14 @@ import java.util.OptionalInt;
 import static by.epam.jwd.cyberbets.dao.impl.DatabaseMetadata.*;
 
 public class AccountDaoImpl implements AccountDao {
-    AccountDaoImpl() {
+    private final Connection transactionConnection;
 
+    AccountDaoImpl() {
+        transactionConnection = null;
+    }
+
+    public AccountDaoImpl(Connection transactionConnection) {
+        this.transactionConnection = transactionConnection;
     }
 
     private static final String FIND_ACCOUNT_BY_ID = """

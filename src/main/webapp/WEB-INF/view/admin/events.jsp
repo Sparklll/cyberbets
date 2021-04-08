@@ -114,7 +114,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div id="eventStatus" class="d-flex justify-content-center mb-2">
                             <div class="btn-group" role="group">
                                 <input type="radio" class="btn-check" id="pendingOption"
@@ -124,21 +123,26 @@
                                        checked/>
                                 <label class="btn btn-secondary btn-sm text-uppercase" for="pendingOption">Pending</label>
 
-                                <input type="radio" class="btn-check" id="finishedOption"
+                                <input type="radio" class="btn-check" id="liveOption"
                                        name="eventStatus"
                                        value="2"
+                                       autocomplete="off"/>
+                                <label class="btn btn-secondary btn-sm text-uppercase" for="liveOption">Live</label>
+
+                                <input type="radio" class="btn-check" id="finishedOption"
+                                       name="eventStatus"
+                                       value="3"
                                        autocomplete="off"/>
                                 <label class="btn btn-secondary btn-sm text-uppercase" for="finishedOption">Finished</label>
 
                                 <input type="radio" class="btn-check" id="canceledOption"
                                        name="eventStatus"
-                                       value="3"
+                                       value="4"
                                        autocomplete="off"/>
                                 <label class="btn btn-secondary btn-sm text-uppercase" for="canceledOption">Canceled</label>
                             </div>
                         </div>
                     </div>
-
                         <div class="accordion accordion-flush" id="eventAccordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="eventInfoHeading">
@@ -201,7 +205,8 @@
                                                 <label for="eventFormatSelect" class="form-label">Format</label>
                                                 <select id="eventFormatSelect"
                                                         class="form-control selectpicker show-tick" data-size="5"
-                                                        data-none-selected-text="⁣">
+                                                        data-none-selected-text="⁣"
+                                                        >
                                                     <option value="0" selected></option>
                                                     <option value="1">BO1</option>
                                                     <option value="2">BO2</option>
@@ -235,29 +240,60 @@
                                     </button>
                                 </h2>
                                 <div id="eventOutcomeCollapse" class="accordion-collapse collapse">
+                                    <template id="eventOutcomeTemplate">
+                                        <div class="event-outcome d-flex flex-column justify-content-center mb-3" data-type="">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span class="odds left-outcome-odds fw-bold text-success">
+                                                        <i>x</i>
+                                                        <span>1</span>
+                                                    </span>
+                                                <span class="outcome-type-name fw-bold text-truncate text-danger mx-2">Name</span>
+                                                <span class="odds right-outcome-odds fw-bold text-success">
+                                                        <i>x</i>
+                                                        <span>1</span>
+                                                    </span>
+                                            </div>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <input type="radio" class="btn-check" id="firstUpshot"
+                                                       name=""
+                                                       value="4"
+                                                       autocomplete="off"/>
+                                                <label class="btn btn-secondary btn-sm text-uppercase me-2 text-truncate"
+                                                       for="firstUpshot" title="First Upshot" style="min-width: 100px; max-width: 100px;"></label>
+
+                                                <input type="radio" class="btn-check" id="disableOption"
+                                                       name=""
+                                                       value="1"
+                                                       autocomplete="off"
+                                                       checked/>
+                                                <label class="btn btn-secondary btn-sm text-uppercase d-flex  justify-content-center align-items-center"
+                                                       for="disableOption" title="Disabled"><i class="fs-5 fas fa-ban fa-fw"></i></label>
+
+                                                <input type="radio" class="btn-check" id="blockOption"
+                                                       name=""
+                                                       value="2"
+                                                       autocomplete="off"/>
+                                                <label class="btn btn-secondary btn-sm text-uppercase d-flex  justify-content-center align-items-center"
+                                                       for="blockOption" title="Blocked"><i class="fs-5 fas fa-lock fa-fw"></i></label>
+
+                                                <input type="radio" class="btn-check" id="unblockOption"
+                                                       name=""
+                                                       value="3"
+                                                       autocomplete="off"/>
+                                                <label class="btn btn-secondary btn-sm text-uppercase d-flex  justify-content-center align-items-center"
+                                                       for="unblockOption" title="Unblocked"><i class="fs-5 fas fa-lock-open fa-fw"></i></label>
+
+                                                <input type="radio" class="btn-check" id="secondUpshot"
+                                                       name=""
+                                                       value="5"
+                                                       autocomplete="off"/>
+                                                <label class="btn btn-secondary btn-sm text-uppercase ms-2 text-truncate"
+                                                       for="secondUpshot" title="Second Upshot" style="min-width: 100px; max-width: 100px;"></label>
+                                            </div>
+                                        </div>
+                                    </template>
                                     <div class="accordion-body">
 
-                                        <div class="btn-group" role="group">
-                                            <input type="radio" class="btn-check" id="option1"
-                                                   name="toggle-option"
-                                                   value=""
-                                                   autocomplete="off"
-                                                   checked
-                                            />
-                                            <label class="btn btn-secondary btn-sm text-uppercase" for="option1">Disable</label>
-
-                                            <input type="radio" class="btn-check" id="option2"
-                                                   name="toggle-option"
-                                                   value=""
-                                                   autocomplete="off"/>
-                                            <label class="btn btn-secondary btn-sm text-uppercase" for="option2">Block</label>
-
-                                            <input type="radio" class="btn-check" id="option3"
-                                                   name="toggle-option"
-                                                   value=""
-                                                   autocomplete="off"/>
-                                            <label class="btn btn-secondary btn-sm text-uppercase" for="option3">Unblock</label>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
