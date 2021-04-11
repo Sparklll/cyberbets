@@ -1,8 +1,9 @@
 package by.epam.jwd.cyberbets.controller.command.impl.admin.event;
 
 import by.epam.jwd.cyberbets.controller.command.Action;
+import by.epam.jwd.cyberbets.domain.EventResult;
 import by.epam.jwd.cyberbets.domain.Role;
-import by.epam.jwd.cyberbets.service.EventService;
+import by.epam.jwd.cyberbets.service.EventResultService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import com.google.gson.*;
@@ -14,14 +15,17 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import java.util.List;
 import java.util.Map;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
+import static by.epam.jwd.cyberbets.controller.Parameters.STATUS_EXCEPTION;
 
-public final class DeleteEvent implements Action {
-    private static final Logger logger = LoggerFactory.getLogger(DeleteEvent.class);
+public final class LoadEventResults implements Action {
+    private static final Logger logger = LoggerFactory.getLogger(LoadEventResults.class);
 
-    private final EventService eventService = ServiceProvider.INSTANCE.getEventService();
+    private final EventResultService eventResultService = ServiceProvider.INSTANCE.getEventResultService();
 
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,9 +41,11 @@ public final class DeleteEvent implements Action {
 
                 try {
                     Double eventId = (Double) jsonMap.get(ID_PARAM);
-
                     if (eventId != null) {
-                        eventService.deleteEvent(eventId.intValue());
+                        List<EventResult> eventResults = eventResultService.findAllByEventId(eventId.intValue());
+                        JsonElement eventResultsElement = new Gson().toJsonTree(eventResults);
+
+                        jsonResponse.add(DATA_PROPERTY, eventResultsElement);
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);

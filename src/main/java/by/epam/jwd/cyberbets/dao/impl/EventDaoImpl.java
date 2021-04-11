@@ -17,14 +17,7 @@ import static by.epam.jwd.cyberbets.dao.impl.DatabaseMetadata.*;
 
 public class EventDaoImpl implements EventDao {
     private final Connection transactionConnection;
-
-    EventDaoImpl() {
-        transactionConnection = null;
-    }
-
-    EventDaoImpl(Connection connection) {
-        this.transactionConnection = connection;
-    }
+    private final boolean isTransactional;
 
     private static final String FIND_ALL_EVENTS = """
             select e.id,
@@ -131,13 +124,27 @@ public class EventDaoImpl implements EventDao {
             """;
     private static final String DELETE_EVENT = "delete from event where id = ?";
 
+    EventDaoImpl() {
+        transactionConnection = null;
+        isTransactional = false;
+    }
+
+    EventDaoImpl(Connection connection) {
+        this.transactionConnection = connection;
+        isTransactional = true;
+    }
+
+    private Connection getConnection() {
+        return isTransactional
+                ? transactionConnection
+                : ConnectionPool.INSTANCE.getConnection();
+    }
+
     @Override
     public List<Event> findAll() throws DaoException {
-        Connection connection = transactionConnection == null
-                ? ConnectionPool.INSTANCE.getConnection()
-                : transactionConnection;
+        Connection connection = getConnection();
 
-        try (connection;
+        try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(FIND_ALL_EVENTS)) {
             try (ResultSet rs = ps.executeQuery()) {
                 List<Event> events = new ArrayList<>();
@@ -154,11 +161,9 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public Optional<Event> findEventById(int eventId) throws DaoException {
-        Connection connection = transactionConnection == null
-                ? ConnectionPool.INSTANCE.getConnection()
-                : transactionConnection;
+        Connection connection = getConnection();
 
-        try (connection;
+        try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(FIND_EVENT_BY_ID)) {
             ps.setInt(1, eventId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -176,11 +181,9 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public int createEvent(EventDto eventDto) throws DaoException {
-        Connection connection = transactionConnection == null
-                ? ConnectionPool.INSTANCE.getConnection()
-                : transactionConnection;
+        Connection connection = getConnection();
 
-        try (connection;
+        try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(CREATE_EVENT)) {
             ps.setInt(1, eventDto.disciplineId());
             ps.setInt(2, eventDto.leagueId());
@@ -202,11 +205,9 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public void updateEvent(EventDto eventDto) throws DaoException {
-        Connection connection = transactionConnection == null
-                ? ConnectionPool.INSTANCE.getConnection()
-                : transactionConnection;
+        Connection connection = getConnection();
 
-        try (connection;
+        try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(UPDATE_EVENT)) {
             ps.setInt(1, eventDto.disciplineId());
             ps.setInt(2, eventDto.leagueId());
@@ -225,11 +226,9 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public void deleteEvent(int eventId) throws DaoException {
-        Connection connection = transactionConnection == null
-                ? ConnectionPool.INSTANCE.getConnection()
-                : transactionConnection;
+        Connection connection = getConnection();
 
-        try (connection;
+        try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(DELETE_EVENT)) {
             ps.setInt(1, eventId);
             ps.executeUpdate();

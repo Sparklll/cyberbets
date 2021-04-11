@@ -12,6 +12,7 @@ public final class DatabaseMetadata {
     static final String EVENT_FORMAT_ID = "event_format_id";
     static final String EVENT_RESULT_ID = "event_result_id";
     static final String DISCIPLINE_ID = "discipline_id";
+    static final String UPSHOT_TYPE_ID = "upshot_type_id";
 
     static final String OUTCOME_TYPE_ID = "outcome_type_id";
     static final String RESULT_STATUS_ID = "result_status_id";
@@ -48,6 +49,7 @@ public final class DatabaseMetadata {
     static final String PASSWORD_HASH = "password_hash";
     static final String BALANCE = "balance";
     static final String AMOUNT = "amount";
+    static final String TOTAL_AMOUNT = "total_amount";
     static final String DATE = "date";
     static final String START = "start";
     static final String ROYALTY_PERCENTAGE = "royalty_percentage";

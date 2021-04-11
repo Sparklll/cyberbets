@@ -309,6 +309,38 @@
             </div>
         </div>
     </div>
+
+<div class="modal fade" id="confirmModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmModal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered justify-content-center">
+        <div class="modal-content w-100">
+            <div class="card">
+                <div class="card-header d-inline-flex align-items-center">
+                    <a class="close ms-auto" role="button"
+                       data-bs-dismiss="modal"
+                       data-bs-toggle="modal">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="icon-box mb-4">
+                            <i class="fas fa-times"></i>
+                        </div>
+
+                        <div class="text-center mb-3 fw-bold">
+                            <h4 class="mb-3">Are you sure?</h4>
+                            <p>Do you really want to delete this record? This process cannot be undone.</p>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button id="cancelButton" type="button" class="btn btn-secondary mx-4" data-bs-dismiss="modal">Cancel</button>
+                            <button id="deleteButton" type="button" class="btn btn-primary mx-4">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <%@ include file="../general/html/admin-scripts.html" %>

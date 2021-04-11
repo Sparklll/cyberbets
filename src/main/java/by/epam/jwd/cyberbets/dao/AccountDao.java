@@ -15,4 +15,6 @@ public interface AccountDao {
     void createAccount(CreateAccountDto createAccountDto) throws DaoException;
     void updateAccount(Account account) throws DaoException;
     void updateAccountBalance(int accountId, BigDecimal balance) throws DaoException;
+    void addToAccountBalance(int accountId, BigDecimal amount) throws DaoException;
+    void subtractFromAccountBalance(int accountId, BigDecimal amount) throws DaoException;
 }

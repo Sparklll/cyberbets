@@ -54,6 +54,7 @@ public final class Parameters {
     public static final String BALANCE_ATTR = "balance";
 
     // ACTION NAMES
+    public static final String LOAD_EVENT_RESULTS = "loadEventResults";
     public static final String LOAD_EVENT_ACTION = "loadEvent";
     public static final String INSERT_EVENT_ACTION = "insertEvent";
     public static final String UPDATE_EVENT_ACTION = "updateEvent";

@@ -1,9 +1,11 @@
 package by.epam.jwd.cyberbets.controller.command.impl.admin.event;
 
 import by.epam.jwd.cyberbets.controller.command.Action;
+import by.epam.jwd.cyberbets.controller.validator.EventResultValidator;
 import by.epam.jwd.cyberbets.controller.validator.Validator;
 import by.epam.jwd.cyberbets.controller.validator.ValidatorProvider;
 import by.epam.jwd.cyberbets.domain.Event;
+import by.epam.jwd.cyberbets.domain.EventResult;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.dto.EventDto;
 
@@ -12,6 +14,7 @@ import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.utils.gson.InstantAdapter;
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +25,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
@@ -45,7 +50,7 @@ public final class UpdateEvent implements Action {
                 PrintWriter out = response.getWriter();
 
                 try {
-                    Double eventId  = (Double) jsonMap.get(ID_PARAM);
+                    Double eventId = (Double) jsonMap.get(ID_PARAM);
                     Double disciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
                     Double leagueId = (Double) jsonMap.get(LEAGUE_ID_PARAM);
                     Double firstTeamId = (Double) jsonMap.get(FIRST_TEAM_ID_PARAM);
@@ -54,8 +59,9 @@ public final class UpdateEvent implements Action {
                     Double eventStatusId = (Double) jsonMap.get(STATUS_PARAM);
                     Double royaltyParam = (Double) jsonMap.get(ROYALTY_PERCENTAGE_PARAM);
                     Double startDateParam = (Double) jsonMap.get(START_DATE_PARAM);
+                    String eventResultsJsonStr = new Gson().toJson(jsonMap.get(EVENT_RESULTS_PARAM));
 
-                    if(eventId != null
+                    if (eventId != null
                             && disciplineId != null
                             && leagueId != null
                             && firstTeamId != null
@@ -63,22 +69,27 @@ public final class UpdateEvent implements Action {
                             && formatId != null
                             && eventStatusId != null
                             && royaltyParam != null
-                            && startDateParam != null) {
+                            && startDateParam != null
+                            && eventResultsJsonStr != null) {
 
                         BigDecimal royalty = new BigDecimal(royaltyParam);
                         Instant startDate = Instant.ofEpochSecond(startDateParam.longValue());
 
                         EventDto eventDto = new EventDto(eventId.intValue(), disciplineId.intValue(), leagueId.intValue(),
                                 firstTeamId.intValue(), secondTeamId.intValue(), formatId.intValue(), royalty, startDate, eventStatusId.intValue());
+                        List<EventResult> eventResults = new Gson().fromJson(eventResultsJsonStr,
+                                new TypeToken<ArrayList<EventResult>>() {
+                                }.getType());
 
                         Validator<EventDto> eventValidator = ValidatorProvider.INSTANCE.getEventValidator();
-                        if (eventValidator.isValid(eventDto)) {
-                            eventService.updateEvent(eventDto);
+                        EventResultValidator eventResultValidator = ValidatorProvider.INSTANCE.getEventResultValidator();
+                        if (eventValidator.isValid(eventDto) && eventResultValidator.isValid(eventResults)) {
+                            eventService.updateEvent(eventDto, eventResults);
 
-                            Event createdEvent = eventService.findEventById(eventId.intValue()).get();
+                            Event updatedEvent = eventService.findEventById(eventId.intValue()).get();
 
                             Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
-                            String jsonStrEvent = gson.toJson(createdEvent);
+                            String jsonStrEvent = gson.toJson(updatedEvent);
                             JsonElement jsonElementEvent = JsonParser.parseString(jsonStrEvent);
 
                             jsonResponse.add(DATA_PROPERTY, jsonElementEvent);

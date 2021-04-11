@@ -5,6 +5,7 @@ import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.dao.impl.DaoProvider;
 import by.epam.jwd.cyberbets.dao.impl.EventManager;
 import by.epam.jwd.cyberbets.domain.Event;
+import by.epam.jwd.cyberbets.domain.EventResult;
 import by.epam.jwd.cyberbets.domain.dto.EventDto;
 import by.epam.jwd.cyberbets.service.EventService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
@@ -39,18 +40,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public int createEvent(EventDto eventDto) throws ServiceException {
+    public int createEvent(EventDto eventDto, List<EventResult> eventResults) throws ServiceException {
         try {
-            eventManager.createEvent();
+            return eventManager.createEvent(eventDto, eventResults);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public void updateEvent(EventDto eventDto) throws ServiceException {
+    public void updateEvent(EventDto eventDto, List<EventResult> eventResults) throws ServiceException {
         try {
-            eventManager.updateEvent();
+            eventManager.updateEvent(eventDto, eventResults);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -59,7 +60,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public void deleteEvent(int eventId) throws ServiceException {
         try {
-            eventManager.updateEvent();
+            eventManager.deleteEvent(eventId);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

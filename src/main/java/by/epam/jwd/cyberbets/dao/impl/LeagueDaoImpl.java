@@ -19,10 +19,6 @@ import static by.epam.jwd.cyberbets.dao.impl.DatabaseMetadata.*;
 import static by.epam.jwd.cyberbets.dao.impl.DatabaseMetadata.PATH;
 
 public class LeagueDaoImpl implements LeagueDao {
-    LeagueDaoImpl() {
-
-    }
-
     private static final String FIND_ALL_LEAGUES = """
             select l.id, l.name, l.discipline_id, l.icon_resource_id, r.path
             from league l
@@ -52,6 +48,10 @@ public class LeagueDaoImpl implements LeagueDao {
     private static final String CREATE_LEAGUE = "insert into league (name, discipline_id, icon_resource_id) values (?, ?, ?) returning id";
     private static final String UPDATE_LEAGUE = "update league set name = ?, discipline_id = ?, icon_resource_id = ? where id = ?";
     private static final String DELETE_LEAGUE = "delete from league where id = ?";
+
+    LeagueDaoImpl() {
+
+    }
 
     @Override
     public List<League> findAll() throws DaoException {

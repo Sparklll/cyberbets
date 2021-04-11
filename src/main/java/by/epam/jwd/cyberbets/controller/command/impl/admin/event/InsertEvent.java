@@ -4,19 +4,15 @@ import by.epam.jwd.cyberbets.controller.command.Action;
 import by.epam.jwd.cyberbets.controller.validator.EventResultValidator;
 import by.epam.jwd.cyberbets.controller.validator.Validator;
 import by.epam.jwd.cyberbets.controller.validator.ValidatorProvider;
-import by.epam.jwd.cyberbets.dao.impl.DaoProvider;
-import by.epam.jwd.cyberbets.dao.impl.EventManager;
 import by.epam.jwd.cyberbets.domain.Event;
 import by.epam.jwd.cyberbets.domain.EventResult;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.dto.EventDto;
-import by.epam.jwd.cyberbets.domain.dto.EventResultDto;
 import by.epam.jwd.cyberbets.service.EventService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.utils.gson.InstantAdapter;
 import com.google.gson.*;
-import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,19 +22,19 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
 public final class InsertEvent implements Action {
     private static final Logger logger = LoggerFactory.getLogger(InsertEvent.class);
 
-    private final EventManager eventManager = DaoProvider.INSTANCE.getEventManager();
+    private final EventService eventService = ServiceProvider.INSTANCE.getEventService();
 
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -63,7 +59,7 @@ public final class InsertEvent implements Action {
                     Double startDateParam = (Double) jsonMap.get(START_DATE_PARAM);
                     String eventResultsJsonStr = new Gson().toJson(jsonMap.get(EVENT_RESULTS_PARAM));
 
-                    if(disciplineId != null
+                    if (disciplineId != null
                             && leagueId != null
                             && firstTeamId != null
                             && secondTeamId != null
@@ -80,12 +76,13 @@ public final class InsertEvent implements Action {
                                 firstTeamId.intValue(), secondTeamId.intValue(),
                                 formatId.intValue(), royalty, startDate, eventStatusId.intValue());
                         List<EventResult> eventResults = new Gson().fromJson(eventResultsJsonStr,
-                                new TypeToken<ArrayList<EventResult>>(){}.getType());
+                                new TypeToken<ArrayList<EventResult>>() {
+                                }.getType());
 
                         Validator<EventDto> eventValidator = ValidatorProvider.INSTANCE.getEventValidator();
                         EventResultValidator eventResultValidator = ValidatorProvider.INSTANCE.getEventResultValidator();
                         if (eventValidator.isValid(eventDto) && eventResultValidator.isValid(eventResults)) {
-                            int id = eventService.createEvent(eventDto);
+                            int id = eventService.createEvent(eventDto, eventResults);
                             Event createdEvent = eventService.findEventById(id).get();
 
                             Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();

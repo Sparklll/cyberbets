@@ -14,14 +14,14 @@ import java.util.Optional;
 import static by.epam.jwd.cyberbets.dao.impl.DatabaseMetadata.*;
 
 public class ResourceDaoImpl implements ResourceDao {
-    ResourceDaoImpl() {
-
-    }
-
     private static final String FIND_RESOURCE_BY_ID = "select * from resource where id = ?";
     private static final String CREATE_RESOURCE = "insert into resource (path) values (?) returning id";
     private static final String UPDATE_RESOURCE = "update resource set path = ? where id = ?";
     private static final String DELETE_RESOURCE = "delete from resource where id = ?";
+
+    ResourceDaoImpl() {
+
+    }
 
     @Override
     public Optional<Resource> findResourceById(int resourceId) throws DaoException {

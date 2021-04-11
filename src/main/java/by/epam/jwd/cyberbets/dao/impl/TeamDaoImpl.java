@@ -18,10 +18,6 @@ import java.util.Optional;
 import static by.epam.jwd.cyberbets.dao.impl.DatabaseMetadata.*;
 
 public class TeamDaoImpl implements TeamDao {
-    TeamDaoImpl() {
-
-    }
-
     private static final String FIND_ALL_TEAMS = """
             select t.id, t.name, t.rating, t.discipline_id, t.logo_resource_id, r.path
             from team t
@@ -53,6 +49,9 @@ public class TeamDaoImpl implements TeamDao {
     private static final String UPDATE_TEAM = "update team set name = ?, rating = ?, discipline_id = ?, logo_resource_id = ? where id = ?";
     private static final String DELETE_TEAM = "delete from team where id = ?";
 
+    TeamDaoImpl() {
+
+    }
 
     @Override
     public List<Team> findAll() throws DaoException {

@@ -19,14 +19,7 @@ import static by.epam.jwd.cyberbets.dao.impl.DatabaseMetadata.*;
 
 public class EventResultDaoImpl implements EventResultDao {
     private final Connection transactionConnection;
-
-    EventResultDaoImpl() {
-        transactionConnection = null;
-    }
-
-    EventResultDaoImpl(Connection transactionConnection) {
-        this.transactionConnection = transactionConnection;
-    }
+    private final boolean isTransactional;
 
     private static final String FIND_ALL_EVENT_RESULTS = "select * from event_result";
     private static final String FIND_ALL_EVENT_RESULTS_BY_EVENT_ID = "select * from event_result where event_id = ?";
@@ -35,13 +28,27 @@ public class EventResultDaoImpl implements EventResultDao {
     private static final String UPDATE_EVENT_RESULT = "update event_result set event_id = ?, outcome_type_id = ?, result_status_id = ? where id = ?";
     private static final String DELETE_EVENT_RESULT = "delete from event_result where id = ?";
 
+    EventResultDaoImpl() {
+        transactionConnection = null;
+        isTransactional = false;
+    }
+
+    EventResultDaoImpl(Connection transactionConnection) {
+        this.transactionConnection = transactionConnection;
+        isTransactional = true;
+    }
+
+    private Connection getConnection() {
+        return isTransactional
+                ? transactionConnection
+                : ConnectionPool.INSTANCE.getConnection();
+    }
+
     @Override
     public List<EventResult> findAll() throws DaoException {
-        Connection connection = transactionConnection == null
-                ? ConnectionPool.INSTANCE.getConnection()
-                : transactionConnection;
+        Connection connection = getConnection();
 
-        try (connection;
+        try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(FIND_ALL_EVENT_RESULTS)) {
             return getEvents(ps);
         } catch (SQLException e) {
@@ -51,11 +58,9 @@ public class EventResultDaoImpl implements EventResultDao {
 
     @Override
     public List<EventResult> findAllByEventId(int eventId) throws DaoException {
-        Connection connection = transactionConnection == null
-                ? ConnectionPool.INSTANCE.getConnection()
-                : transactionConnection;
+        Connection connection = getConnection();
 
-        try (connection;
+        try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(FIND_ALL_EVENT_RESULTS_BY_EVENT_ID)) {
             ps.setInt(1, eventId);
             return getEvents(ps);
@@ -77,11 +82,9 @@ public class EventResultDaoImpl implements EventResultDao {
 
     @Override
     public Optional<EventResult> findEventResultById(int eventResultId) throws DaoException {
-        Connection connection = transactionConnection == null
-                ? ConnectionPool.INSTANCE.getConnection()
-                : transactionConnection;
+        Connection connection = getConnection();
 
-        try (connection;
+        try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(FIND_EVENT_RESULTS_BY_ID)) {
             ps.setInt(1, eventResultId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -99,11 +102,9 @@ public class EventResultDaoImpl implements EventResultDao {
 
     @Override
     public int createEventResult(EventResult eventResult) throws DaoException {
-        Connection connection = transactionConnection == null
-                ? ConnectionPool.INSTANCE.getConnection()
-                : transactionConnection;
+        Connection connection = getConnection();
 
-        try (connection;
+        try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(CREATE_EVENT_RESULT)) {
             ps.setInt(1, eventResult.getEventId());
             ps.setInt(2, eventResult.getEventOutcomeType().getId());
@@ -120,11 +121,9 @@ public class EventResultDaoImpl implements EventResultDao {
 
     @Override
     public void updateEventResult(EventResult eventResult) throws DaoException {
-        Connection connection = transactionConnection == null
-                ? ConnectionPool.INSTANCE.getConnection()
-                : transactionConnection;
+        Connection connection = getConnection();
 
-        try (connection;
+        try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(UPDATE_EVENT_RESULT)) {
             ps.setInt(1, eventResult.getEventId());
             ps.setInt(2, eventResult.getEventOutcomeType().getId());
@@ -138,11 +137,9 @@ public class EventResultDaoImpl implements EventResultDao {
 
     @Override
     public void deleteEventResult(int eventResultId) throws DaoException {
-        Connection connection = transactionConnection == null
-                ? ConnectionPool.INSTANCE.getConnection()
-                : transactionConnection;
+        Connection connection = getConnection();
 
-        try (connection;
+        try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(DELETE_EVENT_RESULT)) {
             ps.setInt(1, eventResultId);
             ps.executeUpdate();

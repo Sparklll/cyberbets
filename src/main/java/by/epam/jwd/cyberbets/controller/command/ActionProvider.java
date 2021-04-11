@@ -1,9 +1,6 @@
 package by.epam.jwd.cyberbets.controller.command;
 
-import by.epam.jwd.cyberbets.controller.command.impl.admin.event.DeleteEvent;
-import by.epam.jwd.cyberbets.controller.command.impl.admin.event.InsertEvent;
-import by.epam.jwd.cyberbets.controller.command.impl.admin.event.LoadEvent;
-import by.epam.jwd.cyberbets.controller.command.impl.admin.event.UpdateEvent;
+import by.epam.jwd.cyberbets.controller.command.impl.admin.event.*;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.league.DeleteLeague;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.league.InsertLeague;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.league.LoadLeague;
@@ -27,6 +24,7 @@ public enum ActionProvider {
     private final Map<String, Action> actions = new HashMap<>();
 
     private ActionProvider() {
+        actions.put(LOAD_EVENT_RESULTS, new LoadEventResults());
         actions.put(LOAD_EVENT_ACTION, new LoadEvent());
         actions.put(INSERT_EVENT_ACTION, new InsertEvent());
         actions.put(UPDATE_EVENT_ACTION, new UpdateEvent());

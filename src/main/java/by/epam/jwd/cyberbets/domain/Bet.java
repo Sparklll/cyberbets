@@ -11,23 +11,23 @@ public class Bet extends Entity {
     private static final long serialVersionUID = -848437283670389073L;
 
     private int accountId;
-    private EventResult eventResult;
+    private int eventResultId;
     private Upshot upshot;
     private BigDecimal amount;
     private Instant date;
 
-    public Bet(int accountId, EventResult eventResult, Upshot upshot, BigDecimal amount, Instant date) {
+    public Bet(int accountId, int eventResultId, Upshot upshot, BigDecimal amount, Instant date) {
         this.accountId = accountId;
-        this.eventResult = eventResult;
+        this.eventResultId = eventResultId;
         this.upshot = upshot;
         this.amount = amount;
         this.date = date;
     }
 
-    public Bet(int id, int accountId, EventResult eventResult, Upshot upshot, BigDecimal amount, Instant date) {
+    public Bet(int id, int accountId, int eventResultId, Upshot upshot, BigDecimal amount, Instant date) {
         super(id);
         this.accountId = accountId;
-        this.eventResult = eventResult;
+        this.eventResultId = eventResultId;
         this.upshot = upshot;
         this.amount = amount;
         this.date = date;
@@ -41,12 +41,12 @@ public class Bet extends Entity {
         this.accountId = accountId;
     }
 
-    public EventResult getEventResult() {
-        return eventResult;
+    public int getEventResultId() {
+        return eventResultId;
     }
 
-    public void setEventResult(EventResult eventResult) {
-        this.eventResult = eventResult;
+    public void setEventResultId(int eventResultId) {
+        this.eventResultId = eventResultId;
     }
 
     public Upshot getUpshot() {
@@ -79,7 +79,7 @@ public class Bet extends Entity {
         if (o == null || getClass() != o.getClass()) return false;
         Bet bet = (Bet) o;
         return accountId == bet.accountId
-                && Objects.equals(eventResult, bet.eventResult)
+                && eventResultId == bet.eventResultId
                 && upshot == bet.upshot
                 && Objects.equals(amount, bet.amount)
                 && Objects.equals(date, bet.date);
@@ -87,14 +87,14 @@ public class Bet extends Entity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountId, eventResult, upshot, amount, date);
+        return Objects.hash(accountId, eventResultId, upshot, amount, date);
     }
 
     @Override
     public String toString() {
         return "Bet{" +
                 "accountId=" + accountId +
-                ", eventResult=" + eventResult +
+                ", eventResultId=" + eventResultId +
                 ", upshot=" + upshot +
                 ", amount=" + amount +
                 ", date=" + date +

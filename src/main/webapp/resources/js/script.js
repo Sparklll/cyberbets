@@ -220,7 +220,7 @@ $(document).ready(function () {
                 {
                     type: "control",
                     editButton: false,
-                    deleteButton: false,
+                    deleteButton: true,
                     clearFilterButton: true,
                     modeSwitchButton: true,
                     width: 50,
@@ -300,19 +300,27 @@ $(document).ready(function () {
 
                 deleteItem: function (item) {
                     let d = $.Deferred();
-                    return $.ajax({
+                    $.ajax({
                         type: "POST",
                         url: ACTION_URL,
                         data: JSON.stringify(Object.assign({}, {"action": "deleteEvent"}, item))
                     }).done(function (response) {
-                        notify('success', 'Success', 'Event was successfully deleted.');
-                        d.resolve(item);
+                        if (response.status === 'ok') {
+                            notify('success', 'Success', 'Event was successfully deleted.');
+                            d.resolve();
+                        } else if (response.status === 'deny') {
+                            notify('warning', 'Warning', 'Incorrect data was sent!');
+                            d.reject();
+                        } else if (response.status === 'exception') {
+                            notify('error', 'Error', 'There was an error deleting the event!');
+                            d.reject();
+                        }
                     }).fail(function () {
                         notify('error', 'Error', 'There was an error deleting the Event!');
                         d.reject();
                     });
                     return d.promise();
-                },
+                }
             },
 
             width: "100%",
@@ -326,6 +334,20 @@ $(document).ready(function () {
             sorting: true,
             paging: true,
             pageLoading: false,
+            confirmDeleting: false,
+
+            onItemDeleting: function (args) {
+                if (!args.item.deleteConfirmed) {
+                    args.cancel = true;
+                    $('#confirmModal').modal('show');
+                    $('#confirmModal #deleteButton').off('click').on('click', function () {
+                        args.item.deleteConfirmed = true;
+                        $('#eventsGrid').jsGrid('deleteItem', args.item).then(function () {
+                            $('#confirmModal').modal('hide');
+                        });
+                    });
+                }
+            },
 
             rowClick: function (args) {
                 // TODO: Add i18n
@@ -380,6 +402,45 @@ $(document).ready(function () {
                 $('#eventRoyalty').val(event.royaltyPercentage);
 
                 $('.selectpicker').selectpicker('refresh');
+
+                postData(ACTION_URL, {
+                    "action" : "loadEventResults",
+                    "id" : event.id
+                }).then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        return Promise.reject(response);
+                    }
+                ).then(function (response) {
+                    response.data.forEach(eventResult => {
+                        let eventOutcomeTemplate = $($("#eventOutcomeTemplate").html());
+                        let eventOutcomeType = eventResult.eventOutcomeType;
+
+                        eventOutcomeTemplate.attr('data-type', eventOutcomeType);
+                        eventOutcomeTemplate.find('label[for=firstUpshot]').text(event.firstTeam.teamName);
+                        eventOutcomeTemplate.find('label[for=secondUpshot]').text(event.secondTeam.teamName);
+
+                        eventOutcomeTemplate.find(':input:radio').each(function (index, item) {
+                            $(item).attr({
+                                'id': $(this).attr('id') + eventOutcomeType,
+                                'name': eventOutcomeType,
+                            });
+                        });
+                        eventOutcomeTemplate
+                            .find(`:input:radio[value=${eventResult.resultStatus}]`)
+                            .prop('checked', true);
+                        eventOutcomeTemplate.find('label').each(function (index, item) {
+                            $(item).attr('for', $(this).attr('for') + eventOutcomeType);
+                        });
+                        eventOutcomeTemplate.find('.outcome-type-name').text(
+                            eventOutcome.find(eo => eo.Id == eventOutcomeType).Name
+                        );
+
+                        $('#eventModal #eventOutcomeCollapse .accordion-body').append(eventOutcomeTemplate);
+                        }
+                    );
+                }).catch((error) => console.log('Something went wrong.', error));
             },
 
             pageIndex: 1,
@@ -622,7 +683,7 @@ $(document).ready(function () {
                 && (royalty >= 0 && royalty <= 100)
             ) {
 
-                let eventResults = new Array();
+                let eventResults = [];
                 $('#eventOutcomeCollapse .accordion-body .event-outcome').each(function () {
                     let eventOutcomeType = $(this).data('type').toString();
                     let resultStatus = $(this).find('input:radio:checked').val();
@@ -660,7 +721,6 @@ $(document).ready(function () {
             }
         });
     }
-
 
     if ($('#leaguesGrid').length > 0) {
         $('#leaguesGrid').jsGrid({
