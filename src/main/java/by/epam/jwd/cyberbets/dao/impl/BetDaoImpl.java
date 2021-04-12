@@ -34,6 +34,11 @@ public class BetDaoImpl implements BetDao {
     private static final String GET_TOTAL_AMOUNT_OF_BETS = """
             select coalesce(sum(amount), 0) as total_amount
             from bet
+            where event_result_id = ?
+            """;
+    private static final String GET_TOTAL_AMOUNT_OF_BETS_FOR_UPSHOT = """
+            select coalesce(sum(amount), 0) as total_amount
+            from bet
             where event_result_id = ? and upshot_type_id = ?
             """;
     private static final String CREATE_BET = "insert into bet (account_id, event_result_id, amount, date, upshot_type_id) values (?, ?, ?, ?, ?) returning id";
@@ -137,11 +142,27 @@ public class BetDaoImpl implements BetDao {
     }
 
     @Override
-    public BigDecimal getTotalAmountOfBets(int eventResultId, Upshot upshot) throws DaoException {
+    public BigDecimal getTotalAmountOfBets(int eventResultId) throws DaoException {
         Connection connection = getConnection();
 
         try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(GET_TOTAL_AMOUNT_OF_BETS)) {
+            ps.setInt(1, eventResultId);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getBigDecimal(TOTAL_AMOUNT);
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public BigDecimal getTotalAmountOfBetsForUpshot(int eventResultId, Upshot upshot) throws DaoException {
+        Connection connection = getConnection();
+
+        try (Connection connectionResource = isTransactional ? null : connection;
+             PreparedStatement ps = connection.prepareStatement(GET_TOTAL_AMOUNT_OF_BETS_FOR_UPSHOT)) {
             ps.setInt(1, eventResultId);
             ps.setInt(2, upshot.getId());
             try (ResultSet rs = ps.executeQuery()) {

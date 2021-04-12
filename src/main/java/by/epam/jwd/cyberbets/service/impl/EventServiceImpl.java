@@ -6,10 +6,12 @@ import by.epam.jwd.cyberbets.dao.impl.DaoProvider;
 import by.epam.jwd.cyberbets.dao.impl.EventManager;
 import by.epam.jwd.cyberbets.domain.Event;
 import by.epam.jwd.cyberbets.domain.EventResult;
+import by.epam.jwd.cyberbets.domain.EventStatus;
 import by.epam.jwd.cyberbets.domain.dto.EventDto;
 import by.epam.jwd.cyberbets.service.EventService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,9 +33,36 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Event> findAllEventsByStatus(EventStatus eventStatus) throws ServiceException {
+        try {
+            return eventDao.findAllEventsByStatus(eventStatus);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public List<Event> findAllEventsByStatus(EventStatus eventStatus, int limit) throws ServiceException {
+        try {
+            return eventDao.findAllEventsByStatus(eventStatus, limit);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public Optional<Event> findEventById(int eventId) throws ServiceException {
         try {
             return eventDao.findEventById(eventId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<BigDecimal> findRoyaltyByEventId(int eventId) throws ServiceException {
+        try {
+            return eventDao.findRoyaltyByEventId(eventId);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

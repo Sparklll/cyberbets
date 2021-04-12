@@ -225,7 +225,7 @@
                                             <div class="mb-3 col-12">
                                                 <label for="eventRoyalty" class="form-label">Royalty</label>
                                                 <input id="eventRoyalty" class="form-control" type="number" value="5"
-                                                       min="0" max="100">
+                                                       min="0" max="20" step="0.1">
                                             </div>
                                         </form>
                                     </div>

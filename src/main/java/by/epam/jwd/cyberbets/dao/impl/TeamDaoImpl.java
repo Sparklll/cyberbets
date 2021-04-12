@@ -24,20 +24,8 @@ public class TeamDaoImpl implements TeamDao {
             inner join discipline d on d.id = t.discipline_id
             inner join resource r on r.id = t.logo_resource_id
             """;
-    private static final String FIND_TEAM_BY_ID = """
-            select t.id, t.name, t.rating, t.discipline_id, t.logo_resource_id, r.path
-            from team t
-            inner join discipline d on d.id = t.discipline_id
-            inner join resource r on r.id = t.logo_resource_id
-            where t.id = ?
-            """;
-    private static final String FIND_TEAM_BY_NAME = """
-            select t.id, t.name, t.rating, t.discipline_id, t.logo_resource_id, r.path
-            from team t
-            inner join discipline d on d.id = t.discipline_id
-            inner join resource r on r.id = t.logo_resource_id
-            where t.name = ?
-            """;
+    private static final String FIND_TEAM_BY_ID = FIND_ALL_TEAMS.concat(" where t.id = ?");
+    private static final String FIND_TEAM_BY_NAME = FIND_ALL_TEAMS.concat(" where t.name = ?");
 
     private static final String FIND_LOGO_RESOURCE_BY_TEAM_ID = """
             select r.id, r.path

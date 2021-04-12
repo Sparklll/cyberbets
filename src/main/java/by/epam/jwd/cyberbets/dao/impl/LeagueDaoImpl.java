@@ -25,20 +25,8 @@ public class LeagueDaoImpl implements LeagueDao {
             inner join discipline d on d.id = l.discipline_id
             inner join resource r on r.id = l.icon_resource_id
             """;
-    private static final String FIND_LEAGUE_BY_ID = """
-            select l.id, l.name, l.discipline_id, l.icon_resource_id, r.path
-            from league l
-            inner join discipline d on d.id = l.discipline_id
-            inner join resource r on r.id = l.icon_resource_id
-            where l.id = ?
-            """;
-    private static final String FIND_LEAGUE_BY_NAME = """
-            select l.id, l.name, l.discipline_id, l.icon_resource_id, r.path
-            from league l
-            inner join discipline d on d.id = l.discipline_id
-            inner join resource r on r.id = l.icon_resource_id
-            where  l.name = ?
-            """;
+    private static final String FIND_LEAGUE_BY_ID = FIND_ALL_LEAGUES.concat(" where l.id = ?");
+    private static final String FIND_LEAGUE_BY_NAME = FIND_ALL_LEAGUES.concat(" where  l.name = ?");
     private static final String FIND_ICON_RESOURCE_BY_LEAGUE_ID = """
             select r.id, r.path
             from league l

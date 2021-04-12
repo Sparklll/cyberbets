@@ -1,5 +1,6 @@
 $(document).ready(function () {
     const lang = ['de', 'en', 'fr', 'ru'];
+    const discipline = ['csgo', 'dota2','lol','valorant'];
     const DEFAULT_LANG = 'en';
     const ACTION_URL = "/action/"
 
@@ -34,6 +35,47 @@ $(document).ready(function () {
 
     function reloadPage() {
         window.location.href = window.location.pathname;
+    }
+
+    function reloadDisciplineFilter() {
+        let disciplineCookie = getCookie('discipline_filter');
+        $('.discipline').removeClass('active');
+
+        if(disciplineCookie !== undefined)  {
+            let selectedDisciplines = disciplineCookie.split('|');
+            selectedDisciplines.forEach(d => {
+                if(discipline.includes(d)) {
+                    $(`.discipline[data-discipline='${d}']`).addClass('active');
+                }
+            });
+        } else {
+            setCookie("discipline_filter", discipline.join('|'), 365)
+            $('.discipline').each(function() {
+                $(this).addClass('active');
+            });
+        }
+    }
+
+    function loadEventsSection() {
+        $.get('/loadEventSection/', function (responseXml) {
+            $('#liveEvents .events').html($(responseXml).find('#liveEvents .events').html()).fadeIn(200);
+            $('#upcomingEvents .events').html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(200);
+            $('#pastEvents .events').html($(responseXml).find('#pastEvents .events').html()).fadeIn(200);
+        });
+    }
+
+    function reloadEventsSection() {
+        $.get('/loadEventSection/', function (responseXml) {
+            $('#liveEvents .events').fadeOut(300, function () {
+                $(this).html($(responseXml).find('#liveEvents .events').html());
+            }).fadeIn(300);
+            $('#upcomingEvents .events').fadeOut(300, function () {
+                $(this).html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(300);
+            });
+            $('#pastEvents .events').fadeOut(300, function () {
+                $(this).html($(responseXml).find('#pastEvents .events').html()).fadeIn(300);
+            });
+        });
     }
 
     async function postData(url = '', data = {}) {
@@ -108,7 +150,8 @@ $(document).ready(function () {
             {Name: "[Map #1] Victory on the map", Discipline: "all", Format: 1, Id: 2},
             {Name: "[Map #2] Victory on the map", Discipline: "all", Format: 2, Id: 3},
             {Name: "[Map #3] Victory on the map", Discipline: "all", Format: 3, Id: 4},
-            {Name: "[Map #5] Victory on the map", Discipline: "all", Format: 4, Id: 5},
+            {Name: "[Map #4] Victory on the map", Discipline: "all", Format: 4, Id: 5},
+            {Name: "[Map #5] Victory on the map", Discipline: "all", Format: 4, Id: 6},
 
             // csgo
             // dota2
@@ -688,6 +731,9 @@ $(document).ready(function () {
                     let eventOutcomeType = $(this).data('type').toString();
                     let resultStatus = $(this).find('input:radio:checked').val();
                     let result = new Result(eventOutcomeType, resultStatus);
+                    if(isEventEditing) {
+                        result.eventId = editingItem.id;
+                    }
                     eventResults.push(result);
                 });
 
@@ -1451,16 +1497,40 @@ $(document).ready(function () {
     }
 
     if ($('.discipline-filter').length > 0) {
+        reloadDisciplineFilter();
+
         $('.discipline').off('click').click(function () {
+            let disciplineCookie = getCookie('discipline_filter');
+            let selectedDisciplines = disciplineCookie.split('|').filter(e => e);
+
             if ($(this).hasClass('active')) {
-                $(this).removeClass('active');
-                if ($('.discipline-filter .discipline.active').length == 0) {
-                    $('.discipline').first().addClass('active');
+                let filterToRemove = $(this).attr('data-discipline');
+                let filterToRemoveIndex = selectedDisciplines.indexOf(filterToRemove);
+
+                if(filterToRemoveIndex != null) {
+                   selectedDisciplines.splice(filterToRemoveIndex, 1);
+                }
+
+                if (selectedDisciplines.length == 0) {
+                    let filterToAdd = $('.discipline').first().attr('data-discipline');
+                    if(!selectedDisciplines.includes(filterToAdd)) {
+                        selectedDisciplines = selectedDisciplines.concat(filterToAdd);
+                    }
                 }
             } else {
-                $(this).addClass('active');
+                let filterToAdd = $(this).attr('data-discipline');
+                if(!selectedDisciplines.includes(filterToAdd)) {
+                    selectedDisciplines = selectedDisciplines.concat(filterToAdd);
+                }
             }
+            setCookie("discipline_filter", selectedDisciplines.join('|'), 365);
+            reloadDisciplineFilter();
+            reloadEventsSection();
         });
+    }
+
+    if($('#eventsContainer').length > 0) {
+        loadEventsSection();
     }
 
     if ($('.timezone-select').length > 0) {

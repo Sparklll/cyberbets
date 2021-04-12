@@ -10,7 +10,8 @@ public enum EventOutcomeType {
     @SerializedName("2") MAP1_WINNER(2),
     @SerializedName("3") MAP2_WINNER(3),
     @SerializedName("4") MAP3_WINNER(4),
-    @SerializedName("5") MAP5_WINNER(5);
+    @SerializedName("5") MAP4_WINNER(5),
+    @SerializedName("6") MAP5_WINNER(6);
 
     // SPECIFIC \\
     // CS:GO

@@ -8,6 +8,8 @@ import by.epam.jwd.cyberbets.domain.dto.EventDto;
 import java.math.BigDecimal;
 
 public class EventValidator implements Validator<EventDto> {
+    private static final BigDecimal MAX_ROYALTY = new BigDecimal("20");
+
     @Override
     public boolean isValid(EventDto eventDto) {
         return  isDisciplineIdValid(eventDto.disciplineId())
@@ -29,6 +31,6 @@ public class EventValidator implements Validator<EventDto> {
     }
 
     private boolean isRoyaltyValid(BigDecimal royalty) {
-        return royalty.doubleValue() >=0 && royalty.doubleValue() <= 100;
+        return royalty.compareTo(MAX_ROYALTY) <= 0;
     }
 }

@@ -60,10 +60,9 @@
     </div>
 </div>
 
-<div class="events container mb-5">
+<div id="eventsContainer" class="events container mb-5">
     <div class="row">
         <div class="col-12 wrapper">
-
             <nav>
                 <div class="nav nav-tabs" id="eventsTab" role="tablist">
                     <button class="nav-link col-6 col-lg-3 active" id="currentEventsTab" data-bs-toggle="tab"
@@ -87,74 +86,34 @@
                 <div class="tab-pane fade show active" id="currentEvents" role="tabpanel"
                      aria-labelledby="currentEventsTab">
                     <div id="liveEvents" class="mb-4">
-                        <div class="live-label text-uppercase text-center mt-1 mb-1 p-2"><fmt:message key="events.container.live_label"/></div>
-
-
-                        <div class="event mb-3" data-id="">
-                            <div class="event-header d-flex align-items-center">
-                                <span class="date ms-1">20.02.2021</span>
-                                <span class="date ms-1 text-uppercase live"><i class="fas fa-circle me-1"></i>Live</span>
-                                <img src="assets/event-icon2.png" class="event-icon ms-auto me-1">
-                                <span class="league-name float-end me-1">Faceit Pro League</span>
-                            </div>
-                            <div class="event-info d-flex">
-
-                                <div class="team team-left d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
-                                    <div class="d-flex flex-column justify-content-center align-items-center col-6">
-                                        <span class="team-name">Liquid</span>
-                                        <span class="odds m-2"><i>x</i>1.8</span>
-                                    </div>
-                                    <div class="team-logo ms-sm-2">
-                                        <img src="assets/team-2.png">
-                                    </div>
-                                </div>
-
-
-                                <div class="center d-flex flex-column flex-sm-row col-4 justify-content-center align-items-center">
-                                    <div class="left-percent d-flex col-4 justify-content-center">
-                                        <span class="odds-percentage">40%</span>
-
-                                    </div>
-
-                                    <div class="event-format d-flex flex-column col-4 justify-content-center align-items-center">
-                                        <img class="discipline-icon" src="assets/disciplines/csgo_icon.png">
-                                        <span>BO1</span>
-                                    </div>
-
-                                    <div class="right-percent d-flex col-4 justify-content-center">
-                                        <span class="odds-percentage">60%</span>
-                                    </div>
-                                </div>
-
-
-                                <div class="team team-right d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
-                                    <div class="d-flex flex-column justify-content-center align-items-center col-6">
-                                        <span class="team-name">Astralis</span>
-                                        <span class="odds m-2"><i>x</i>1.8</span>
-                                    </div>
-                                    <div class="team-logo order-last order-sm-first me-sm-2">
-                                        <img src="assets/team-1.png">
-                                    </div>
-                                </div>
-                            </div>
-
+                        <div class="live-label text-uppercase text-center mt-1 mb-1 p-2">
+                            <fmt:message key="events.container.live_label"/>
+                        </div>
+                        <div class="events" style="display: none">
 
                         </div>
+                    </div>
+                    <div id="upcomingEvents">
+                        <div class="upcoming-label text-uppercase text-center mt-5 mb-1 p-2">
+                            <fmt:message key="events.container.upcoming_label"/>
+                        </div>
 
-
-                        <div id="upcomingEvents">
-                            <div class="upcoming-label text-uppercase text-center mt-5 mb-1 p-2"><fmt:message key="events.container.upcoming_label"/></div>
+                        <div class="events" style="display: none;">
 
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="pastEvents" role="tabpanel" aria-labelledby="pastEventsTab">
+                    <div class="events" style="display: none">
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 <jsp:include page="general/footer.jsp"/>
 

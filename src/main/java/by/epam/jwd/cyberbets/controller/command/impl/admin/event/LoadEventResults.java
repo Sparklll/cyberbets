@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,7 @@ public final class LoadEventResults implements Action {
                     Double eventId = (Double) jsonMap.get(ID_PARAM);
                     if (eventId != null) {
                         List<EventResult> eventResults = eventResultService.findAllByEventId(eventId.intValue());
+                        eventResults.sort(Comparator.comparing(EventResult::getId));
                         JsonElement eventResultsElement = new Gson().toJsonTree(eventResults);
 
                         jsonResponse.add(DATA_PROPERTY, eventResultsElement);

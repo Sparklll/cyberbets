@@ -85,6 +85,24 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public void addToAccountBalance(int accountId, BigDecimal amount) throws ServiceException {
+        try {
+            accountDao.addToAccountBalance(accountId, amount);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void subtractFromAccountBalance(int accountId, BigDecimal amount) throws ServiceException {
+        try {
+            accountDao.subtractFromAccountBalance(accountId, amount);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public boolean isAuthorizationValid(LoginDto loginDto) throws ServiceException {
         String loginDtoEmail = loginDto.email();
         String loginDtoPassword = loginDto.password();
