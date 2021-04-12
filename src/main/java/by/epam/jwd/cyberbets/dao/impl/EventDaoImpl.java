@@ -83,6 +83,7 @@ public class EventDaoImpl implements EventDao {
                 status = ?
             where id = ?
             """;
+    private static final String UPDATE_EVENT_STATUS = "update event set status = ? where id = ?";
     private static final String DELETE_EVENT = "delete from event where id = ?";
 
     EventDaoImpl() {
@@ -240,6 +241,20 @@ public class EventDaoImpl implements EventDao {
             ps.setBigDecimal(7, eventDto.royalty());
             ps.setInt(8, eventDto.eventStatusId());
             ps.setInt(9, eventDto.eventId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public void updateEventStatus(int eventId, int newStatusId) throws DaoException {
+        Connection connection = getConnection();
+
+        try (Connection connectionResource = isTransactional ? null : connection;
+             PreparedStatement ps = connection.prepareStatement(UPDATE_EVENT_STATUS)) {
+            ps.setInt(1, newStatusId);
+            ps.setInt(2, eventId);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);

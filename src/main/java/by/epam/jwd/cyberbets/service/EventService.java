@@ -18,6 +18,7 @@ public interface EventService {
     Optional<BigDecimal> findRoyaltyByEventId(int eventId) throws ServiceException;
     int createEvent(EventDto eventDto, List<EventResult> eventResults) throws ServiceException;
     void updateEvent(EventDto eventDto, List<EventResult> eventResults) throws ServiceException;
+    void updateEventStatus(int eventId, EventStatus newStatus) throws ServiceException;
     void deleteEvent(int eventId) throws ServiceException;
 }
 

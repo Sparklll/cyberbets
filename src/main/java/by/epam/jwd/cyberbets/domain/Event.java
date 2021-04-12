@@ -1,7 +1,5 @@
 package by.epam.jwd.cyberbets.domain;
 
-import com.google.gson.annotations.Expose;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;

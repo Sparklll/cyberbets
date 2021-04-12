@@ -1,15 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib uri="http://cyberbets.com/jsp/tlds/datetime" prefix="datetime" %>
 <%@ page session="false" %>
 
 <c:set var="lang" value="${cookie['lang'].getValue()}"/>
 <fmt:setLocale value="${empty lang ? 'default' : lang}" scope="request"/>
 
-<c:set var = "csgoIcon" value = "/resources/assets/disciplines/csgo_icon.png"/>
-<c:set var = "dota2Icon" value = "/resources/assets/disciplines/dota2_icon.png"/>
-<c:set var = "lolIcon" value = "/resources/assets/disciplines/lol_icon.png"/>
-<c:set var = "valorantIcon" value = "/resources/assets/disciplines/valorant_icon.jpg"/>
+<c:set var="csgoIcon" value="/resources/assets/disciplines/csgo_icon.png"/>
+<c:set var="dota2Icon" value="/resources/assets/disciplines/dota2_icon.png"/>
+<c:set var="lolIcon" value="/resources/assets/disciplines/lol_icon.png"/>
+<c:set var="valorantIcon" value="/resources/assets/disciplines/valorant_icon.jpg"/>
 
 
 <div class="tab-content" id="eventsTabContent">
@@ -24,9 +25,10 @@
                 <c:forEach items="${liveEvents}" var="eventData">
                     <div class="event mb-3" data-id="${eventData.event.id}">
                         <div class="event-header d-flex align-items-center">
-                            <span class="date ms-1">${eventData.event.startDate}</span>
-                            <span class="date ms-1 text-uppercase live"><i
-                                    class="fas fa-circle me-1"></i>Live</span>
+                            <span class="date ms-1">
+                                <datetime:format value="${eventData.event.startDate}" pattern="EEE, dd MMM YYYY HH:mm" locale="${locale}"/>
+                            </span>
+                            <img class="ms-2" src="/resources/assets/live.png" width="50">
                             <img src="${eventData.event.league.iconResource.path}" class="league-icon ms-auto me-1">
                             <span class="league-name float-end me-1">${eventData.event.league.name}</span>
                         </div>
@@ -35,7 +37,7 @@
                             <div class="team team-left d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                                 <div class="d-flex flex-column justify-content-center align-items-center col-6">
                                     <span class="team-name">${eventData.event.firstTeam.name}</span>
-                                    <span class="odds m-2"><i>x</i>1.8</span>
+                                    <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.firstUpshotOdds}</span>
                                 </div>
                                 <div class="team-logo ms-sm-2">
                                     <img src="${eventData.event.firstTeam.logoResource.path}">
@@ -45,7 +47,7 @@
 
                             <div class="center d-flex flex-column flex-sm-row col-4 justify-content-center align-items-center">
                                 <div class="left-percent d-flex col-4 justify-content-center">
-                                    <span class="odds-percentage">40%</span>
+                                    <span class="odds-percentage">${eventData.totalCoefficients.firstUpshotPercent}%</span>
 
                                 </div>
 
@@ -80,7 +82,7 @@
                                 </div>
 
                                 <div class="right-percent d-flex col-4 justify-content-center">
-                                    <span class="odds-percentage">60%</span>
+                                    <span class="odds-percentage">${eventData.totalCoefficients.secondUpshotPercent}%</span>
                                 </div>
                             </div>
 
@@ -88,7 +90,7 @@
                             <div class="team team-right d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                                 <div class="d-flex flex-column justify-content-center align-items-center col-6">
                                     <span class="team-name">${eventData.event.secondTeam.name}</span>
-                                    <span class="odds m-2"><i>x</i>1.8</span>
+                                    <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.secondUpshotOdds}</span>
                                 </div>
                                 <div class="team-logo order-last order-sm-first me-sm-2">
                                     <img src="${eventData.event.secondTeam.logoResource.path}">

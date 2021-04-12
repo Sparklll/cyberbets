@@ -310,31 +310,20 @@ img {
     border-radius: 5px 5px 0 0;
 }
 
-.event .event-header .league-icon {
+.event-header .league-icon {
     max-width: 35px;
 }
 
-.event .event-header .live {
-    font-size: 0.8rem;
+.event-header .live {
     animation: blinkingLive 3s infinite ease-in-out;
 }
 
 @keyframes blinkingLive {
-    0% {
-        color: rgba(255, 0, 0, 0.8);
-    }
-    25% {
-        color: rgba(255, 0, 0, 0.6);
-    }
-    50% {
-        color: rgba(255, 0, 0, 0.4);
-    }
-    75% {
-        color: rgba(255, 0, 0, 0.6);
-    }
-    100% {
-        color: rgba(255, 0, 0, 0.8);
-    }
+    0%   {opacity: 1;}
+    25%  {opacity: 0.8;}
+    50%  {opacity: 0.4;}
+    75%  {opacity: 0.8;}
+    100% {opacity: 1;}
 }
 
 .live-label, .upcoming-label {

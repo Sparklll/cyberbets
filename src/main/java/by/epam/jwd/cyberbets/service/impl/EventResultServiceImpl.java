@@ -7,7 +7,7 @@ import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.dao.impl.DaoProvider;
 import by.epam.jwd.cyberbets.domain.Bet.Upshot;
 import by.epam.jwd.cyberbets.domain.EventResult;
-import by.epam.jwd.cyberbets.domain.dto.EventResultCoefficientsDto;
+import by.epam.jwd.cyberbets.domain.dto.CoefficientsDto;
 import by.epam.jwd.cyberbets.service.EventResultService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import by.epam.jwd.cyberbets.utils.CoefficientCalculator;
@@ -53,12 +53,22 @@ public class EventResultServiceImpl implements EventResultService {
     }
 
     @Override
-    public Optional<EventResultCoefficientsDto> receiveEventResultCoefficients(int eventResultId) throws ServiceException {
+    public List<Integer> findAllEventResultIdsByEventId(int eventId) throws ServiceException {
+        try {
+            return eventResultDao.findAllEventResultIdsByEventId(eventId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<CoefficientsDto> receiveEventResultCoefficients(int eventResultId) throws ServiceException {
         try {
             Optional<EventResult> eventResultOptional = findEventResultById(eventResultId);
             if (eventResultOptional.isPresent()) {
                 EventResult eventResult = eventResultOptional.get();
                 int eventId = eventResult.getEventId();
+                int eventOutcomeTypeId = eventResult.getEventOutcomeType().getId();
 
                 BigDecimal eventRoyalty = eventDao.findRoyaltyByEventId(eventId).get();
                 BigDecimal totalBetsAmount = betDao.getTotalAmountOfBets(eventResultId);
@@ -70,7 +80,8 @@ public class EventResultServiceImpl implements EventResultService {
                 BigDecimal firstUpshotPercent = CoefficientCalculator.calculateUpshotPercent(totalBetsAmount, firstUpshotBetsAmount);
                 BigDecimal secondUpshotPercent = CoefficientCalculator.calculateUpshotPercent(totalBetsAmount, secondUpshotBetsAmount);
 
-                return Optional.of(new EventResultCoefficientsDto(firstUpshotOdds, firstUpshotPercent, secondUpshotOdds, secondUpshotPercent));
+                return Optional.of(new CoefficientsDto(eventResultId, eventOutcomeTypeId, firstUpshotOdds,
+                        firstUpshotPercent, secondUpshotOdds, secondUpshotPercent));
             } else {
                 return Optional.empty();
             }

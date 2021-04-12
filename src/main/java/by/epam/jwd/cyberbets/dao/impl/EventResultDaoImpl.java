@@ -23,6 +23,7 @@ public class EventResultDaoImpl implements EventResultDao {
 
     private static final String FIND_ALL_EVENT_RESULTS = "select * from event_result";
     private static final String FIND_ALL_EVENT_RESULTS_BY_EVENT_ID = "select * from event_result where event_id = ?";
+    private static final String FIND_ALL_EVENT_RESULT_IDS_BY_EVENT_ID = "select id from event_result where event_id = ?";;
     private static final String FIND_EVENT_RESULTS_BY_ID = "select * from event_result where id = ?";
     private static final String CREATE_EVENT_RESULT = "insert into event_result (event_id, outcome_type_id, result_status_id) values (?, ?, ?) returning id";
     private static final String UPDATE_EVENT_RESULT = "update event_result set event_id = ?, outcome_type_id = ?, result_status_id = ? where id = ?";
@@ -64,6 +65,26 @@ public class EventResultDaoImpl implements EventResultDao {
              PreparedStatement ps = connection.prepareStatement(FIND_ALL_EVENT_RESULTS_BY_EVENT_ID)) {
             ps.setInt(1, eventId);
             return getEvents(ps);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Integer> findAllEventResultIdsByEventId(int eventId) throws DaoException {
+        Connection connection = getConnection();
+
+        try (Connection connectionResource = isTransactional ? null : connection;
+             PreparedStatement ps = connection.prepareStatement(FIND_ALL_EVENT_RESULT_IDS_BY_EVENT_ID)) {
+            List<Integer> eventResultIds = new ArrayList<>();
+            ps.setInt(1, eventId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Integer eventResultId = rs.getInt(ID);
+                    eventResultIds.add(eventResultId);
+                }
+            }
+            return eventResultIds;
         } catch (SQLException e) {
             throw new DaoException(e);
         }

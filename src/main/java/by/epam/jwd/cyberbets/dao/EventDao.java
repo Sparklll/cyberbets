@@ -17,5 +17,6 @@ public interface EventDao {
     Optional<BigDecimal> findRoyaltyByEventId(int eventId) throws DaoException;
     int createEvent(EventDto eventDto) throws DaoException;
     void updateEvent(EventDto eventDto) throws DaoException;
+    void updateEventStatus(int eventId, int newStatusId) throws DaoException;
     void deleteEvent(int eventId) throws DaoException;
 }

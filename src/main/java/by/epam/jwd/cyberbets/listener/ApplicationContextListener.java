@@ -1,6 +1,9 @@
 package by.epam.jwd.cyberbets.listener;
 
 import by.epam.jwd.cyberbets.dao.connection.ConnectionPool;
+import by.epam.jwd.cyberbets.service.job.LoadCoefficientsJob;
+import by.epam.jwd.cyberbets.service.job.LoadEventJob;
+import by.epam.jwd.cyberbets.service.job.UpdateEventStatusJob;
 import by.epam.jwd.cyberbets.utils.ResourceManager;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
@@ -13,6 +16,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @WebListener
 public class ApplicationContextListener implements ServletContextListener {
@@ -20,12 +26,20 @@ public class ApplicationContextListener implements ServletContextListener {
 
     private static final String WEBAPP_APPLICATION_RESOURCES_PATH = "/resources/application";
 
+    private ScheduledExecutorService scheduler;
+
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
 
         ConnectionPool connectionPool = ConnectionPool.INSTANCE;
         logger.info("Connection pool was successfully initialized");
+
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(new LoadEventJob(), 0, 30, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(new LoadCoefficientsJob(),0, 10, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(new UpdateEventStatusJob(),0, 1, TimeUnit.MINUTES);
+
 
         Path applicationResourcesSourcePath = Path.of(servletContext.getInitParameter("APP_RESOURCES_SOURCE_PATH"));
         Path webappApplicationResourcesPath = Path.of(servletContext.getRealPath(WEBAPP_APPLICATION_RESOURCES_PATH));
@@ -49,6 +63,7 @@ public class ApplicationContextListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
 
+        scheduler.shutdown();
         ConnectionPool.INSTANCE.destroyPool();
         logger.info("Connection pool was successfully destroyed");
 

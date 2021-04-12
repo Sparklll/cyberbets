@@ -47,6 +47,7 @@ public final class Parameters {
     public static final String DATA_PROPERTY = "data";
 
     // REQUEST & SESSION ATTRIBUTES
+    public static final String LOCALE_ATTR = "locale";
     public static final String LIVE_EVENTS_ATTR = "liveEvents";
     public static final String UPCOMING_EVENTS_ATTR = "upcomingEvents";
     public static final String PAST_EVENTS_ATTR = "pastEvents";
@@ -55,6 +56,16 @@ public final class Parameters {
     public static final String AUTH_ATTR = "auth";
     public static final String ROLE_ATTR = "role";
     public static final String BALANCE_ATTR = "balance";
+
+    // COOKIES
+    public static final String LANG_COOKIE = "lang";
+    public static final String DISCIPLINE_FILTER_COOKIE = "discipline_filter";
+
+    // DISCIPLINE FILTER
+    public static final String CSGO_DISC = "csgo";
+    public static final String DOTA2_DISC = "dota2";
+    public static final String LOL_DISC = "lol";
+    public static final String VALORANT_DISC = "valorant";
 
     // ACTION NAMES
     public static final String LOAD_EVENT_RESULTS = "loadEventResults";
