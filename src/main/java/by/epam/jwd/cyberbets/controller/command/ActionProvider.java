@@ -1,5 +1,6 @@
 package by.epam.jwd.cyberbets.controller.command;
 
+import by.epam.jwd.cyberbets.controller.command.impl.admin.event.*;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.league.DeleteLeague;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.league.InsertLeague;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.league.LoadLeague;
@@ -9,7 +10,7 @@ import by.epam.jwd.cyberbets.controller.command.impl.admin.team.InsertTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.team.LoadTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.team.UpdateTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.general.*;
-import by.epam.jwd.cyberbets.controller.command.impl.page.ForwardErrorPage;
+import by.epam.jwd.cyberbets.controller.command.impl.page.ErrorPage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,11 @@ public enum ActionProvider {
     private final Map<String, Action> actions = new HashMap<>();
 
     private ActionProvider() {
+        actions.put(LOAD_EVENT_RESULTS, new LoadEventResults());
+        actions.put(LOAD_EVENT_ACTION, new LoadEvent());
+        actions.put(INSERT_EVENT_ACTION, new InsertEvent());
+        actions.put(UPDATE_EVENT_ACTION, new UpdateEvent());
+        actions.put(DELETE_EVENT_ACTION, new DeleteEvent());
         actions.put(LOAD_LEAGUE_ACTION, new LoadLeague());
         actions.put(INSERT_LEAGUE_ACTION, new InsertLeague());
         actions.put(UPDATE_LEAGUE_ACTION, new UpdateLeague());
@@ -35,7 +41,7 @@ public enum ActionProvider {
         actions.put(LOGIN_ACTION, new Login());
         actions.put(LOGOUT_ACTION, new Logout());
         actions.put(IGNORE_ACTION, new Ignore());
-        actions.put(FORWARD_ERROR_PAGE_ACTION, new ForwardErrorPage());
+        actions.put(FORWARD_ERROR_PAGE_ACTION, new ErrorPage());
     }
 
     public Action getAction(String actionName) {

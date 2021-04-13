@@ -1,7 +1,7 @@
 package by.epam.jwd.cyberbets.service.impl;
 
 import by.epam.jwd.cyberbets.dao.AccountDao;
-import by.epam.jwd.cyberbets.dao.DaoProvider;
+import by.epam.jwd.cyberbets.dao.impl.DaoProvider;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.domain.Account;
 import by.epam.jwd.cyberbets.domain.dto.CreateAccountDto;
@@ -18,6 +18,10 @@ import java.util.OptionalInt;
 
 public class AccountServiceImpl implements AccountService {
     private final AccountDao accountDao = DaoProvider.INSTANCE.getAccountDao();
+
+    AccountServiceImpl() {
+
+    }
 
     @Override
     public Optional<Account> findAccountById(int accountId) throws ServiceException {
@@ -75,6 +79,24 @@ public class AccountServiceImpl implements AccountService {
     public void updateAccountBalance(int accountId, BigDecimal balance) throws ServiceException {
         try {
             accountDao.updateAccountBalance(accountId, balance);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void addToAccountBalance(int accountId, BigDecimal amount) throws ServiceException {
+        try {
+            accountDao.addToAccountBalance(accountId, amount);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void subtractFromAccountBalance(int accountId, BigDecimal amount) throws ServiceException {
+        try {
+            accountDao.subtractFromAccountBalance(accountId, amount);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

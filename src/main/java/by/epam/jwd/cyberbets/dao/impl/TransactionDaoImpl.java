@@ -7,6 +7,10 @@ import by.epam.jwd.cyberbets.domain.dto.TransactionDto;
 import java.util.List;
 
 public class TransactionDaoImpl implements TransactionDao {
+    TransactionDaoImpl() {
+
+    }
+
     @Override
     public List<Transaction> findTransactions(int limit) {
         return null;

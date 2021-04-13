@@ -18,13 +18,22 @@ public final class Parameters {
 
 
     // REQUEST PARAMS
+    public static final String EVENT_RESULTS_PARAM = "eventResults";
+    public static final String LEAGUE_ID_PARAM = "leagueId";
+    public static final String FIRST_TEAM_ID_PARAM = "firstTeamId";
+    public static final String SECOND_TEAM_ID_PARAM = "secondTeamId";
+    public static final String FORMAT_ID_PARAM = "formatId";
+    public static final String ROYALTY_PERCENTAGE_PARAM = "royaltyPercentage";
+    public static final String START_DATE_PARAM = "startDate";
+    public static final String EVENT_FORMAT_PARAM = "eventFormat";
+    public static final String EVENT_PARAM = "event";
     public static final String DISCIPLINE_PARAM = "discipline";
+    public static final String LEAGUE_ICON_PARAM = "leagueIcon";
+    public static final String LEAGUE_NAME_PARAM = "leagueName";
     public static final String TEAM_RATING_PARAM = "teamRating";
     public static final String TEAM_LOGO_PARAM = "teamLogo";
     public static final String TEAM_NAME_PARAM = "teamName";
     public static final String PATH_PARAM = "path";
-    public static final String TEAM_PARAM = "team";
-    public static final String FILTER_PARAM = "filter";
     public static final String ID_PARAM = "id";
     public static final String EMAIL_PARAM = "email";
     public static final String PASSWORD_PARAM = "password";
@@ -38,13 +47,32 @@ public final class Parameters {
     public static final String DATA_PROPERTY = "data";
 
     // REQUEST & SESSION ATTRIBUTES
+    public static final String LOCALE_ATTR = "locale";
+    public static final String LIVE_EVENTS_ATTR = "liveEvents";
+    public static final String UPCOMING_EVENTS_ATTR = "upcomingEvents";
+    public static final String PAST_EVENTS_ATTR = "pastEvents";
     public static final String ACCOUNT_ID_ATTR = "accountId";
     public static final String ACCOUNT_EMAIL_ATTR = "accountEmail";
     public static final String AUTH_ATTR = "auth";
     public static final String ROLE_ATTR = "role";
     public static final String BALANCE_ATTR = "balance";
 
+    // COOKIES
+    public static final String LANG_COOKIE = "lang";
+    public static final String DISCIPLINE_FILTER_COOKIE = "discipline_filter";
+
+    // DISCIPLINE FILTER
+    public static final String CSGO_DISC = "csgo";
+    public static final String DOTA2_DISC = "dota2";
+    public static final String LOL_DISC = "lol";
+    public static final String VALORANT_DISC = "valorant";
+
     // ACTION NAMES
+    public static final String LOAD_EVENT_RESULTS = "loadEventResults";
+    public static final String LOAD_EVENT_ACTION = "loadEvent";
+    public static final String INSERT_EVENT_ACTION = "insertEvent";
+    public static final String UPDATE_EVENT_ACTION = "updateEvent";
+    public static final String DELETE_EVENT_ACTION = "deleteEvent";
     public static final String LOAD_LEAGUE_ACTION = "loadLeague";
     public static final String INSERT_LEAGUE_ACTION = "insertLeague";
     public static final String UPDATE_LEAGUE_ACTION = "updateLeague";
@@ -59,9 +87,10 @@ public final class Parameters {
     public static final String IGNORE_ACTION = "ignore";
     public static final String FORWARD_ERROR_PAGE_ACTION = "forwardErrorPage";
 
-    // PAGES
+    // PAGES / SECTIONS
+    public static final String EVENT_SECTION = "/WEB-INF/view/xml/events.jsp";
     public static final String ERROR_PAGE = "/WEB-INF/view/error404.jsp";
-    public static final String ROOT_PAGE = "/WEB-INF/view/home.jsp";
+    public static final String HOME_PAGE = "/WEB-INF/view/home.jsp";
     public static final String NEWS_PAGE = "/WEB-INF/view/news.jsp";
     public static final String TEAM_RATING_PAGE = "/WEB-INF/view/team-rating.jsp";
     public static final String SUPPORT_PAGE = "/WEB-INF/view/support.jsp";
@@ -73,10 +102,21 @@ public final class Parameters {
     public static final String TRANSACTIONS_PAGE = "/WEB-INF/view/user/transactions.jsp";
     public static final String WITHDRAWAL_PAGE = "/WEB-INF/view/user/withdrawal.jsp";
     public static final String ADMIN_PANEL_PAGE = "/WEB-INF/view/admin/admin.jsp";
+    public static final String ADMIN_DASHBOARD_SECTION = "/WEB-INF/view/admin/dashboard.jsp";
+    public static final String ADMIN_EVENTS_SECTION = "/WEB-INF/view/admin/events.jsp";
+    public static final String ADMIN_LEAGUES_SECTION = "/WEB-INF/view/admin/leagues.jsp";
+    public static final String ADMIN_TEAMS_SECTION = "/WEB-INF/view/admin/teams.jsp";
+    public static final String ADMIN_NEWS_SECTION = "/WEB-INF/view/admin/news.jsp";
+    public static final String ADMIN_ACCOUNTS_SECTION = "/WEB-INF/view/admin/accounts.jsp";
+    public static final String ADMIN_TRANSACTIONS_SECTION = "/WEB-INF/view/admin/transactions.jsp";
+    public static final String ADMIN_SUPPORT_SECTION = "/WEB-INF/view/admin/support.jsp";
+    public static final String ADMIN_LOGS_SECTION = "/WEB-INF/view/admin/logs.jsp";
+
 
     // ROUTES
     public static final String ACTION_LISTENER_ROUTE = "/action/";
-    public static final String ROOT_ROUTE = "/";
+    public static final String EVENT_SECTION_ROUTE = "/loadEventSection/";
+    public static final String HOME_ROUTE = "/";
     public static final String NEWS_ROUTE = "/news/";
     public static final String TEAM_RATING_ROUTE = "/rating/";
     public static final String SUPPORT_ROUTE = "/support/";
@@ -87,5 +127,14 @@ public final class Parameters {
     public static final String ACCOUNT_SETTINGS_ROUTE = "/settings/";
     public static final String TRANSACTIONS_ROUTE = "/transactions/";
     public static final String WITHDRAWAL_ROUTE = "/withdrawal/";
-    public static final String ADMIN_PANEL_ROUTE = "/admin/";
+
+    public static final String ADMIN_DASHBOARD_ROUTE = "/admin/";
+    public static final String ADMIN_EVENTS_ROUTE = "/admin/events/";
+    public static final String ADMIN_LEAGUES_ROUTE = "/admin/leagues/";
+    public static final String ADMIN_TEAMS_ROUTE = "/admin/teams/";
+    public static final String ADMIN_NEWS_ROUTE = "/admin/news/";
+    public static final String ADMIN_ACCOUNTS_ROUTE = "/admin/accounts/";
+    public static final String ADMIN_TRANSACTIONS_ROUTE = "/admin/transactions/";
+    public static final String ADMIN_SUPPORT_ROUTE = "/admin/support/";
+    public static final String ADMIN_LOGS_ROUTE = "/admin/logs/";
 }

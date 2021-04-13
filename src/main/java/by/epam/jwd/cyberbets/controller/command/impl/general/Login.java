@@ -3,7 +3,7 @@ package by.epam.jwd.cyberbets.controller.command.impl.general;
 import by.epam.jwd.cyberbets.controller.command.Action;
 import by.epam.jwd.cyberbets.domain.dto.LoginDto;
 import by.epam.jwd.cyberbets.service.AccountService;
-import by.epam.jwd.cyberbets.service.ServiceProvider;
+import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletException;

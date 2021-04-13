@@ -19,6 +19,10 @@ public class ResourceDaoImpl implements ResourceDao {
     private static final String UPDATE_RESOURCE = "update resource set path = ? where id = ?";
     private static final String DELETE_RESOURCE = "delete from resource where id = ?";
 
+    ResourceDaoImpl() {
+
+    }
+
     @Override
     public Optional<Resource> findResourceById(int resourceId) throws DaoException {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
@@ -33,8 +37,6 @@ public class ResourceDaoImpl implements ResourceDao {
                     resourceOptional = Optional.of(resource);
                 }
                 return resourceOptional;
-            } catch (SQLException e) {
-                throw new DaoException(e);
             }
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -50,8 +52,6 @@ public class ResourceDaoImpl implements ResourceDao {
             try(ResultSet rs = ps.getResultSet()) {
                 rs.next();
                 return rs.getInt(ID);
-            } catch (SQLException e) {
-                throw new DaoException(e);
             }
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -63,6 +63,7 @@ public class ResourceDaoImpl implements ResourceDao {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement ps = connection.prepareStatement(UPDATE_RESOURCE)) {
             ps.setString(1, resource.getPath());
+            ps.setInt(2, resource.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);

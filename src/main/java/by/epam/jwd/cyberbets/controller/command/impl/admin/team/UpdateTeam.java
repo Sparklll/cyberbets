@@ -6,7 +6,7 @@ import by.epam.jwd.cyberbets.controller.validator.ValidatorProvider;
 import by.epam.jwd.cyberbets.domain.Resource;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.dto.TeamDto;
-import by.epam.jwd.cyberbets.service.ServiceProvider;
+import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.service.TeamService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import com.google.gson.JsonObject;
@@ -44,27 +44,36 @@ public final class UpdateTeam implements Action {
                 PrintWriter out = response.getWriter();
 
                 try {
-                    int id  = ((Double) jsonMap.get(ID_PARAM)).intValue();
-                    int teamRating = ((Double) jsonMap.get(TEAM_RATING_PARAM)).intValue();
+                    Double id = (Double) jsonMap.get(ID_PARAM);
+                    Double teamRating = (Double) jsonMap.get(TEAM_RATING_PARAM);
+                    Double disciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
                     String teamName = (String) jsonMap.get(TEAM_NAME_PARAM);
                     LinkedTreeMap<String, String> teamLogoObj = (LinkedTreeMap<String, String>) jsonMap.get(TEAM_LOGO_PARAM);
                     String teamLogoBase64 = teamLogoObj != null ? teamLogoObj.get(PATH_PARAM) : "";
-                    String disciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
 
-                    TeamDto teamDto = new TeamDto(id, teamName, teamRating, teamLogoBase64, disciplineId);
+                    if (id != null
+                            && teamRating != null
+                            && disciplineId != null
+                            && teamName != null) {
 
-                    Validator<TeamDto> teamValidator = ValidatorProvider.INSTANCE.getTeamValidator();
-                    if (teamValidator.isValid(teamDto)) {
-                        teamService.updateTeam(teamDto);
+                        TeamDto teamDto = new TeamDto(id.intValue(), teamName,
+                                teamRating.intValue(), teamLogoBase64, disciplineId.intValue());
 
-                        String resourcePath = "";
-                        Optional<Resource> resourceOptional = teamService.findLogoResourceByTeamId(id);
-                        if(resourceOptional.isPresent()) {
-                            resourcePath += resourceOptional.get().getPath();
+                        Validator<TeamDto> teamValidator = ValidatorProvider.INSTANCE.getTeamValidator();
+                        if (teamValidator.isValid(teamDto)) {
+                            teamService.updateTeam(teamDto);
+
+                            String teamLogoPath = "";
+                            Optional<Resource> resourceOptional = teamService.findLogoResourceByTeamId(id.intValue());
+                            if (resourceOptional.isPresent()) {
+                                teamLogoPath += resourceOptional.get().getPath();
+                            }
+
+                            jsonResponse.addProperty(PATH_PARAM, teamLogoPath);
+                            jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
+                        } else {
+                            jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                         }
-
-                        jsonResponse.addProperty(PATH_PARAM, resourcePath);
-                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }

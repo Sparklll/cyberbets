@@ -1,20 +1,19 @@
 package by.epam.jwd.cyberbets.domain;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Optional;
+
 public enum EventOutcomeType {
     // GENERAL
-    FIRST_TEAM_TOTAL_WINNER(1),
-    SECOND_TEAM_TOTAL_WINNER(2),
-    FIRST_TEAM_1MAP_WINNER(3),
-    SECOND_TEAM_1MAP_WINNER(4),
-    FIRST_TEAM_2MAP_WINNER(5),
-    SECOND_TEAM_2MAP_WINNER(6),
-    FIRST_TEAM_3MAP_WINNER(7),
-    SECOND_TEAM_3MAP_WINNER(8),
-    FIRST_TEAM_4MAP_WINNER(9),
-    SECOND_TEAM_4MAP_WINNER(10),
-    FIRST_TEAM_5MAP_WINNER(11),
-    SECOND_TEAM_5MAP_WINNER(12);
+    @SerializedName("1") TOTAL_WINNER(1),
+    @SerializedName("2") MAP1_WINNER(2),
+    @SerializedName("3") MAP2_WINNER(3),
+    @SerializedName("4") MAP3_WINNER(4),
+    @SerializedName("5") MAP4_WINNER(5),
+    @SerializedName("6") MAP5_WINNER(6);
 
+    // SPECIFIC \\
     // CS:GO
 
     // DOTA2
@@ -33,12 +32,14 @@ public enum EventOutcomeType {
         return id;
     }
 
-    public EventOutcomeType getEventOutcomeTypeById(int id) {
+    public static Optional<EventOutcomeType> getEventOutcomeTypeById(int id) {
+        Optional<EventOutcomeType> eventOutcomeTypeOptional = Optional.empty();
         for(EventOutcomeType eventOutcomeType : values()) {
             if(eventOutcomeType.getId() == id) {
-                return eventOutcomeType;
+                eventOutcomeTypeOptional = Optional.of(eventOutcomeType);
+                return eventOutcomeTypeOptional;
             }
         }
-        throw new IllegalArgumentException("Unable to find EventOutcomeType with id = " + id);
+        return eventOutcomeTypeOptional;
     }
 }

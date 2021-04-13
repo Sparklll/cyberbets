@@ -15,6 +15,6 @@ public interface TeamService {
     Optional<Team> findTeamByName(String name) throws ServiceException;
     Optional<Resource> findLogoResourceByTeamId(int teamId) throws ServiceException;
     int createTeam(TeamDto teamDto) throws ServiceException;
-    void updateTeam(TeamDto team) throws ServiceException;
+    void updateTeam(TeamDto teamDto) throws ServiceException;
     void deleteTeam(int teamId) throws ServiceException;
 }

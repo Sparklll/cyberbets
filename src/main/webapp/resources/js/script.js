@@ -1,11 +1,13 @@
 $(document).ready(function () {
     const lang = ['de', 'en', 'fr', 'ru'];
+    const discipline = ['csgo', 'dota2','lol','valorant'];
     const DEFAULT_LANG = 'en';
     const ACTION_URL = "/action/"
 
+    var isEventEditing = false;
     var isTeamEditing = false;
+    var isLeagueEditing = false;
     var editingItem = null;
-
 
     function setCookie(name, value, days) {
         if (days) {
@@ -33,6 +35,47 @@ $(document).ready(function () {
 
     function reloadPage() {
         window.location.href = window.location.pathname;
+    }
+
+    function reloadDisciplineFilter() {
+        let disciplineCookie = getCookie('discipline_filter');
+        $('.discipline').removeClass('active');
+
+        if(disciplineCookie !== undefined)  {
+            let selectedDisciplines = disciplineCookie.split('|');
+            selectedDisciplines.forEach(d => {
+                if(discipline.includes(d)) {
+                    $(`.discipline[data-discipline='${d}']`).addClass('active');
+                }
+            });
+        } else {
+            setCookie("discipline_filter", discipline.join('|'), 365)
+            $('.discipline').each(function() {
+                $(this).addClass('active');
+            });
+        }
+    }
+
+    function loadEventsSection() {
+        $.get('/loadEventSection/', function (responseXml) {
+            $('#liveEvents .events').html($(responseXml).find('#liveEvents .events').html()).fadeIn(200);
+            $('#upcomingEvents .events').html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(200);
+            $('#pastEvents .events').html($(responseXml).find('#pastEvents .events').html()).fadeIn(200);
+        });
+    }
+
+    function reloadEventsSection() {
+        $.get('/loadEventSection/', function (responseXml) {
+            $('#liveEvents .events').fadeOut(300, function () {
+                $(this).html($(responseXml).find('#liveEvents .events').html());
+            }).fadeIn(300);
+            $('#upcomingEvents .events').fadeOut(300, function () {
+                $(this).html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(300);
+            });
+            $('#pastEvents .events').fadeOut(300, function () {
+                $(this).html($(responseXml).find('#pastEvents .events').html()).fadeIn(300);
+            });
+        });
     }
 
     async function postData(url = '', data = {}) {
@@ -64,29 +107,937 @@ $(document).ready(function () {
         return password1 === password2;
     }
 
+    function validateName(name) {
+        return name.length > 0 && name.length < 50
+    }
+
     function validateTeamRating(teamRating) {
         const ratingFormat = /^(([1-9][0-9]{0,5})|([0]))$/;
         return !isNaN(teamRating)
             && ratingFormat.test(teamRating);
     }
 
-    function validateTeamName(teamName) {
-        return teamName.length > 0 && teamName.length < 30
+    var disciplines = [
+        {Name: "", Id: 0, Logo: ""},
+        {Name: "CS:GO", Id: 1, Logo: "/resources/assets/disciplines/csgo_icon.png"},
+        {Name: "DOTA 2", Id: 2, Logo: "/resources/assets/disciplines/dota2_icon.png"},
+        {Name: "LEAGUE OF LEGENDS", Id: 3, Logo: "/resources/assets/disciplines/lol_icon.png"},
+        {Name: "VALORANT", Id: 4, Logo: "/resources/assets/disciplines/valorant_icon.jpg"}
+    ];
+
+    if ($('#eventsGrid').length > 0) {
+        var eventFormat = [
+            {Name: "", Id: 0},
+            {Name: "BO1", Id: 1},
+            {Name: "BO2", Id: 2},
+            {Name: "BO3", Id: 3},
+            {Name: "BO5", Id: 4}
+        ];
+
+        var eventStatus = [
+            {Name: "", Id: 0},
+            {Name: "Pending", Id: 1, Logo: "/resources/assets/status/pending.png"},
+            {Name: "Live", Id: 2, Logo: "/resources/assets/status/live.png"},
+            {Name: "Finished", Id: 3, Logo: "/resources/assets/status/finished.png"},
+            {Name: "Canceled", Id: 4, Logo: "/resources/assets/status/canceled.png"},
+        ];
+
+        var eventOutcome = [
+            // TODO: i18n
+
+            // general
+            {Name: "Total winner", Discipline: "all", Format: "all", Id: 1},
+            {Name: "[Map #1] Victory on the map", Discipline: "all", Format: 1, Id: 2},
+            {Name: "[Map #2] Victory on the map", Discipline: "all", Format: 2, Id: 3},
+            {Name: "[Map #3] Victory on the map", Discipline: "all", Format: 3, Id: 4},
+            {Name: "[Map #4] Victory on the map", Discipline: "all", Format: 4, Id: 5},
+            {Name: "[Map #5] Victory on the map", Discipline: "all", Format: 4, Id: 6},
+
+            // csgo
+            // dota2
+            // lol
+            // valorant
+        ];
+
+        $('#eventsGrid').jsGrid({
+            fields: [
+                {name: "id", title: "Id", type: "number", width: 50, align: "center"},
+                {
+                    name: "event",
+                    title: "Event",
+                    type: "text",
+                    width: 100,
+                    align: "center",
+                    itemTemplate: function (value, item) {
+                        return `<div class="d-flex justify-content-center align-items-center">
+                                    <div class="d-flex flex-column justify-content-center align-items-center me-auto ms-2">
+                                        <span class="mb-2 fw-bold">${item.firstTeam.teamName}</span>
+                                        <img src="${item.firstTeam.teamLogo.path}" width="50">
+                                    </div>
+                                   
+                                   <i class="fw-bold">VS</i> 
+                                   
+                                   <div class="d-flex flex-column justify-content-center align-items-center ms-auto me-2">
+                                        <span class="mb-2 fw-bold">${item.secondTeam.teamName}</span>
+                                        <img src="${item.secondTeam.teamLogo.path}" width="50">
+                                    </div>
+                                </div>`;
+                    }
+                },
+                {
+                    name: "eventFormat",
+                    title: "Format",
+                    type: "select",
+                    items: eventFormat,
+                    valueField: "Id",
+                    textField: "Name",
+                    width: 50,
+                    itemTemplate: function (value, item) {
+                        return eventFormat.find(f => f.Id == value).Name;
+                    }
+                },
+                {
+                    name: "leagueName",
+                    title: "League",
+                    type: "text",
+                    width: 100,
+                    align: "center",
+                    itemTemplate: function (value, item) {
+                        return `<div class="d-flex flex-column justify-content-center align-items-center">
+                                    <span class="mb-2">${item.league.leagueName}</span>
+                                    <img src="${item.league.leagueIcon.path}" width="30">
+                                </div>`;
+                    }
+                },
+                {
+                    name: "discipline",
+                    title: "Discipline",
+                    type: "select",
+                    items: disciplines,
+                    valueField: "Id",
+                    textField: "Name",
+                    width: 100,
+                    itemTemplate: function (value, item) {
+                        let disciplineName = disciplines.find(d => d.Id == value).Name;
+                        let disciplineLogo = disciplines.find(d => d.Id == value).Logo;
+                        return `<div class="d-flex flex-column justify-content-center align-items-center">
+                                    <span class="mb-2">${disciplineName}</span>
+                                    <img src="${disciplineLogo}" width="30" style="border-radius: 5px">
+                                </div>`;
+                    }
+                },
+                {
+                    name: "startDate",
+                    title: "Start",
+                    type: "",
+                    width: 50,
+                    align: "center",
+                    filtering: false,
+                    itemTemplate: function (value, item) {
+                        return `<span class="mb-2 fw-bold text-info">${dayjs.unix(value).format('ddd, DD MMM YYYY HH:mm')}</span>`;
+                    }
+                },
+                {
+                    name: "royaltyPercentage",
+                    title: "Royalty",
+                    type: "number",
+                    width: 50,
+                    align: "center",
+                    itemTemplate: function (value, item) {
+                        return `<span class="mb-2">${value}%</span>`
+                    }
+                },
+                {
+                    name: "status",
+                    title: "Status",
+                    type: "select",
+                    items: eventStatus,
+                    valueField: "Id",
+                    textField: "Name",
+                    width: 50,
+                    itemTemplate: function (value, item) {
+                        let eventStatusIcon = eventStatus.find(s => s.Id == value).Logo;
+                        return `<img src="${eventStatusIcon}" width="30" style="border-radius: 5px">`;
+                    }
+                },
+                {
+                    type: "control",
+                    editButton: false,
+                    deleteButton: true,
+                    clearFilterButton: true,
+                    modeSwitchButton: true,
+                    width: 50,
+                }
+            ],
+
+            autoload: true,
+            controller: {
+                loadData: function (filter) {
+                    let d = $.Deferred();
+                    $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "loadEvent"}, filter))
+                    }).done(function (response) {
+                        if (response.status === 'ok') {
+                            notify('info', 'Success', 'Events were successfully loaded.');
+                            d.resolve(response.data);
+                        } else if (response.status === 'exception') {
+                            notify('error', 'Error', 'Unable to load events from database');
+                            d.reject();
+                        }
+                    }).fail(function () {
+                        notify('error', 'Error', 'Unable to load events from database');
+                        d.reject();
+                    });
+                    return d.promise();
+                },
+
+                insertItem: function (item) {
+                    let d = $.Deferred();
+                    $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "insertEvent"}, item))
+                    }).done(function (response) {
+                        if (response.status === 'ok') {
+                            notify('success', 'Success', 'Event was successfully added.');
+                            d.resolve(response.data);
+                        } else if (response.status === 'deny') {
+                            notify('warning', 'Warning', 'Incorrect data was sent!');
+                            d.reject();
+                        } else if (response.status === 'exception') {
+                            notify('error', 'Error', 'There was an error adding the event!');
+                            d.reject();
+                        }
+                    }).fail(function () {
+                        notify('error', 'Error', 'There was an error adding the event!');
+                        d.reject();
+                    });
+                    return d.promise();
+                },
+
+                updateItem: function (item) {
+                    let d = $.Deferred();
+                    $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "updateEvent"}, item))
+                    }).done(function (response) {
+                        if (response.status === 'ok') {
+                            notify('success', 'Success', 'Event was successfully updated.');
+                            d.resolve(response.data);
+                        } else if (response.status === 'deny') {
+                            notify('warning', 'Warning', 'Incorrect data was sent!');
+                            d.reject();
+                        } else if (response.status === 'exception') {
+                            notify('error', 'Error', 'There was an error updating the event!');
+                            d.reject();
+                        }
+                    }).fail(function () {
+                        notify('error', 'Error', 'There was an error updating the event!');
+                        d.reject();
+                    });
+                    return d.promise();
+                },
+
+                deleteItem: function (item) {
+                    let d = $.Deferred();
+                    $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "deleteEvent"}, item))
+                    }).done(function (response) {
+                        if (response.status === 'ok') {
+                            notify('success', 'Success', 'Event was successfully deleted.');
+                            d.resolve();
+                        } else if (response.status === 'deny') {
+                            notify('warning', 'Warning', 'Incorrect data was sent!');
+                            d.reject();
+                        } else if (response.status === 'exception') {
+                            notify('error', 'Error', 'There was an error deleting the event!');
+                            d.reject();
+                        }
+                    }).fail(function () {
+                        notify('error', 'Error', 'There was an error deleting the Event!');
+                        d.reject();
+                    });
+                    return d.promise();
+                }
+            },
+
+            width: "100%",
+            height: "auto",
+
+            heading: true,
+            filtering: true,
+            inserting: false,
+            editing: true,
+            selecting: true,
+            sorting: true,
+            paging: true,
+            pageLoading: false,
+            confirmDeleting: false,
+
+            onItemDeleting: function (args) {
+                if (!args.item.deleteConfirmed) {
+                    args.cancel = true;
+                    $('#confirmModal').modal('show');
+                    $('#confirmModal #deleteButton').off('click').on('click', function () {
+                        args.item.deleteConfirmed = true;
+                        $('#eventsGrid').jsGrid('deleteItem', args.item).then(function () {
+                            $('#confirmModal').modal('hide');
+                        });
+                    });
+                }
+            },
+
+            rowClick: function (args) {
+                // TODO: Add i18n
+
+                isEventEditing = true;
+                editingItem = args.item;
+
+                $('#eventModal').modal('show');
+                $('#eventModal .card-header h5').text('Edit event');
+                $('#eventModal #eventModalSubmit').text('Update');
+
+                let event = args.item;
+
+                $('#eventModal .event-preview .event-header .date')
+                    .text(dayjs.unix(event.startDate).format('ddd, DD MMM YYYY HH:mm'));
+                $('#eventModal .event-preview .event-header .league-icon')
+                    .attr('src', event.league.leagueIcon.path).fadeIn(500);
+
+                $('#eventModal .event-preview .event-header .league-name').text(event.league.leagueName);
+
+                $('#eventModal .event-preview .team-left .team-logo img')
+                    .attr('src', event.firstTeam.teamLogo.path).fadeIn(500);
+                $('#eventModal .event-preview .team-right .team-logo img')
+                    .attr('src', event.secondTeam.teamLogo.path).fadeIn(500);
+
+                $('#eventModal .event-preview .team-left .team-name').text(event.firstTeam.teamName);
+                $('#eventModal .event-preview .team-right .team-name').text(event.secondTeam.teamName);
+
+                // $('#eventModal .event-preview .team-left .odds').empty().append('<i>x</i>1');
+                // $('#eventModal .event-preview .team-right .odds').empty().append('<i>x</i>1');
+                // $('#eventModal .event-preview .event-info .center .left-percent .odds-percentage').text('50%');
+                // $('#eventModal .event-preview .event-info .center .right-percent .odds-percentage').text('50%');
+
+                $('#eventModal .event-preview .event-info .center .event-format span')
+                    .text(eventFormat.find(e => e.Id == event.eventFormat).Name);
+                $('#eventModal .event-preview .event-info .center .event-format .discipline-icon')
+                    .hide().attr('src', disciplines.find(d => d.Id == event.discipline).Logo).fadeIn(1000);
+
+                $(`#eventStatus input[value="${event.status}"]:radio`).prop('checked', true);
+
+
+                $(`<option value="0"></option>`).appendTo($('#eventLeagueSelect, #eventSecondTeamSelect, #eventFirstTeamSelect'));
+                $('#eventDisciplineSelect').val(event.discipline);
+                $('#eventLeagueSelect option').val(event.league.id).data('icon', event.league.leagueIcon.path).text(event.league.leagueName);
+
+                $('#eventFirstTeamSelect option').val(event.firstTeam.id).data('icon', event.firstTeam.teamLogo.path).text(event.firstTeam.teamName);
+                $('#eventSecondTeamSelect option').val(event.secondTeam.id).data('icon', event.secondTeam.teamLogo.path).text(event.secondTeam.teamName);
+
+
+                $('#eventFormatSelect').val(event.eventFormat);
+                $('#eventDatetimeStart').val(dayjs.unix(event.startDate).format('YYYY-MM-DDTHH:mm'));
+                $('#eventRoyalty').val(event.royaltyPercentage);
+
+                $('.selectpicker').selectpicker('refresh');
+
+                postData(ACTION_URL, {
+                    "action" : "loadEventResults",
+                    "id" : event.id
+                }).then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        return Promise.reject(response);
+                    }
+                ).then(function (response) {
+                    response.data.forEach(eventResult => {
+                        let eventOutcomeTemplate = $($("#eventOutcomeTemplate").html());
+                        let eventOutcomeType = eventResult.eventOutcomeType;
+
+                        eventOutcomeTemplate.attr('data-type', eventOutcomeType);
+                        eventOutcomeTemplate.find('label[for=firstUpshot]').text(event.firstTeam.teamName);
+                        eventOutcomeTemplate.find('label[for=secondUpshot]').text(event.secondTeam.teamName);
+
+                        eventOutcomeTemplate.find(':input:radio').each(function (index, item) {
+                            $(item).attr({
+                                'id': $(this).attr('id') + eventOutcomeType,
+                                'name': eventOutcomeType,
+                            });
+                        });
+                        eventOutcomeTemplate
+                            .find(`:input:radio[value=${eventResult.resultStatus}]`)
+                            .prop('checked', true);
+                        eventOutcomeTemplate.find('label').each(function (index, item) {
+                            $(item).attr('for', $(this).attr('for') + eventOutcomeType);
+                        });
+                        eventOutcomeTemplate.find('.outcome-type-name').text(
+                            eventOutcome.find(eo => eo.Id == eventOutcomeType).Name
+                        );
+
+                        $('#eventModal #eventOutcomeCollapse .accordion-body').append(eventOutcomeTemplate);
+                        }
+                    );
+                }).catch((error) => console.log('Something went wrong.', error));
+            },
+
+            pageIndex: 1,
+            pageSize: 10,
+            pageButtonCount: 10,
+        });
+    }
+
+    if ($('#eventModal').length > 0) {
+        $('#eventModal').off('show.bs.modal').on('show.bs.modal', function () {
+            $('#eventStatus input[value="1"]:radio').prop('checked', true);
+            $('#eventRoyalty').val('5');
+        });
+
+        $('#eventModal').off('hidden.bs.modal').on('hidden.bs.modal', function () {
+            // TODO: Add i18n
+            $('#eventModal .card-header h5').text('Add Event');
+            $('#eventModal #eventModalSubmit').text('Save');
+            $('#eventModal .event-header .date').text('Date');
+            $('#eventModal .event-header .league-icon').attr('src', '').hide();
+            $('#eventModal .event-header .league-name').text('League');
+
+            $('#eventModal .event-preview  .team-logo img').attr('src', '').hide();
+            $('#eventModal .event-preview  .team-left .team-name').text('Team 1');
+            $('#eventModal .event-preview  .team-right .team-name').text('Team 2');
+            $('#eventModal .event-preview  .team .odds').empty().append('<i>x</i>1');
+
+            $('#eventModal .event-preview .center .odds-percentage').text('50%');
+            $('#eventModal .event-preview .center .event-format span').empty();
+            $('#eventModal .event-preview .center .event-format .discipline-icon').attr('src', '').hide();
+
+            $('#eventLeagueSelect option, #eventSecondTeamSelect option, #eventFirstTeamSelect option').remove();
+            $('#eventLeagueSelect, #eventFirstTeamSelect, #eventSecondTeamSelect').attr('disabled', true);
+            $('#eventOutcomeCollapse .accordion-body').empty();
+
+            isEventEditing = false;
+        });
+
+        $('#eventDisciplineSelect').change(function () {
+            $('#eventLeagueSelect option, #eventSecondTeamSelect option, #eventFirstTeamSelect option').remove();
+            $(`<option value="0"></option>`).appendTo($('#eventLeagueSelect, #eventSecondTeamSelect, #eventFirstTeamSelect'));
+
+            $('#eventFirstTeamSelect, #eventSecondTeamSelect').attr('disabled', true);
+
+            $('#eventModal .event-preview .event-header .league-icon').attr('src', '').hide();
+            $('#eventModal .event-preview .event-header .league-name').text('League');
+            $('#eventModal .event-info .team .team-logo img').attr('src', '').hide();
+            $('#eventModal .event-preview .event-info .team-left .team-name').text('Team 1');
+            $('#eventModal .event-preview .event-info .team-right .team-name').text('Team 2');
+
+            if ($('#eventDisciplineSelect').val() > 0) {
+                $('#eventLeagueSelect').attr('disabled', false);
+
+                let disciplineId = $('#eventDisciplineSelect').val();
+                let disciplineLogo = disciplines.find(d => d.Id == disciplineId).Logo;
+                $('#eventModal .event-preview .event-info .discipline-icon').hide().attr('src', disciplineLogo).fadeIn(1000);
+
+                postData(ACTION_URL, {
+                    action: 'loadLeague',
+                    discipline: parseInt($('#eventDisciplineSelect').val())
+                }).then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    return Promise.reject(response);
+                }).then(function (response) {
+                    if (response.status === 'ok') {
+                        response.data.forEach(league => {
+                            $(`<option value="${league.id}" data-icon="${league.leagueIcon.path}">${league.leagueName}</option>`).appendTo($('#eventLeagueSelect'));
+                        });
+                        $('.selectpicker').selectpicker('refresh');
+                    } else if (response.status === 'exception') {
+                        notify('error', 'Error', 'There was an error loading the league list.');
+                    }
+                }).catch((error) => console.log('Something went wrong.', error));
+
+            } else {
+                $('#eventLeagueSelect').attr('disabled', true);
+                $('#eventModal .event-preview .event-info .discipline-icon').attr('src', '').hide();
+            }
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+        $('#eventLeagueSelect').change(function () {
+            $('#eventFirstTeamSelect option, #eventSecondTeamSelect option').remove();
+            $(`<option value="0"></option>`).appendTo($('#eventFirstTeamSelect, #eventSecondTeamSelect'));
+
+            $('#eventModal .event-info .team .team-logo img').attr('src', '').hide();
+            $('#eventModal .event-preview .event-info .team-left .team-name').text('Team 1');
+            $('#eventModal .event-preview .event-info .team-right .team-name').text('Team 2');
+
+            if ($('#eventLeagueSelect').val() > 0) {
+                $('#eventFirstTeamSelect, #eventSecondTeamSelect').attr('disabled', false);
+
+                let leagueId = $('#eventLeagueSelect').val();
+                let leagueName = $(`#eventLeagueSelect option[value=${leagueId}]`).text();
+                let leagueIcon = $(`#eventLeagueSelect option[value=${leagueId}]`).data('icon');
+                $('#eventModal .event-preview .event-header .league-icon').hide().attr('src', leagueIcon).fadeIn(1000);
+                $('#eventModal .event-preview .event-header .league-name').text(leagueName);
+
+                postData(ACTION_URL, {
+                    action: 'loadTeam',
+                    discipline: parseInt($('#eventDisciplineSelect').val())
+                }).then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    return Promise.reject(response);
+                }).then(function (response) {
+                    if (response.status === 'ok') {
+                        response.data.forEach(team => {
+                            $(`<option value="${team.id}" data-logo="${team.teamLogo.path}">${team.teamName}</option>`).appendTo($('#eventFirstTeamSelect, #eventSecondTeamSelect'));
+                        });
+                        $('.selectpicker').selectpicker('refresh');
+                    } else if (response.status === 'exception') {
+                        notify('error', 'Error', 'There was an error loading the league list.');
+                    }
+                }).catch((error) => console.log('Something went wrong.', error));
+            } else {
+                $('#eventFirstTeamSelect, #eventSecondTeamSelect').attr('disabled', true);
+                $('#eventModal .event-preview .event-header .league-name').text('League');
+                $('#eventModal .event-preview .event-header .league-icon').attr('src', '').hide();
+            }
+
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+        $('#eventFirstTeamSelect').change(function () {
+            $('#eventFormatSelect').trigger('change');
+
+            if ($('#eventFirstTeamSelect').val() > 0) {
+                let firstTeamId = $('#eventFirstTeamSelect').val();
+                let firstTeamName = $(`#eventFirstTeamSelect option[value=${firstTeamId}]`).text();
+                let firstTeamLogo = $(`#eventFirstTeamSelect option[value=${firstTeamId}]`).data('logo');
+
+                $('#eventModal .event-preview .event-info .team-left .team-name').text(firstTeamName);
+                $('#eventModal .event-info .team-left .team-logo img').hide().attr('src', firstTeamLogo).fadeIn(1000);
+            } else {
+                $('#eventModal .event-preview .event-info .team-left .team-name').text('Team 1');
+                $('#eventModal .event-info .team-left .team-logo img').attr('src', '').hide();
+            }
+        });
+
+        $('#eventSecondTeamSelect').change(function () {
+            $('#eventFormatSelect').trigger('change');
+
+            if ($('#eventSecondTeamSelect').val() > 0) {
+                let secondTeamId = $('#eventSecondTeamSelect').val();
+                let secondTeamName = $(`#eventFirstTeamSelect option[value=${secondTeamId}]`).text();
+                let secondTeamLogo = $(`#eventSecondTeamSelect option[value=${secondTeamId}]`).data('logo');
+
+                $('#eventModal .event-preview .event-info .team-right .team-name').text(secondTeamName);
+                $('#eventModal .event-info .team-right .team-logo img').hide().attr('src', secondTeamLogo).fadeIn(1000);
+            } else {
+                $('#eventModal .event-preview .event-info .team-right .team-name').text('Team 2');
+                $('#eventModal .event-info .team-right .team-logo img').attr('src', '').hide();
+            }
+        });
+
+        $('#eventFormatSelect').change(function () {
+            $('#eventModal .event-preview .center .event-format span').empty();
+            $('#eventOutcomeCollapse .accordion-body').empty();
+
+
+            if ($('#eventFormatSelect').val() > 0) {
+                let eventDisciplineId = $('#eventDisciplineSelect').val();
+                let eventFormatId = $('#eventFormatSelect').val();
+                let firstTeamId = $('#eventFirstTeamSelect').val();
+                let secondTeamId = $('#eventSecondTeamSelect').val();
+                let firstTeamName = $(`#eventFirstTeamSelect option[value=${firstTeamId}]`).text();
+                let secondTeamName = $(`#eventFirstTeamSelect option[value=${secondTeamId}]`).text();
+
+                let eventFormatName = eventFormat.find(f => f.Id == eventFormatId).Name;
+                $('#eventModal .event-preview .center .event-format span').text(eventFormatName);
+
+                eventOutcome.forEach(outcome => {
+                        if (eventFormatId >= outcome.Format || outcome.Format == "all") {
+                            if (eventDisciplineId == outcome.Discipline || outcome.Discipline == "all") {
+                                let eventOutcomeTemplate = $($("#eventOutcomeTemplate").html());
+
+                                eventOutcomeTemplate.attr('data-type', outcome.Id);
+                                eventOutcomeTemplate.find('label[for=firstUpshot]').text(firstTeamName);
+                                eventOutcomeTemplate.find('label[for=secondUpshot]').text(secondTeamName);
+
+                                eventOutcomeTemplate.find(':input:radio').each(function (index, item) {
+                                    $(item).attr({
+                                        'id': $(this).attr('id') + outcome.Id,
+                                        'name': outcome.Id,
+                                    });
+                                });
+                                eventOutcomeTemplate.find('label').each(function (index, item) {
+                                    $(item).attr('for', $(this).attr('for') + outcome.Id);
+                                });
+                                eventOutcomeTemplate.find('.outcome-type-name').text(outcome.Name);
+
+                                $('#eventModal #eventOutcomeCollapse .accordion-body').append(eventOutcomeTemplate);
+                            }
+                        }
+                    }
+                );
+
+            }
+        });
+
+        $('#eventDatetimeStart').change(function () {
+            if ($('#eventDatetimeStart').val()) {
+                let formattedDate = dayjs($('#eventDatetimeStart').val()).format('ddd, DD MMM YYYY HH:mm');
+                $('#eventModal .event-preview .event-header .date').text(formattedDate);
+            } else {
+                $('#eventModal .event-preview .event-header .date').text('Date');
+            }
+        });
+
+        $('#eventModal #eventModalSubmit').off('click').click(function (e) {
+            e.preventDefault();
+
+            function Result(eventOutcomeType, resultStatus) {
+                this.eventOutcomeType = eventOutcomeType;
+                this.resultStatus = resultStatus;
+            }
+
+
+            let eventStatus = $('#eventStatus input:radio:checked').val();
+            let disciplineSelectValue = $('#eventDisciplineSelect').val();
+            let leagueSelectValue = $('#eventLeagueSelect').val();
+            let firstTeamSelectValue = $('#eventFirstTeamSelect').val();
+            let secondTeamSelectValue = $('#eventSecondTeamSelect').val();
+            let formatSelectValue = $('#eventFormatSelect').val();
+            let startDateValue = $('#eventDatetimeStart').val();
+            let royalty = $('#eventRoyalty').val();
+
+            if (eventStatus > 0
+                && disciplineSelectValue > 0
+                && leagueSelectValue > 0
+                && firstTeamSelectValue > 0
+                && secondTeamSelectValue > 0
+                && firstTeamSelectValue !== secondTeamSelectValue
+                && formatSelectValue > 0
+                && startDateValue
+                && (royalty >= 0 && royalty <= 100)
+            ) {
+
+                let eventResults = [];
+                $('#eventOutcomeCollapse .accordion-body .event-outcome').each(function () {
+                    let eventOutcomeType = $(this).data('type').toString();
+                    let resultStatus = $(this).find('input:radio:checked').val();
+                    let result = new Result(eventOutcomeType, resultStatus);
+                    if(isEventEditing) {
+                        result.eventId = editingItem.id;
+                    }
+                    eventResults.push(result);
+                });
+
+                let startDateTimestamp = dayjs($('#eventDatetimeStart').val()).unix();
+                let eventStatusValue = $('#eventStatus input:radio:checked').val();
+
+                let event = {
+                    "discipline": parseFloat(disciplineSelectValue),
+                    "leagueId": parseFloat(leagueSelectValue),
+                    "firstTeamId": parseFloat(firstTeamSelectValue),
+                    "secondTeamId": parseFloat(secondTeamSelectValue),
+                    "formatId": parseFloat(formatSelectValue),
+                    "startDate": startDateTimestamp,
+                    "royaltyPercentage": parseFloat(royalty),
+                    "status": parseFloat(eventStatusValue),
+                    "eventResults": eventResults
+                }
+
+                if (isEventEditing) {
+                    $("#eventsGrid").jsGrid("updateItem", editingItem, event).then(function () {
+                        $('#eventModal').modal('hide');
+                    });
+                } else {
+                    $("#eventsGrid").jsGrid("insertItem", event).then(function () {
+                        $('#eventModal').modal('hide');
+                    });
+                }
+            } else {
+                // TODO: add i18n
+                notify('warning', 'Warning', 'The form has been filled out incorrectly. Please recheck.');
+            }
+        });
+    }
+
+    if ($('#leaguesGrid').length > 0) {
+        $('#leaguesGrid').jsGrid({
+            fields: [
+                {name: "id", title: "Id", type: "number", width: 50, align: "center"},
+                {
+                    name: "leagueName",
+                    title: "League",
+                    type: "text",
+                    width: 100,
+                    align: "center",
+                    itemTemplate: function (value, item) {
+                        let timestamp = new Date().getTime();
+                        let queryString = "?t=" + timestamp;
+                        return `<div class="d-flex flex-column justify-content-center align-items-center">
+                                    <span class="mb-2 fw-bold">${item.leagueName}</span>
+                                    <img src="${item.leagueIcon.path + queryString}" width="60">
+                                </div>`;
+                    }
+                },
+                {
+                    name: "discipline",
+                    title: "Discipline",
+                    type: "select",
+                    items: disciplines,
+                    valueField: "Id",
+                    textField: "Name",
+                    width: 100,
+                    itemTemplate: function (value, item) {
+                        let disciplineName = disciplines.find(d => d.Id == value).Name;
+                        let disciplineLogo = disciplines.find(d => d.Id == value).Logo;
+                        return `<div class="d-flex flex-column justify-content-center align-items-center">
+                                    <span class="mb-2">${disciplineName}</span>
+                                    <img src="${disciplineLogo}" width="30" style="border-radius: 5px">
+                                </div>`;
+                    }
+                },
+                {
+                    type: "control",
+                    editButton: false,
+                    deleteButton: false,
+                    clearFilterButton: true,
+                    modeSwitchButton: true,
+                }
+            ],
+
+            autoload: true,
+            controller: {
+                loadData: function (filter) {
+                    let d = $.Deferred();
+                    $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "loadLeague"}, filter))
+                    }).done(function (response) {
+                        if (response.status === 'ok') {
+                            notify('info', 'Success', 'Leagues were successfully loaded.');
+                            d.resolve(response.data);
+                        } else if (response.status === 'exception') {
+                            notify('error', 'Error', 'Unable to load leagues from database');
+                            d.reject();
+                        }
+                    }).fail(function () {
+                        notify('error', 'Error', 'Unable to load leagues from database');
+                        d.reject();
+                    });
+                    return d.promise();
+                },
+
+                insertItem: function (item) {
+                    let d = $.Deferred();
+                    $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "insertLeague"}, item))
+                    }).done(function (response) {
+                        if (response.status === 'ok') {
+                            notify('success', 'Success', 'League was successfully added.');
+                            item.id = response.id;
+                            item.leagueIcon = {
+                                "path": response.path
+                            };
+                            d.resolve(item);
+                        } else if (response.status === 'deny') {
+                            notify('warning', 'Warning', 'Incorrect data was sent!');
+                            d.reject();
+                        } else if (response.status === 'exception') {
+                            notify('error', 'Error', 'There was an error adding the league!');
+                            d.reject();
+                        }
+                    }).fail(function () {
+                        notify('error', 'Error', 'There was an error adding the league!');
+                        d.reject();
+                    });
+                    return d.promise();
+                },
+
+                updateItem: function (item) {
+                    let d = $.Deferred();
+                    $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "updateLeague"}, item))
+                    }).done(function (response) {
+                        if (response.status === 'ok') {
+                            notify('success', 'Success', 'League was successfully updated.');
+                            item.leagueIcon = {
+                                "path": response.path
+                            };
+                            d.resolve(item);
+                        } else if (response.status === 'deny') {
+                            notify('warning', 'Warning', 'Incorrect data was sent!');
+                            d.reject();
+                        } else if (response.status === 'exception') {
+                            notify('error', 'Error', 'There was an error updating the league!');
+                            d.reject();
+                        }
+                    }).fail(function () {
+                        notify('error', 'Error', 'There was an error updating the league!');
+                        d.reject();
+                    });
+                    return d.promise();
+                },
+
+                deleteItem: function (item) {
+                    let d = $.Deferred();
+                    return $.ajax({
+                        type: "POST",
+                        url: ACTION_URL,
+                        data: JSON.stringify(Object.assign({}, {"action": "deleteLeague"}, item))
+                    }).done(function (response) {
+                        notify('success', 'Success', 'League was successfully deleted.');
+                        d.resolve(item);
+                    }).fail(function () {
+                        notify('error', 'Error', 'There was an error deleting the league!');
+                        d.reject();
+                    });
+                    return d.promise();
+                },
+            },
+
+            width: "100%",
+            height: "auto",
+
+            heading: true,
+            filtering: true,
+            inserting: false,
+            editing: true,
+            selecting: true,
+            sorting: true,
+            paging: true,
+            pageLoading: false,
+
+            rowClick: function (args) {
+                // TODO: Add i18n
+
+                isLeagueEditing = true;
+                editingItem = args.item;
+
+                let timestamp = new Date().getTime();
+                let queryString = "?t=" + timestamp;
+
+                $('#leagueModal').modal('show');
+                $('#leagueModal .card-header h5').text('Edit league');
+                $('#leagueModal #leagueModalSubmit').text('Update');
+
+                let league = args.item;
+                $('#leagueModal #leagueDisciplineSelect').val(league.discipline);
+                $('#leagueModal #leagueName').val(league.leagueName);
+                $('#leagueModal #leagueIconPreview').attr('src', league.leagueIcon.path + queryString).fadeIn(1000);
+            },
+
+            pageIndex: 1,
+            pageSize: 10,
+            pageButtonCount: 10,
+        });
     }
 
     if ($('#leagueModal').length > 0) {
+        var leagueIconBase64;
 
+        $('#leagueModal').off('hidden.bs.modal').on('hidden.bs.modal', function () {
+            // TODO: Add i18n
+            $('#leagueModal .card-header h5').text('Add league');
+            $('#leagueModal #leagueModalSubmit').text('Save');
+            $('#leagueModal #leagueIconPreview').attr('src', '').hide();
+            isLeagueEditing = false;
+        });
+
+        $('#leagueModal #leagueDisciplineSelect').off('change').on('change', function () {
+            let disciplineSelectValue = $('#leagueDisciplineSelect').val();
+            if (disciplineSelectValue > 0) {
+                $('#leagueDisciplineSelect').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#leagueDisciplineSelect').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#leagueModal #leagueName').off('input').on('input', function () {
+            let leagueName = $('#leagueName').val();
+            if (leagueName.length > 0) {
+                $('#leagueName').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#leagueName').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#leagueModal #leagueIcon').off('change').on('change', function () {
+            let fileLength = $('#leagueIcon').get(0).files.length;
+            if (fileLength > 0) {
+                let imageFile = $('#leagueIcon').get(0).files[0];
+
+                let fileReader = new FileReader();
+                fileReader.onload = function () {
+                    $("#leagueIconPreview").attr('src', fileReader.result).fadeIn(1000);
+                    leagueIconBase64 = fileReader.result;
+                }
+                fileReader.readAsDataURL(imageFile);
+                $('#leagueIcon').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $("#leagueIconPreview").fadeOut(1000).queue(function () {
+                    $("#leagueIconPreview").delay(1000).attr('src', '');
+                    $(this).dequeue();
+                });
+                $('#leagueIcon').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#leagueModal #leagueModalSubmit').off('click').click(function (e) {
+            e.preventDefault();
+
+            let leagueName = $('#leagueName').val();
+            let disciplineValue = $('#leagueDisciplineSelect').val();
+            let isImageSelected = $('#leagueIcon').get(0).files.length > 0;
+
+            if (validateName(leagueName)
+                && disciplineValue > 0
+                && (isImageSelected || isLeagueEditing)) {
+
+                let league = {
+                    "leagueName": leagueName,
+                    "discipline": parseFloat(disciplineValue),
+                    "leagueIcon": {
+                        "path": isImageSelected ? leagueIconBase64 : ""
+                    }
+                }
+
+                if (isLeagueEditing) {
+                    $("#leaguesGrid").jsGrid("updateItem", editingItem, league).then(function () {
+                        $('#leagueModal').modal('hide');
+                    });
+                } else {
+                    $("#leaguesGrid").jsGrid("insertItem", league).then(function () {
+                        $('#leagueModal').modal('hide');
+                    });
+                }
+            } else {
+                if (!$('#leagueName').val()) {
+                    $('#leagueName').addClass('is-invalid');
+                }
+                if (!$('#leagueDisciplineSelect').val()) {
+                    $('#leagueDisciplineSelect').addClass('is-invalid');
+                }
+                if (!$('#leagueIcon').val() && !isLeagueEditing) {
+                    $('#leagueIcon').addClass('is-invalid');
+                }
+            }
+        });
     }
 
     if ($('#teamsGrid').length > 0) {
-        var disciplines = [
-            {Name: "", Id: "0", Logo: ""},
-            {Name: "CS:GO", Id: "1", Logo: "/resources/assets/disciplines/csgo_icon.png"},
-            {Name: "DOTA 2", Id: "2", Logo: "/resources/assets/disciplines/dota2_icon.png"},
-            {Name: "LEAGUE OF LEGENDS", Id: "3", Logo: "/resources/assets/disciplines/lol_icon.png"},
-            {Name: "VALORANT", Id: "4", Logo: "/resources/assets/disciplines/valorant_icon.jpg"}
-        ];
-
         $('#teamsGrid').jsGrid({
             fields: [
                 {name: "id", title: "Id", type: "number", width: 50, align: "center"},
@@ -101,7 +1052,7 @@ $(document).ready(function () {
                         let queryString = "?t=" + timestamp;
                         return `<div class="d-flex flex-column justify-content-center align-items-center">
                                     <span class="mb-2 fw-bold">${item.teamName}</span>
-                                    <img src="${item.teamLogo.path + queryString}" width="60">
+                                    <img src="${item.teamLogo.path + queryString}" width="60");>
                                 </div>`;
                     }
                 },
@@ -114,8 +1065,8 @@ $(document).ready(function () {
                     textField: "Name",
                     width: 100,
                     itemTemplate: function (value, item) {
-                        let disciplineName = disciplines.find(d => d.Id === value).Name;
-                        let disciplineLogo = disciplines.find(d => d.Id === value).Logo;
+                        let disciplineName = disciplines.find(d => d.Id == value).Name;
+                        let disciplineLogo = disciplines.find(d => d.Id == value).Logo;
                         return `<div class="d-flex flex-column justify-content-center align-items-center">
                                     <span class="mb-2">${disciplineName}</span>
                                     <img src="${disciplineLogo}" width="30" style="border-radius: 5px">
@@ -165,6 +1116,9 @@ $(document).ready(function () {
                         if (response.status === 'ok') {
                             notify('success', 'Success', 'Team was successfully added.');
                             item.id = response.id;
+                            item.teamLogo = {
+                                "path": response.path
+                            };
                             d.resolve(item);
                         } else if (response.status === 'deny') {
                             notify('warning', 'Warning', 'Incorrect data was sent!');
@@ -208,15 +1162,19 @@ $(document).ready(function () {
                 },
 
                 deleteItem: function (item) {
+                    let d = $.Deferred();
                     return $.ajax({
                         type: "POST",
                         url: ACTION_URL,
                         data: JSON.stringify(Object.assign({}, {"action": "deleteTeam"}, item))
                     }).done(function (response) {
                         notify('success', 'Success', 'Team was successfully deleted.');
+                        d.resolve(item);
                     }).fail(function () {
                         notify('error', 'Error', 'There was an error deleting the team!');
+                        d.reject();
                     });
+                    return d.promise();
                 },
             },
 
@@ -246,9 +1204,7 @@ $(document).ready(function () {
                 $('#teamModal #teamModalSubmit').text('Update');
 
                 let team = args.item;
-                let teamId = team.id;
 
-                $('#teamModal').data('id', teamId);
                 $('#teamModal #teamDisciplineSelect').val(team.discipline);
                 $('#teamModal #teamName').val(team.teamName);
                 $('#teamModal #teamRating').val(team.teamRating);
@@ -332,7 +1288,7 @@ $(document).ready(function () {
             let disciplineValue = $('#teamDisciplineSelect').val();
             let isImageSelected = $('#teamLogo').get(0).files.length > 0;
 
-            if (validateTeamName(teamName)
+            if (validateName(teamName)
                 && validateTeamRating(teamRating)
                 && disciplineValue > 0
                 && (isImageSelected || isTeamEditing)) {
@@ -340,21 +1296,13 @@ $(document).ready(function () {
                 let team = {
                     "teamName": teamName,
                     "teamRating": parseFloat(teamRating),
-                    "discipline": disciplineValue,
-                }
-
-                if (isImageSelected) {
-                    team.teamLogo = {
-                        "path": teamLogoBase64
-                    };
-                } else {
-                    team.teamLogo = {
-                        "path": ""
-                    };
+                    "discipline": parseFloat(disciplineValue),
+                    "teamLogo": {
+                        "path": isImageSelected ? teamLogoBase64 : ""
+                    }
                 }
 
                 if (isTeamEditing) {
-                    team.id = $('#teamModal').data('id');
                     $("#teamsGrid").jsGrid("updateItem", editingItem, team).then(function () {
                         $('#teamModal').modal('hide');
                     });
@@ -549,16 +1497,40 @@ $(document).ready(function () {
     }
 
     if ($('.discipline-filter').length > 0) {
+        reloadDisciplineFilter();
+
         $('.discipline').off('click').click(function () {
+            let disciplineCookie = getCookie('discipline_filter');
+            let selectedDisciplines = disciplineCookie.split('|').filter(e => e);
+
             if ($(this).hasClass('active')) {
-                $(this).removeClass('active');
-                if ($('.discipline-filter .discipline.active').length == 0) {
-                    $('.discipline').first().addClass('active');
+                let filterToRemove = $(this).attr('data-discipline');
+                let filterToRemoveIndex = selectedDisciplines.indexOf(filterToRemove);
+
+                if(filterToRemoveIndex != null) {
+                   selectedDisciplines.splice(filterToRemoveIndex, 1);
+                }
+
+                if (selectedDisciplines.length == 0) {
+                    let filterToAdd = $('.discipline').first().attr('data-discipline');
+                    if(!selectedDisciplines.includes(filterToAdd)) {
+                        selectedDisciplines = selectedDisciplines.concat(filterToAdd);
+                    }
                 }
             } else {
-                $(this).addClass('active');
+                let filterToAdd = $(this).attr('data-discipline');
+                if(!selectedDisciplines.includes(filterToAdd)) {
+                    selectedDisciplines = selectedDisciplines.concat(filterToAdd);
+                }
             }
+            setCookie("discipline_filter", selectedDisciplines.join('|'), 365);
+            reloadDisciplineFilter();
+            reloadEventsSection();
         });
+    }
+
+    if($('#eventsContainer').length > 0) {
+        loadEventsSection();
     }
 
     if ($('.timezone-select').length > 0) {
@@ -623,14 +1595,18 @@ $(document).ready(function () {
 
     $('.modal').on('hidden.bs.modal', function (e) {
         $(this)
-            .find("input,textarea,select")
+            .find("input[type!=radio][type!=checkbox], textarea, select")
             .val('')
             .end()
             .find("input[type=checkbox], input[type=radio]")
             .prop('checked', '')
             .end()
+            .find('.selectpicker')
+            .selectpicker('refresh')
+            .end()
             .find('*')
             .removeClass('is-invalid')
             .removeClass('is-valid')
-    })
+            .end()
+    });
 });

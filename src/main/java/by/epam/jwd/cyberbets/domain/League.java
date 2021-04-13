@@ -1,12 +1,16 @@
 package by.epam.jwd.cyberbets.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Objects;
 
 public class League extends Entity {
     private static final long serialVersionUID = 4942205941516690400L;
 
+    @SerializedName("leagueName")
     private String name;
     private Discipline discipline;
+    @SerializedName("leagueIcon")
     private Resource iconResource;
 
     public League(int id, String name, Discipline discipline, Resource iconResource) {

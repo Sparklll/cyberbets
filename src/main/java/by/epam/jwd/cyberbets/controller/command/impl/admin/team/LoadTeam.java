@@ -1,13 +1,10 @@
 package by.epam.jwd.cyberbets.controller.command.impl.admin.team;
 
 import by.epam.jwd.cyberbets.controller.command.Action;
-import by.epam.jwd.cyberbets.controller.validator.Validator;
-import by.epam.jwd.cyberbets.controller.validator.ValidatorProvider;
-import by.epam.jwd.cyberbets.domain.Discipline;
+import by.epam.jwd.cyberbets.domain.League;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.Team;
-import by.epam.jwd.cyberbets.domain.dto.TeamDto;
-import by.epam.jwd.cyberbets.service.ServiceProvider;
+import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.service.TeamService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import com.google.gson.Gson;
@@ -23,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -51,16 +49,17 @@ public final class LoadTeam implements Action {
                     String filterTeamName = (String) jsonMap.get(TEAM_NAME_PARAM);
                     Double filterId = (Double) jsonMap.get(ID_PARAM);
                     Double filterTeamRating = (Double) jsonMap.get(TEAM_RATING_PARAM);
-                    String filterDisciplineId = (String) jsonMap.get(DISCIPLINE_PARAM);
+                    Double filterDisciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
 
                     List<Team> teams = teamService.findAll();
                     teams = teams.stream()
                             .filter(t -> (filterId == null || t.getId() == filterId.intValue())
                                     && (filterTeamRating == null || t.getRating() == filterTeamRating.intValue())
                                     && (StringUtils.isBlank(filterTeamName) || t.getName().toLowerCase().contains(filterTeamName.toLowerCase()))
-                                    && (StringUtils.isBlank(filterDisciplineId)
-                                    || filterDisciplineId.equals("0")
-                                    || t.getDiscipline().getId() == Integer.parseInt(filterDisciplineId)))
+                                    && (filterDisciplineId == null
+                                    || filterDisciplineId.intValue() == 0
+                                    || t.getDiscipline().getId() == filterDisciplineId.intValue()))
+                            .sorted(Comparator.comparing(Team::getId))
                             .collect(Collectors.toList());
 
                     String jsonStrTeams = new Gson().toJson(teams);

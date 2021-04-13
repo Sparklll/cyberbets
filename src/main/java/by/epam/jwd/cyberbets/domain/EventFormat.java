@@ -1,11 +1,15 @@
 package by.epam.jwd.cyberbets.domain;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Optional;
+
 public enum EventFormat {
     // GENERAL
-    BO1(1),
-    BO2(2),
-    BO3(3),
-    BO5(4);
+    @SerializedName("1") BO1(1),
+    @SerializedName("2") BO2(2),
+    @SerializedName("3") BO3(3),
+    @SerializedName("4") BO5(4);
 
     private final int id;
 
@@ -17,12 +21,14 @@ public enum EventFormat {
         return id;
     }
 
-    public EventFormat getEventFormatById(int id) {
-        for(EventFormat eventFormat : values()) {
-            if(eventFormat.getId() == id) {
-                return eventFormat;
+    public static Optional<EventFormat> getEventFormatById(int id) {
+        Optional<EventFormat> eventFormatOptional = Optional.empty();
+        for (EventFormat eventFormat : values()) {
+            if (eventFormat.getId() == id) {
+                eventFormatOptional = Optional.of(eventFormat);
+                return eventFormatOptional;
             }
         }
-        throw new IllegalArgumentException("Unable to find EventFormat with id = " + id);
+        return eventFormatOptional;
     }
 }

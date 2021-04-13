@@ -1,11 +1,15 @@
 package by.epam.jwd.cyberbets.domain;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Optional;
+
 public enum ResultStatus {
-    UNBLOCKED(1),
-    BLOCKED(2),
-    CANCELED(3),
-    SUCCESS(4),
-    FAILURE(5);
+    @SerializedName("1") DISABLED(1),
+    @SerializedName("2") BLOCKED(2),
+    @SerializedName("3") UNBLOCKED(3),
+    @SerializedName("4") FIRST_UPSHOT(4),
+    @SerializedName("5") SECOND_UPSHOT(5);
 
     private final int id;
 
@@ -17,12 +21,14 @@ public enum ResultStatus {
         return id;
     }
 
-    public ResultStatus getResultStatusById(int id) throws IllegalArgumentException{
-        for(ResultStatus resultStatus : values()) {
-            if(resultStatus.getId() == id) {
-                return resultStatus;
+    public static Optional<ResultStatus> getResultStatusById(int id) throws IllegalArgumentException {
+        Optional<ResultStatus> resultStatusOptional = Optional.empty();
+        for (ResultStatus resultStatus : values()) {
+            if (resultStatus.getId() == id) {
+                resultStatusOptional = Optional.of(resultStatus);
+                return resultStatusOptional;
             }
         }
-        throw new IllegalArgumentException("Unable to find ResultStatus with id = " + id);
+        return resultStatusOptional;
     }
 }

@@ -24,20 +24,8 @@ public class TeamDaoImpl implements TeamDao {
             inner join discipline d on d.id = t.discipline_id
             inner join resource r on r.id = t.logo_resource_id
             """;
-    private static final String FIND_TEAM_BY_ID = """
-            select t.id, t.name, t.rating, t.discipline_id, t.logo_resource_id, r.path
-            from team t
-            inner join discipline d on d.id = t.discipline_id
-            inner join resource r on r.id = t.logo_resource_id
-            where t.id = ?
-            """;
-    private static final String FIND_TEAM_BY_NAME = """
-            select t.id, t.name, t.rating, t.discipline_id, t.logo_resource_id, r.path
-            from team t
-            inner join discipline d on d.id = t.discipline_id
-            inner join resource r on r.id = t.logo_resource_id
-            where t.name = ?
-            """;
+    private static final String FIND_TEAM_BY_ID = FIND_ALL_TEAMS.concat(" where t.id = ?");
+    private static final String FIND_TEAM_BY_NAME = FIND_ALL_TEAMS.concat(" where t.name = ?");
 
     private static final String FIND_LOGO_RESOURCE_BY_TEAM_ID = """
             select r.id, r.path
@@ -49,6 +37,9 @@ public class TeamDaoImpl implements TeamDao {
     private static final String UPDATE_TEAM = "update team set name = ?, rating = ?, discipline_id = ?, logo_resource_id = ? where id = ?";
     private static final String DELETE_TEAM = "delete from team where id = ?";
 
+    TeamDaoImpl() {
+
+    }
 
     @Override
     public List<Team> findAll() throws DaoException {
@@ -61,8 +52,6 @@ public class TeamDaoImpl implements TeamDao {
                     teams.add(team);
                 }
                 return teams;
-            } catch (SQLException e) {
-                throw new DaoException(e);
             }
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -98,29 +87,25 @@ public class TeamDaoImpl implements TeamDao {
             ps.setInt(1, teamId);
             try (ResultSet rs = ps.executeQuery()) {
                 Optional<Resource> resourceOptional = Optional.empty();
-                while (rs.next()) {
+                if (rs.next()) {
                     Resource resource = new Resource(rs.getInt(ID), rs.getString(PATH));
                     resourceOptional = Optional.of(resource);
                 }
                 return resourceOptional;
-            } catch (SQLException e) {
-                throw new DaoException(e);
             }
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
 
-    private Optional<Team> getTeam(PreparedStatement ps) throws DaoException {
+    private Optional<Team> getTeam(PreparedStatement ps) throws SQLException {
         try (ResultSet rs = ps.executeQuery()) {
             Optional<Team> teamOptional = Optional.empty();
-            while (rs.next()) {
+            if (rs.next()) {
                 Team team = mapRow(rs);
                 teamOptional = Optional.of(team);
             }
             return teamOptional;
-        } catch (SQLException e) {
-            throw new DaoException(e);
         }
     }
 
@@ -136,8 +121,6 @@ public class TeamDaoImpl implements TeamDao {
             try (ResultSet rs = ps.getResultSet()) {
                 rs.next();
                 return rs.getInt(ID);
-            } catch (SQLException e) {
-                throw new DaoException(e);
             }
         } catch (SQLException e) {
             throw new DaoException(e);

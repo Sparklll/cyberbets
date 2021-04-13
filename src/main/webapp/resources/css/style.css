@@ -310,31 +310,20 @@ img {
     border-radius: 5px 5px 0 0;
 }
 
-.event .event-header .event-icon {
+.event-header .league-icon {
     max-width: 35px;
 }
 
-.event .event-header .live {
-    font-size: 0.8rem;
+.event-header .live {
     animation: blinkingLive 3s infinite ease-in-out;
 }
 
 @keyframes blinkingLive {
-    0% {
-        color: rgba(255, 0, 0, 0.8);
-    }
-    25% {
-        color: rgba(255, 0, 0, 0.6);
-    }
-    50% {
-        color: rgba(255, 0, 0, 0.4);
-    }
-    75% {
-        color: rgba(255, 0, 0, 0.6);
-    }
-    100% {
-        color: rgba(255, 0, 0, 0.8);
-    }
+    0%   {opacity: 1;}
+    25%  {opacity: 0.8;}
+    50%  {opacity: 0.4;}
+    75%  {opacity: 0.8;}
+    100% {opacity: 1;}
 }
 
 .live-label, .upcoming-label {
@@ -369,6 +358,12 @@ img {
     .event {
         font-size: 0.8rem;
     }
+}
+
+.event-outcome {
+    padding:5px;
+    border-radius: 5px;
+    border: 2px solid rgb(102, 24, 179);
 }
 
 /* FOOTER */
@@ -495,6 +490,11 @@ footer .copyright {
 
 }
 
+.btn-check:active+.btn-secondary,
+.btn-check:checked+.btn-secondary {
+    background-color: #29864e;
+}
+
 /* INPUT FIELD */
 .input-field {
     border-radius: 10px;
@@ -529,13 +529,47 @@ footer .copyright {
     background-color: #4e5061;
 }
 
-
 .custom-controls select {
     color: white;
     border: none;
     outline: none;
     background-color: #4e5061;
     width: 100%;
+}
+
+/* BOOTSTRAP SELECT */
+.bootstrap-select {
+    background: none;
+    color: white !important;
+}
+
+.bootstrap-select .btn {
+    background-color: #4e5061;
+    font-weight: 500;
+}
+
+.bootstrap-select .dropdown-menu {
+    background-color: #4e5061;
+}
+
+.bootstrap-select .bs-searchbox input {
+    background-color: #2a2f36;
+}
+
+.bootstrap-select .dropdown-menu li a.selected {
+    background-color: #645fa8;
+}
+
+.bootstrap-select .dropdown-menu li a:hover,
+.bootstrap-select .no-results {
+    background-color: #6b6b7d;
+}
+
+.bootstrap-select .filter-option,
+.bootstrap-select .dropdown-menu,
+.bootstrap-select .dropdown-menu li a,
+.bootstrap-select > .dropdown-toggle:after {
+    color: white;
 }
 
 /* CARD */
@@ -563,6 +597,25 @@ footer .copyright {
     transform: rotate(180deg);
 }
 
+/* ACCORDION*/
+.accordion-body {
+    background-color: #2a2f36;
+}
+
+.accordion-item {
+    background-color: transparent;
+}
+
+.accordion-header .accordion-button::after {
+    color: white;
+}
+
+.accordion-header .accordion-button {
+    color: white;
+    border: none;
+    background-color: #4e5061;
+}
+
 /* MODALS GLOBAL */
 .modal-open {
     position: fixed;
@@ -575,6 +628,10 @@ footer .copyright {
     border: none;
 }
 
+body.modal-open {
+    position: inherit;
+}
+
 /* SPECIAL MODALS */
 .login-form a {
     font-style: italic;
@@ -582,6 +639,21 @@ footer .copyright {
     color: #a504ff;
 }
 
+#confirmModal .icon-box {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    border-radius: 50%;
+    z-index: 9;
+    text-align: center;
+    border: 3px solid #f15e5e;
+}
+#confirmModal .icon-box i {
+    color: #f15e5e;
+    font-size: 46px;
+    display: inline-block;
+    margin-top: 13px;
+}
 
 /* FLAGS */
 .flag {
@@ -638,7 +710,7 @@ footer .copyright {
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
     .sidebar {
         width: 100%;
         max-width: 350px;
