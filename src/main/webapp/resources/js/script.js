@@ -56,16 +56,18 @@ $(document).ready(function () {
         }
     }
 
-    function loadEventsSection() {
-        $.get('/loadEventSection/', function (responseXml) {
+    function loadEventSection() {
+        $.post(ACTION_URL, JSON.stringify({action: "loadEventSection"}))
+            .done(function (responseXml) {
             $('#liveEvents .events').html($(responseXml).find('#liveEvents .events').html()).fadeIn(200);
             $('#upcomingEvents .events').html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(200);
             $('#pastEvents .events').html($(responseXml).find('#pastEvents .events').html()).fadeIn(200);
         });
     }
 
-    function reloadEventsSection() {
-        $.get('/loadEventSection/', function (responseXml) {
+    function reloadEventSection() {
+        $.post(ACTION_URL, JSON.stringify({action: "loadEventSection"}))
+            .done(function (responseXml) {
             $('#liveEvents .events').fadeOut(300, function () {
                 $(this).html($(responseXml).find('#liveEvents .events').html());
             }).fadeIn(300);
@@ -153,6 +155,7 @@ $(document).ready(function () {
             {Name: "[Map #4] Victory on the map", Discipline: "all", Format: 4, Id: 5},
             {Name: "[Map #5] Victory on the map", Discipline: "all", Format: 4, Id: 6},
 
+            //Specific\\
             // csgo
             // dota2
             // lol
@@ -166,19 +169,19 @@ $(document).ready(function () {
                     name: "event",
                     title: "Event",
                     type: "text",
-                    width: 100,
+                    width: 125,
                     align: "center",
                     itemTemplate: function (value, item) {
                         return `<div class="d-flex justify-content-center align-items-center">
                                     <div class="d-flex flex-column justify-content-center align-items-center me-auto ms-2">
-                                        <span class="mb-2 fw-bold">${item.firstTeam.teamName}</span>
+                                        <span class="mb-2 fw-bold text-truncate" style="width: 100px">${item.firstTeam.teamName}</span>
                                         <img src="${item.firstTeam.teamLogo.path}" width="50">
                                     </div>
                                    
                                    <i class="fw-bold">VS</i> 
                                    
                                    <div class="d-flex flex-column justify-content-center align-items-center ms-auto me-2">
-                                        <span class="mb-2 fw-bold">${item.secondTeam.teamName}</span>
+                                        <span class="mb-2 fw-bold text-truncate" style="width: 100px">${item.secondTeam.teamName}</span>
                                         <img src="${item.secondTeam.teamLogo.path}" width="50">
                                     </div>
                                 </div>`;
@@ -200,7 +203,7 @@ $(document).ready(function () {
                     name: "leagueName",
                     title: "League",
                     type: "text",
-                    width: 100,
+                    width: 75,
                     align: "center",
                     itemTemplate: function (value, item) {
                         return `<div class="d-flex flex-column justify-content-center align-items-center">
@@ -419,11 +422,6 @@ $(document).ready(function () {
                 $('#eventModal .event-preview .team-left .team-name').text(event.firstTeam.teamName);
                 $('#eventModal .event-preview .team-right .team-name').text(event.secondTeam.teamName);
 
-                // $('#eventModal .event-preview .team-left .odds').empty().append('<i>x</i>1');
-                // $('#eventModal .event-preview .team-right .odds').empty().append('<i>x</i>1');
-                // $('#eventModal .event-preview .event-info .center .left-percent .odds-percentage').text('50%');
-                // $('#eventModal .event-preview .event-info .center .right-percent .odds-percentage').text('50%');
-
                 $('#eventModal .event-preview .event-info .center .event-format span')
                     .text(eventFormat.find(e => e.Id == event.eventFormat).Name);
                 $('#eventModal .event-preview .event-info .center .event-format .discipline-icon')
@@ -483,6 +481,37 @@ $(document).ready(function () {
                         $('#eventModal #eventOutcomeCollapse .accordion-body').append(eventOutcomeTemplate);
                         }
                     );
+
+                    postData(ACTION_URL, {
+                        "action" : "loadEventCoefficients",
+                        "id" : event.id
+                    }).then((response) => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            return Promise.reject(response);
+                        }
+                    ).then(function (response) {
+                        if(response.data != null) {
+                            let eventCoefficients = response.data;
+                            eventCoefficients.forEach(c => {
+                                if(c.eventOutcomeTypeId == 1) { // Total Winner, filling preview
+                                    $('#eventModal .team-left .odds').empty().append(`<i>x</i>${c.firstUpshotOdds}`);
+                                    $('#eventModal .team-right .odds').empty().append(`<i>x</i>${c.secondUpshotOdds}`);
+                                    $('#eventModal .center .left-percent .odds-percentage').text(`${c.firstUpshotPercent}%`);
+                                    $('#eventModal .center .right-percent .odds-percentage').text(`${c.secondUpshotPercent}%`);
+                                }
+
+                                let foundedEventOutcome = $('#eventOutcomeCollapse .accordion-body')
+                                    .find(`.event-outcome[data-type=${c.eventOutcomeTypeId}]`);
+                                if(foundedEventOutcome != null) {
+                                    $(foundedEventOutcome).find('.left-outcome-odds').empty().append(`<i>x</i>${c.firstUpshotOdds}`);
+                                    $(foundedEventOutcome).find('.right-outcome-odds').empty().append(`<i>x</i>${c.secondUpshotOdds}`);
+                                }
+                            });
+                        }
+                    }).catch((error) => console.log('Something went wrong.', error));
+
                 }).catch((error) => console.log('Something went wrong.', error));
             },
 
@@ -1525,12 +1554,12 @@ $(document).ready(function () {
             }
             setCookie("discipline_filter", selectedDisciplines.join('|'), 365);
             reloadDisciplineFilter();
-            reloadEventsSection();
+            reloadEventSection();
         });
     }
 
     if($('#eventsContainer').length > 0) {
-        loadEventsSection();
+        loadEventSection();
     }
 
     if ($('.timezone-select').length > 0) {

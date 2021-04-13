@@ -37,7 +37,7 @@ public class ApplicationContextListener implements ServletContextListener {
 
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new LoadEventJob(), 0, 30, TimeUnit.SECONDS);
-        scheduler.scheduleAtFixedRate(new LoadCoefficientsJob(),0, 10, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(new LoadCoefficientsJob(),0, 5, TimeUnit.SECONDS);
         scheduler.scheduleAtFixedRate(new UpdateEventStatusJob(),0, 1, TimeUnit.MINUTES);
 
 

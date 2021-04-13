@@ -26,7 +26,6 @@ public enum Router {
     Router() {
         routes.put(ACTION_LISTENER_ROUTE, new ActionListener());
         routes.put(HOME_ROUTE, new HomePage());
-        routes.put(EVENT_SECTION_ROUTE, new EventSection());
         routes.put(CONTACTS_ROUTE, new ContactsPage());
         routes.put(NEWS_ROUTE, new NewsPage());
         routes.put(PRIVACY_POLICY_ROUTE, new PrivacyPolicyPage());

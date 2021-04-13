@@ -14,7 +14,6 @@
     <title>CYBERBETS | HOME</title>
 </head>
 
-
 <body class="d-flex flex-column min-vh-100">
 
 <jsp:include page="general/navbar.jsp">
@@ -104,7 +103,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="pastEvents" role="tabpanel" aria-labelledby="pastEventsTab">
-                    <div class="events" style="display: none">
+                    <div class="events mt-1" style="display: none">
 
                     </div>
                 </div>
