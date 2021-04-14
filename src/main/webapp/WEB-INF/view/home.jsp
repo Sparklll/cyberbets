@@ -59,7 +59,7 @@
     </div>
 </div>
 
-<div id="eventsContainer" class="events container mb-5">
+<div id="eventsContainer" class="events container mb-5" data-auth="${auth}">
     <div class="row">
         <div class="col-12 wrapper">
             <nav>
@@ -112,9 +112,55 @@
     </div>
 </div>
 
-
-
 <jsp:include page="general/footer.jsp"/>
+
+<div class="modal fade" id="betModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="betModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered justify-content-center">
+        <div class="modal-content w-100">
+            <div class="card">
+                <div class="card-header bet-header d-inline-flex align-items-center">
+                    <img class="discipline-icon me-3" src="">
+                    <div class="d-flex flex-column">
+                        <span class="league-name"></span>
+                        <span class="event-format"></span>
+                    </div>
+                    <a class="close ms-auto" role="button"
+                       data-bs-dismiss="modal"
+                       data-bs-toggle="modal">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+                <div class="card-body p-3">
+                    <div class="bet-preview row mx-3">
+                        <div class="team team-left d-flex flex-column justify-content-center align-items-center col-4">
+                            <span class="team-name fw-bold text-truncate mb-2"></span>
+                            <div class="team-logo">
+                                <img src="">
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column justify-content-center align-items-center col-4">
+                            <h5 class="text-center text-uppercase fst-italic fw-bold">Vs</h5>
+                            <span class="date text-center"></span>
+                        </div>
+                        <div class="team team-right d-flex flex-column justify-content-center align-items-center col-4">
+                            <span class="team-name fw-bold text-truncate mb-2"></span>
+                            <div class="team-logo order-last">
+                                <img src="assets/team-1.png">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center mt-3 mx-3">
+                        <div class="spinner-border" style="width: 4rem; height: 4rem;" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <%@ include file="general/html/scripts.html" %>
 </body>

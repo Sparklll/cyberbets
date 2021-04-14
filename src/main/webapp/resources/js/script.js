@@ -4,6 +4,7 @@ $(document).ready(function () {
     const DEFAULT_LANG = 'en';
     const ACTION_URL = "/action/"
 
+    var auth = $('#eventsContainer').data('auth');
     var isEventEditing = false;
     var isTeamEditing = false;
     var isLeagueEditing = false;
@@ -683,7 +684,7 @@ $(document).ready(function () {
                 let firstTeamId = $('#eventFirstTeamSelect').val();
                 let secondTeamId = $('#eventSecondTeamSelect').val();
                 let firstTeamName = $(`#eventFirstTeamSelect option[value=${firstTeamId}]`).text();
-                let secondTeamName = $(`#eventFirstTeamSelect option[value=${secondTeamId}]`).text();
+                let secondTeamName = $(`#eventSecondTeamSelect option[value=${secondTeamId}]`).text();
 
                 let eventFormatName = eventFormat.find(f => f.Id == eventFormatId).Name;
                 $('#eventModal .event-preview .center .event-format span').text(eventFormatName);
@@ -1525,6 +1526,38 @@ $(document).ready(function () {
         });
     }
 
+    if ($('#eventsContainer').length > 0) {
+        loadEventSection();
+
+        $('#eventsContainer').on('click', ' .team', function (event) {
+            if(auth) {
+                let eventInfo = $(this).closest('.event');
+
+                let leagueName = $(eventInfo).find('.league-name').text();
+                let disciplineIcon = $(eventInfo).find('.discipline-icon').attr('src');
+                let eventFormat = $(eventInfo).find('.event-format span').text();
+                let teamLeftName = $(eventInfo).find('.team-left .team-name').text();
+                let teamLeftLogo = $(eventInfo).find('.team-left .team-logo img').attr('src');
+                let teamRightName = $(eventInfo).find('.team-right .team-name').text();
+                let teamRightLogo = $(eventInfo).find('.team-right .team-logo img').attr('src')
+
+                $('#betModal .discipline-icon').attr('src', disciplineIcon);
+                $('#betModal .league-name').text(leagueName);
+                $('#betModal .event-format').text(eventFormat);
+                $('#betModal .team-left .team-name').text(teamLeftName);
+                $('#betModal .team-left .team-logo img').attr('src', teamLeftLogo);
+                $('#betModal .team-right .team-name').text(teamRightName);
+                $('#betModal .team-right .team-logo img').attr('src', teamRightLogo);
+
+
+
+                $('#betModal').modal('show');
+            } else {
+                $('#loginModal').modal('show');
+            }
+        });
+    }
+
     if ($('.discipline-filter').length > 0) {
         reloadDisciplineFilter();
 
@@ -1537,7 +1570,7 @@ $(document).ready(function () {
                 let filterToRemoveIndex = selectedDisciplines.indexOf(filterToRemove);
 
                 if(filterToRemoveIndex != null) {
-                   selectedDisciplines.splice(filterToRemoveIndex, 1);
+                    selectedDisciplines.splice(filterToRemoveIndex, 1);
                 }
 
                 if (selectedDisciplines.length == 0) {
@@ -1556,10 +1589,6 @@ $(document).ready(function () {
             reloadDisciplineFilter();
             reloadEventSection();
         });
-    }
-
-    if($('#eventsContainer').length > 0) {
-        loadEventSection();
     }
 
     if ($('.timezone-select').length > 0) {
