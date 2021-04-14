@@ -41,10 +41,10 @@
                     <a class="nav-link dropdown-toggle" href="#" id="timezoneDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false"><i class="far fa-clock me-2"></i></a>
                     <ul class="dropdown-menu fade-down" aria-labelledby="timezoneDropdown">
-                        <li><a class="dropdown-item" href="#">UTC-0</a></li>
-                        <li><a class="dropdown-item" href="#">UTC-1</a></li>
-                        <li><a class="dropdown-item" href="#">UTC-2</a></li>
-                        <li><a class="dropdown-item" href="#">UTC-3</a></li>
+<%--                        <li><a class="dropdown-item" href="#">UTC-0</a></li>--%>
+<%--                        <li><a class="dropdown-item" href="#">UTC-1</a></li>--%>
+<%--                        <li><a class="dropdown-item" href="#">UTC-2</a></li>--%>
+<%--                        <li><a class="dropdown-item" href="#">UTC-3</a></li>--%>
                     </ul>
                 </li>
                 <li class="nav-item dropdown lang-select">

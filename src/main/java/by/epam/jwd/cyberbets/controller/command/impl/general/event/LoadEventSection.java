@@ -1,11 +1,10 @@
-package by.epam.jwd.cyberbets.controller.command.impl.page;
+package by.epam.jwd.cyberbets.controller.command.impl.general.event;
 
 import by.epam.jwd.cyberbets.controller.command.Action;
 import by.epam.jwd.cyberbets.domain.Event;
 import by.epam.jwd.cyberbets.domain.EventOutcomeType;
 import by.epam.jwd.cyberbets.domain.dto.CoefficientsDto;
 import by.epam.jwd.cyberbets.service.EventService;
-import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.service.job.LoadCoefficientsJob;
 import by.epam.jwd.cyberbets.service.job.LoadEventJob;
@@ -22,8 +21,8 @@ import java.util.*;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
-public final class EventSection implements Action {
-    private static final Logger logger = LoggerFactory.getLogger(EventSection.class);
+public final class LoadEventSection implements Action {
+    private static final Logger logger = LoggerFactory.getLogger(LoadEventSection.class);
 
     private static final String VERTICAL_BAR_PATTERN = "\\|";
 
@@ -56,9 +55,9 @@ public final class EventSection implements Action {
                 ? new Locale(langCookie.getValue())
                 : Locale.getDefault();
 
-        List<String> filterDisciplines = null;
+        List<String> filterDisciplines = new ArrayList<>();
         if (disciplineFilterCookie != null) {
-            filterDisciplines = Arrays.stream(disciplineFilterCookie.getValue().split(VERTICAL_BAR_PATTERN)).toList();
+            Arrays.stream(disciplineFilterCookie.getValue().split(VERTICAL_BAR_PATTERN)).forEach(s -> filterDisciplines.add(s));
         }
 
         Map<Integer, List<CoefficientsDto>> coefficients = LoadCoefficientsJob.cachedCoefficients;
@@ -67,11 +66,10 @@ public final class EventSection implements Action {
         List<EventData> upcomingEvents = new ArrayList<>();
         List<EventData> pastEvents = new ArrayList<>();
 
-        boolean isFilterDisciplineEmpty = filterDisciplines == null;
-        List<String> finalFilterDisciplines = filterDisciplines;
+        boolean isFilterDisciplineCookieEmpty = disciplineFilterCookie == null;
         LoadEventJob.cachedLiveEvents.stream()
-                .filter(e -> isFilterDisciplineEmpty
-                        || finalFilterDisciplines.contains(disciplineMap.get(e.getDiscipline().getId())))
+                .filter(e -> isFilterDisciplineCookieEmpty
+                        || filterDisciplines.contains(disciplineMap.get(e.getDiscipline().getId())))
                         .sorted(Comparator.comparing(Event::getStartDate))
                         .forEach(e -> {
                             List<CoefficientsDto> eventCoefficients = coefficients.get(e.getId());
@@ -83,27 +81,27 @@ public final class EventSection implements Action {
                             }
                         });
         LoadEventJob.cachedUpcomingEvents.stream()
-                .filter(e -> isFilterDisciplineEmpty
-                        || finalFilterDisciplines.contains(disciplineMap.get(e.getDiscipline().getId())))
+                .filter(e -> isFilterDisciplineCookieEmpty
+                        || filterDisciplines.contains(disciplineMap.get(e.getDiscipline().getId())))
                 .sorted(Comparator.comparing(Event::getStartDate))
                 .forEach(e -> {
                     List<CoefficientsDto> eventCoefficients = coefficients.get(e.getId());
                     for (CoefficientsDto coefficientsDto : eventCoefficients) {
                         if (coefficientsDto.getEventOutcomeTypeId() == EventOutcomeType.TOTAL_WINNER.getId()) {
-                            liveEvents.add(new EventData(e, coefficientsDto));
+                            upcomingEvents.add(new EventData(e, coefficientsDto));
                             break;
                         }
                     }
                 });
         LoadEventJob.cachedPastEvents.stream()
-                .filter(e -> isFilterDisciplineEmpty
-                        || finalFilterDisciplines.contains(disciplineMap.get(e.getDiscipline().getId())))
+                .filter(e -> isFilterDisciplineCookieEmpty
+                        || filterDisciplines.contains(disciplineMap.get(e.getDiscipline().getId())))
                 .sorted(Comparator.comparing(Event::getStartDate))
                 .forEach(e -> {
                     List<CoefficientsDto> eventCoefficients = coefficients.get(e.getId());
                     for (CoefficientsDto coefficientsDto : eventCoefficients) {
                         if (coefficientsDto.getEventOutcomeTypeId() == EventOutcomeType.TOTAL_WINNER.getId()) {
-                            liveEvents.add(new EventData(e, coefficientsDto));
+                            pastEvents.add(new EventData(e, coefficientsDto));
                             break;
                         }
                     }

@@ -339,7 +339,7 @@ img {
     border-radius: 5px 5px 0 0;
 }
 
-.event-info .center .discipline-icon {
+.discipline-icon {
     border-radius: 5px;
     max-width: 30px;
 }
@@ -639,6 +639,7 @@ body.modal-open {
     color: #a504ff;
 }
 
+/* CONFIRM MODAL COMPONENTS */
 #confirmModal .icon-box {
     width: 80px;
     height: 80px;
@@ -653,6 +654,40 @@ body.modal-open {
     font-size: 46px;
     display: inline-block;
     margin-top: 13px;
+}
+
+/* BET MODAL COMPONENTS */
+.bet-header .league-name {
+    font-weight: bold;
+}
+
+.bet-header .event-format {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.bet-preview {
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid #8800ff;
+
+    background: linear-gradient(45deg,#1c6067, #512854, #4f1862, #342485, #1c6067);
+    background-size: 200% 200%;
+    animation: gradient 8s ease-in-out infinite;
+}
+.bet-preview .team-logo {
+    padding: 2px;
+    border-radius: 5px;
+    background-color: rgba(158, 158, 172, 0.4);
+}
+
+.bet-preview .team-logo img {
+    width: 60px;
+}
+
+.bet-preview .date {
+    color: red;
 }
 
 /* FLAGS */

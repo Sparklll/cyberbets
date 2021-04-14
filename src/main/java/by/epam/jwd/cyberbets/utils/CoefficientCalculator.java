@@ -22,7 +22,7 @@ public final class CoefficientCalculator {
 
     public static BigDecimal calculateUpshotPercent(BigDecimal totalBetsAmount, BigDecimal upshotBetsAmount) {
         if (totalBetsAmount.compareTo(BigDecimal.ZERO) == 0) {
-            return new BigDecimal(0);
+            return BigDecimal.ZERO;
         } else {
             return upshotBetsAmount.divide(totalBetsAmount, 2, RoundingMode.HALF_UP).scaleByPowerOfTen(2);
         }

@@ -68,7 +68,10 @@ public final class Parameters {
     public static final String VALORANT_DISC = "valorant";
 
     // ACTION NAMES
-    public static final String LOAD_EVENT_RESULTS = "loadEventResults";
+    public static final String LOAD_EVENT_COEFFICIENTS_ACTION = "loadEventCoefficients";
+    public static final String LOAD_COEFFICIENTS_ACTION = "loadCoefficients";
+    public static final String LOAD_EVENT_RESULTS_ACTION = "loadEventResults";
+    public static final String LOAD_EVENT_SECTION_ACTION = "loadEventSection";
     public static final String LOAD_EVENT_ACTION = "loadEvent";
     public static final String INSERT_EVENT_ACTION = "insertEvent";
     public static final String UPDATE_EVENT_ACTION = "updateEvent";
