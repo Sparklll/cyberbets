@@ -28,7 +28,7 @@
                             <span class="date ms-1">
                                 <datetime:format value="${eventData.event.startDate}" pattern="EEE, dd MMM YYYY HH:mm" locale="${locale}"/>
                             </span>
-                            <img class="ms-2" src="/resources/assets/live.png" width="50">
+                            <img class="live-icon ms-2" src="/resources/assets/interface/live.png">
                             <img src="${eventData.event.league.iconResource.path}" class="league-icon ms-auto me-1">
                             <span class="league-name float-end me-1">${eventData.event.league.name}</span>
                         </div>
@@ -36,7 +36,7 @@
 
                             <div class="team team-left d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                                 <div class="d-flex flex-column justify-content-center align-items-center col-6">
-                                    <span class="team-name">${eventData.event.firstTeam.name}</span>
+                                    <span class="team-name text-center">${eventData.event.firstTeam.name}</span>
                                     <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.firstUpshotOdds}</span>
                                 </div>
                                 <div class="team-logo ms-sm-2">
@@ -89,7 +89,7 @@
 
                             <div class="team team-right d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                                 <div class="d-flex flex-column justify-content-center align-items-center col-6">
-                                    <span class="team-name">${eventData.event.secondTeam.name}</span>
+                                    <span class="team-name text-center">${eventData.event.secondTeam.name}</span>
                                     <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.secondUpshotOdds}</span>
                                 </div>
                                 <div class="team-logo order-last order-sm-first me-sm-2">
@@ -121,7 +121,7 @@
 
                             <div class="team team-left d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                                 <div class="d-flex flex-column justify-content-center align-items-center col-6">
-                                    <span class="team-name">${eventData.event.firstTeam.name}</span>
+                                    <span class="team-name text-center">${eventData.event.firstTeam.name}</span>
                                     <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.firstUpshotOdds}</span>
                                 </div>
                                 <div class="team-logo ms-sm-2">
@@ -174,7 +174,7 @@
 
                             <div class="team team-right d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                                 <div class="d-flex flex-column justify-content-center align-items-center col-6">
-                                    <span class="team-name">${eventData.event.secondTeam.name}</span>
+                                    <span class="team-name text-center">${eventData.event.secondTeam.name}</span>
                                     <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.secondUpshotOdds}</span>
                                 </div>
                                 <div class="team-logo order-last order-sm-first me-sm-2">
@@ -202,7 +202,7 @@
 
                         <div class="team team-left d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                             <div class="d-flex flex-column justify-content-center align-items-center col-6">
-                                <span class="team-name">${eventData.event.firstTeam.name}</span>
+                                <span class="team-name text-center">${eventData.event.firstTeam.name}</span>
                                 <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.firstUpshotOdds}</span>
                             </div>
                             <div class="team-logo ms-sm-2">
@@ -255,7 +255,7 @@
 
                         <div class="team team-right d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                             <div class="d-flex flex-column justify-content-center align-items-center col-6">
-                                <span class="team-name">${eventData.event.secondTeam.name}</span>
+                                <span class="team-name text-center">${eventData.event.secondTeam.name}</span>
                                 <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.secondUpshotOdds}</span>
                             </div>
                             <div class="team-logo order-last order-sm-first me-sm-2">

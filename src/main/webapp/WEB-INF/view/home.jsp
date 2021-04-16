@@ -132,16 +132,17 @@
                     </a>
                 </div>
                 <div class="card-body p-3">
-                    <div class="bet-preview row mx-3">
+                    <div class="bet-preview row mx-3 mb-3">
                         <div class="team team-left d-flex flex-column justify-content-center align-items-center col-4">
                             <span class="team-name fw-bold text-truncate mb-2"></span>
                             <div class="team-logo">
                                 <img src="">
                             </div>
                         </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center col-4">
+                        <div class="center d-flex flex-column justify-content-center align-items-center col-4">
                             <h5 class="text-center text-uppercase fst-italic fw-bold">Vs</h5>
-                            <span class="date text-center"></span>
+                            <img class="live-icon live-blink mb-1" src="/resources/assets/interface/live.png" style="display: none">
+                            <span class="date fw-bold text-center"></span>
                         </div>
                         <div class="team team-right d-flex flex-column justify-content-center align-items-center col-4">
                             <span class="team-name fw-bold text-truncate mb-2"></span>

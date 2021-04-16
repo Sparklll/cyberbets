@@ -263,6 +263,7 @@ img {
 
 .event-info .team {
     background-color: #2f353d;
+    transition: background-color 0.3s;
 }
 .event-info .center {
     background-color: rgba(47, 53, 61, 0.2);
@@ -314,8 +315,8 @@ img {
     max-width: 35px;
 }
 
-.event-header .live {
-    animation: blinkingLive 3s infinite ease-in-out;
+.live-blink {
+    animation: blinkingLive 2s infinite ease-in;
 }
 
 @keyframes blinkingLive {
@@ -329,6 +330,11 @@ img {
 .live-label, .upcoming-label {
     font-weight: bold;
     background-color: #444455;
+}
+
+.live-icon {
+    width:50px;
+    border-radius: 5px;
 }
 
 .live-label {
@@ -679,7 +685,7 @@ body.modal-open {
 .bet-preview .team-logo {
     padding: 2px;
     border-radius: 5px;
-    background-color: rgba(158, 158, 172, 0.4);
+    background-color: rgba(158, 158, 172, 0.5);
 }
 
 .bet-preview .team-logo img {

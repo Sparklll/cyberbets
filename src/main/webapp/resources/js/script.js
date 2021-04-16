@@ -1549,7 +1549,11 @@ $(document).ready(function () {
                 $('#betModal .team-right .team-name').text(teamRightName);
                 $('#betModal .team-right .team-logo img').attr('src', teamRightLogo);
 
-
+                if($(eventInfo).find('.live-icon').length > 0) {
+                    $('#betModal .live-icon').show();
+                } else {
+                    $('#betModal .live-icon').hide();
+                }
 
                 $('#betModal').modal('show');
             } else {

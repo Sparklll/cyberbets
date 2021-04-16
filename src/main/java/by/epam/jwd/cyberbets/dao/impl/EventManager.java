@@ -12,7 +12,7 @@ import by.epam.jwd.cyberbets.domain.Event;
 import by.epam.jwd.cyberbets.domain.EventResult;
 import by.epam.jwd.cyberbets.domain.ResultStatus;
 import by.epam.jwd.cyberbets.domain.dto.EventDto;
-import by.epam.jwd.cyberbets.utils.CoefficientCalculator;
+import by.epam.jwd.cyberbets.util.CoefficientCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -209,7 +209,7 @@ public class EventManager {
         }
     }
 
-    class CompositeDao {
+    static class CompositeDao {
         private final EventDao eventDao;
         private final EventResultDao eventResultDao;
         private final AccountDao accountDao;

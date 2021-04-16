@@ -64,7 +64,7 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link text-nowrap" href="#">
-                                <img src="/resources/assets/wallet.png" class="balance">
+                                <img src="/resources/assets/interface/wallet.png" class="balance">
                                 <span>
                             <i class="fas fa-dollar-sign"></i>
                             <span>
@@ -76,7 +76,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false"><img
-                                    src="/resources/assets/profile-avatar.png"
+                                    src="/resources/assets/interface/profile-avatar.png"
                                     class="profile-avatar rounded-circle"></a>
                             <ul class="dropdown-menu fade-down" aria-labelledby="profileDropdown">
                                 <li>

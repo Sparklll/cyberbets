@@ -1,4 +1,4 @@
-package by.epam.jwd.cyberbets.utils;
+package by.epam.jwd.cyberbets.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

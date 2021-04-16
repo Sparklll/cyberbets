@@ -10,7 +10,7 @@ import by.epam.jwd.cyberbets.domain.EventResult;
 import by.epam.jwd.cyberbets.domain.dto.CoefficientsDto;
 import by.epam.jwd.cyberbets.service.EventResultService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
-import by.epam.jwd.cyberbets.utils.CoefficientCalculator;
+import by.epam.jwd.cyberbets.util.CoefficientCalculator;
 
 import java.math.BigDecimal;
 import java.util.List;
