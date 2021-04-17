@@ -47,6 +47,9 @@ public final class Parameters {
     public static final String DATA_PROPERTY = "data";
 
     // REQUEST & SESSION ATTRIBUTES
+    public static final String EVENT_COEFFICIENTS_ATTR = "eventCoefficients";
+    public static final String EVENT_RESULTS_ATTR = "eventResults";
+    public static final String EVENT_BETS_ATTR = "eventBets";
     public static final String LOCALE_ATTR = "locale";
     public static final String LIVE_EVENTS_ATTR = "liveEvents";
     public static final String UPCOMING_EVENTS_ATTR = "upcomingEvents";
@@ -68,6 +71,7 @@ public final class Parameters {
     public static final String VALORANT_DISC = "valorant";
 
     // ACTION NAMES
+    public static final String LOAD_BET_MODAL_ACTION = "loadBetModal";
     public static final String LOAD_EVENT_COEFFICIENTS_ACTION = "loadEventCoefficients";
     public static final String LOAD_COEFFICIENTS_ACTION = "loadCoefficients";
     public static final String LOAD_EVENT_RESULTS_ACTION = "loadEventResults";
@@ -91,6 +95,7 @@ public final class Parameters {
     public static final String FORWARD_ERROR_PAGE_ACTION = "forwardErrorPage";
 
     // PAGES / SECTIONS
+    public static final String BET_MODAL = "/WEB-INF/view/xml/bet-modal.jsp";
     public static final String EVENT_SECTION = "/WEB-INF/view/xml/events.jsp";
     public static final String ERROR_PAGE = "/WEB-INF/view/error404.jsp";
     public static final String HOME_PAGE = "/WEB-INF/view/home.jsp";
@@ -118,7 +123,6 @@ public final class Parameters {
 
     // ROUTES
     public static final String ACTION_LISTENER_ROUTE = "/action/";
-    public static final String EVENT_SECTION_ROUTE = "/loadEventSection/";
     public static final String HOME_ROUTE = "/";
     public static final String NEWS_ROUTE = "/news/";
     public static final String TEAM_RATING_ROUTE = "/rating/";

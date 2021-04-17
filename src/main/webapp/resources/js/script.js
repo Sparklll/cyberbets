@@ -1555,7 +1555,24 @@ $(document).ready(function () {
                     $('#betModal .live-icon').hide();
                 }
 
+                $('#betModal .spinner-border').show();
                 $('#betModal').modal('show');
+
+                postData(ACTION_URL, {
+                    action: "loadBetModal",
+                }).then((response) => {
+                        if (response.ok) {
+                            return response;
+                        }
+                        return Promise.reject(response);
+                    }
+                ).then(function (response) {
+                    $('#betModal .spinner-border').hide();
+
+                    $('#betModal .outcomes')
+                        .html($(response).find('.outcomes').html());
+                }).catch((error) => console.log('Something went wrong.', error));
+
             } else {
                 $('#loginModal').modal('show');
             }
@@ -1658,17 +1675,17 @@ $(document).ready(function () {
     $('.modal').on('hidden.bs.modal', function (e) {
         $(this)
             .find("input[type!=radio][type!=checkbox], textarea, select")
-            .val('')
+                .val('')
             .end()
             .find("input[type=checkbox], input[type=radio]")
-            .prop('checked', '')
+                .prop('checked', '')
             .end()
             .find('.selectpicker')
-            .selectpicker('refresh')
+                .selectpicker('refresh')
             .end()
             .find('*')
-            .removeClass('is-invalid')
-            .removeClass('is-valid')
+                .removeClass('is-invalid')
+                .removeClass('is-valid')
             .end()
     });
 });

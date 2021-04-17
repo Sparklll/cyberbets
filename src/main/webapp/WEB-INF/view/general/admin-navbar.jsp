@@ -39,7 +39,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="adminControlDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false"><img src="/resources/assets/profile-avatar.png"
+                       data-bs-toggle="dropdown" aria-expanded="false"><img src="/resources/assets/interface/profile-avatar.png"
                                                                             class="profile-avatar rounded-circle"></a>
                     <ul class="dropdown-menu fade-down" aria-labelledby="adminControlDropdown">
                         <li class="d-block d-md-none">

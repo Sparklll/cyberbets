@@ -30,6 +30,12 @@ public class BetDaoImpl implements BetDao {
             inner join event_result er on er.id = b.event_result_id
             where er.event_id = ?
             """;
+    private static final String FIND_ALL_BETS_BY_ACCOUNT_ID_AND_EVENT_ID = """
+            select b.id, b.account_id, b.event_result_id, b.amount, b.date, b.upshot_type_id
+            from bet b
+            inner join event_result er on er.id = b.event_result_id
+            where b.account_id = ? and er.event_id = ?
+            """;
     private static final String FIND_ALL_BETS_BY_EVENT_RESULT_ID = "select * from bet where event_result_id = ?";
     private static final String GET_TOTAL_AMOUNT_OF_BETS = """
             select coalesce(sum(amount), 0) as total_amount
@@ -88,6 +94,27 @@ public class BetDaoImpl implements BetDao {
         try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(FIND_ALL_BETS_BY_EVENT_ID)) {
             ps.setInt(1, eventId);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Bet> bets = new ArrayList<>();
+                while (rs.next()) {
+                    Bet bet = mapRow(rs);
+                    bets.add(bet);
+                }
+                return bets;
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Bet> findAllBetsByAccountIdAndEventId(int accountId, int eventId) throws DaoException {
+        Connection connection = getConnection();
+
+        try (Connection connectionResource = isTransactional ? null : connection;
+             PreparedStatement ps = connection.prepareStatement(FIND_ALL_BETS_BY_ACCOUNT_ID_AND_EVENT_ID)) {
+            ps.setInt(1, accountId);
+            ps.setInt(2, eventId);
             try (ResultSet rs = ps.executeQuery()) {
                 List<Bet> bets = new ArrayList<>();
                 while (rs.next()) {
@@ -181,7 +208,7 @@ public class BetDaoImpl implements BetDao {
         try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(CREATE_BET)) {
 
-
+            /////////
 
             ps.execute();
             try (ResultSet rs = ps.getResultSet()) {

@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface BetDao {
     List<Bet> findAllBetsByAccountId(int accountId) throws DaoException;
     List<Bet> findAllBetsByEventId(int eventId) throws DaoException;
+    List<Bet> findAllBetsByAccountIdAndEventId(int accountId, int eventId) throws DaoException;
     List<Bet> findAllBetsByEventResultId(int eventResultId) throws DaoException;
     Optional<Bet> findBetById(int betId) throws DaoException;
     BigDecimal getTotalAmountOfBets(int eventResultId) throws DaoException;

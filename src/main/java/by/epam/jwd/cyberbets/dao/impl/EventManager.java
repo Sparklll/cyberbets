@@ -8,7 +8,6 @@ import by.epam.jwd.cyberbets.dao.connection.ConnectionPool;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.domain.Bet;
 import by.epam.jwd.cyberbets.domain.Bet.Upshot;
-import by.epam.jwd.cyberbets.domain.Event;
 import by.epam.jwd.cyberbets.domain.EventResult;
 import by.epam.jwd.cyberbets.domain.ResultStatus;
 import by.epam.jwd.cyberbets.domain.dto.EventDto;

@@ -152,10 +152,14 @@
                         </div>
                     </div>
 
-                    <div class="row justify-content-center mt-3 mx-3">
+                    <div class="row justify-content-center">
                         <div class="spinner-border" style="width: 4rem; height: 4rem;" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
+                    </div>
+
+                    <div class="outcomes">
+
                     </div>
                 </div>
             </div>

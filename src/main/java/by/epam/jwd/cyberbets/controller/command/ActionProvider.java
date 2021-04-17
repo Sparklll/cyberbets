@@ -10,6 +10,7 @@ import by.epam.jwd.cyberbets.controller.command.impl.admin.team.InsertTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.team.LoadTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.team.UpdateTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.general.*;
+import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadBetModal;
 import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadCoefficients;
 import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadEventCoefficients;
 import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadEventSection;
@@ -27,6 +28,7 @@ public enum ActionProvider {
     private final Map<String, Action> actions = new HashMap<>();
 
     private ActionProvider() {
+        actions.put(LOAD_BET_MODAL_ACTION, new LoadBetModal());
         actions.put(LOAD_COEFFICIENTS_ACTION, new LoadCoefficients());
         actions.put(LOAD_EVENT_COEFFICIENTS_ACTION, new LoadEventCoefficients());
         actions.put(LOAD_EVENT_RESULTS_ACTION, new LoadEventResults());

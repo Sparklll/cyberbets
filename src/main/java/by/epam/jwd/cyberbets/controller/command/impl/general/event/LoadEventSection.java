@@ -4,8 +4,6 @@ import by.epam.jwd.cyberbets.controller.command.Action;
 import by.epam.jwd.cyberbets.domain.Event;
 import by.epam.jwd.cyberbets.domain.EventOutcomeType;
 import by.epam.jwd.cyberbets.domain.dto.CoefficientsDto;
-import by.epam.jwd.cyberbets.service.EventService;
-import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.service.job.LoadCoefficientsJob;
 import by.epam.jwd.cyberbets.service.job.LoadEventJob;
 import jakarta.servlet.RequestDispatcher;
@@ -26,7 +24,6 @@ public final class LoadEventSection implements Action {
 
     private static final String VERTICAL_BAR_PATTERN = "\\|";
 
-    private final EventService eventService = ServiceProvider.INSTANCE.getEventService();
     private final HashMap<Integer, String> disciplineMap = new HashMap<>();
 
     {
