@@ -15,6 +15,8 @@ import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadCoefficie
 import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadEventCoefficients;
 import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadEventSection;
 import by.epam.jwd.cyberbets.controller.command.impl.page.ErrorPage;
+import by.epam.jwd.cyberbets.controller.command.impl.user.bet.PlaceBet;
+import by.epam.jwd.cyberbets.controller.command.impl.user.bet.RefundBet;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +30,9 @@ public enum ActionProvider {
     private final Map<String, Action> actions = new HashMap<>();
 
     private ActionProvider() {
+        actions.put(PLACE_BET_ACTION, new PlaceBet());
+        actions.put(UPDATE_BET_ACTION, new UpdateEvent());
+        actions.put(REFUND_BET_ACTION, new RefundBet());
         actions.put(LOAD_BET_MODAL_ACTION, new LoadBetModal());
         actions.put(LOAD_COEFFICIENTS_ACTION, new LoadCoefficients());
         actions.put(LOAD_EVENT_COEFFICIENTS_ACTION, new LoadEventCoefficients());

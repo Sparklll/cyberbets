@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
-public class LoadCoefficients implements Action {
+public final class LoadCoefficients implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JsonObject jsonResponse = new JsonObject();

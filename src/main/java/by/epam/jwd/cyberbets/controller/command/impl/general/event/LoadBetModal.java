@@ -19,12 +19,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
-public class LoadBetModal implements Action {
+public final class LoadBetModal implements Action {
     private static final Logger logger = LoggerFactory.getLogger(LoadBetModal.class);
 
     private final EventResultService eventResultService = ServiceProvider.INSTANCE.getEventResultService();
@@ -33,7 +34,7 @@ public class LoadBetModal implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Role role = Role.getRoleByName((String) request.getAttribute(ROLE_ATTR));
-        logger.info("ok");
+
         if (role.getId() >= Role.USER.getId()) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
@@ -43,7 +44,9 @@ public class LoadBetModal implements Action {
 
                     if(eventId != null) {
                         int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
-                        List<EventResult> eventResults = eventResultService.findAllByEventId(eventId.intValue());
+                        List<EventResult> eventResults = eventResultService.findAllByEventId(eventId.intValue()).stream()
+                                .sorted(Comparator.comparing(EventResult::getId))
+                                .toList();
                         List<Bet> eventBets = betService.findAllBetsByAccountIdAndEventId(accountId, eventId.intValue());
 
                         Map<Integer, List<CoefficientsDto>> coefficients = LoadCoefficientsJob.cachedCoefficients;

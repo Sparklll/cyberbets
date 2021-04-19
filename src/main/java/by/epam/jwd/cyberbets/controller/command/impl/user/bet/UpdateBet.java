@@ -1,4 +1,4 @@
-package by.epam.jwd.cyberbets.controller.command.impl.user.transaction;
+package by.epam.jwd.cyberbets.controller.command.impl.user.bet;
 
 import by.epam.jwd.cyberbets.controller.command.Action;
 import jakarta.servlet.ServletException;
@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public final class Withdraw implements Action {
-    private static final Logger logger = LoggerFactory.getLogger(Withdraw.class);
+public final class UpdateBet implements Action {
+    private static final Logger logger = LoggerFactory.getLogger(UpdateBet.class);
 
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

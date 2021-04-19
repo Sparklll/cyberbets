@@ -71,6 +71,9 @@ public final class Parameters {
     public static final String VALORANT_DISC = "valorant";
 
     // ACTION NAMES
+    public static final String PLACE_BET_ACTION = "placeBet";
+    public static final String UPDATE_BET_ACTION = "updateBet";
+    public static final String REFUND_BET_ACTION = "refundBet";
     public static final String LOAD_BET_MODAL_ACTION = "loadBetModal";
     public static final String LOAD_EVENT_COEFFICIENTS_ACTION = "loadEventCoefficients";
     public static final String LOAD_COEFFICIENTS_ACTION = "loadCoefficients";

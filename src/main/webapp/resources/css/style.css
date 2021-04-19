@@ -693,8 +693,11 @@ body.modal-open {
     width: 60px;
 }
 
-.bet-outcome,
-.bet-confirm {
+.bet-preview .date {
+    color: white;
+}
+
+.bet-module {
     border-radius: 5px;
     padding: 2px;
     margin-bottom: 10px;
@@ -705,9 +708,89 @@ body.modal-open {
     color: #99c6ff;
 }
 
-.bet-outcome .odds {
+.bet-module .odds {
     font-weight: bold;
     border-bottom: 2px solid #29864e;
+}
+
+#betModal input {
+    background-color: #343a45;
+}
+
+#betModal .btn {
+    background-color: rgba(54, 255, 134, 0.5);
+}
+#betModal .cancel.btn {
+    background-color: rgba(200, 200, 200, 0.5);
+}
+#betModal .remove-bet.btn {
+    background-color: rgba(255, 45, 65, 0.5);
+}
+#betModal .edit-bet.btn {
+    background-color: rgba(45, 120, 255, 0.5);
+}
+
+.flip-box {
+    background-color: transparent;
+    perspective: 1000px; /* 3D effect */
+}
+
+.flip-box-inner {
+    position: relative;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+}
+
+.flip-box-front,
+.flip-box-back {
+    width: 100%;
+    border-radius: 5px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden; /* Safari */
+}
+
+.flip-box-front {
+    position: relative;
+}
+.flip-box-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.flip-box-back {
+    transform: rotateY(180deg);
+}
+
+@media all and (max-width: 576px) {
+    .bet-module,
+    #betModal .btn-sm {
+        font-size: 0.6rem;
+    }
+
+    #betModal .btn-sm {
+        width: 80px;
+    }
+}
+@media all and (min-width: 576px) and (max-width: 768px) {
+    .bet-module,
+    #betModal .btn-sm {
+        font-size: 0.7rem;
+    }
+
+    #betModal .btn-sm {
+        width: 100px;
+    }
+}
+@media all and (min-width: 768px) {
+    .bet-module,
+    #betModal .btn-sm {
+        font-size: 0.8rem;
+    }
+
+    #betModal .btn-sm {
+        width: 100px;
+    }
 }
 
 /* FLAGS */

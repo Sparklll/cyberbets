@@ -128,41 +128,41 @@ $(document).ready(function () {
         {Name: "VALORANT", Id: 4, Logo: "/resources/assets/disciplines/valorant_icon.jpg"}
     ];
 
+    var eventFormat = [
+        {Name: "", Id: 0},
+        {Name: "BO1", Id: 1},
+        {Name: "BO2", Id: 2},
+        {Name: "BO3", Id: 3},
+        {Name: "BO5", Id: 4}
+    ];
+
+    var eventStatus = [
+        {Name: "", Id: 0},
+        {Name: "Pending", Id: 1, Logo: "/resources/assets/status/pending.png"},
+        {Name: "Live", Id: 2, Logo: "/resources/assets/status/live.png"},
+        {Name: "Finished", Id: 3, Logo: "/resources/assets/status/finished.png"},
+        {Name: "Canceled", Id: 4, Logo: "/resources/assets/status/canceled.png"},
+    ];
+
+    var eventOutcome = [
+        // TODO: i18n
+
+        // general
+        {Name: "Total winner", Discipline: "all", Format: "all", Id: 1},
+        {Name: "[Map #1] Victory on the map", Discipline: "all", Format: 1, Id: 2},
+        {Name: "[Map #2] Victory on the map", Discipline: "all", Format: 2, Id: 3},
+        {Name: "[Map #3] Victory on the map", Discipline: "all", Format: 3, Id: 4},
+        {Name: "[Map #4] Victory on the map", Discipline: "all", Format: 4, Id: 5},
+        {Name: "[Map #5] Victory on the map", Discipline: "all", Format: 4, Id: 6},
+
+        //Specific\\
+        // csgo
+        // dota2
+        // lol
+        // valorant
+    ];
+
     if ($('#eventsGrid').length > 0) {
-        var eventFormat = [
-            {Name: "", Id: 0},
-            {Name: "BO1", Id: 1},
-            {Name: "BO2", Id: 2},
-            {Name: "BO3", Id: 3},
-            {Name: "BO5", Id: 4}
-        ];
-
-        var eventStatus = [
-            {Name: "", Id: 0},
-            {Name: "Pending", Id: 1, Logo: "/resources/assets/status/pending.png"},
-            {Name: "Live", Id: 2, Logo: "/resources/assets/status/live.png"},
-            {Name: "Finished", Id: 3, Logo: "/resources/assets/status/finished.png"},
-            {Name: "Canceled", Id: 4, Logo: "/resources/assets/status/canceled.png"},
-        ];
-
-        var eventOutcome = [
-            // TODO: i18n
-
-            // general
-            {Name: "Total winner", Discipline: "all", Format: "all", Id: 1},
-            {Name: "[Map #1] Victory on the map", Discipline: "all", Format: 1, Id: 2},
-            {Name: "[Map #2] Victory on the map", Discipline: "all", Format: 2, Id: 3},
-            {Name: "[Map #3] Victory on the map", Discipline: "all", Format: 3, Id: 4},
-            {Name: "[Map #4] Victory on the map", Discipline: "all", Format: 4, Id: 5},
-            {Name: "[Map #5] Victory on the map", Discipline: "all", Format: 4, Id: 6},
-
-            //Specific\\
-            // csgo
-            // dota2
-            // lol
-            // valorant
-        ];
-
         $('#eventsGrid').jsGrid({
             fields: [
                 {name: "id", title: "Id", type: "number", width: 50, align: "center"},
@@ -1529,10 +1529,11 @@ $(document).ready(function () {
     if ($('#eventsContainer').length > 0) {
         loadEventSection();
 
-        $('#eventsContainer').on('click', ' .team', function (event) {
+        $('#eventsContainer').on('click', '#currentEvents .team', function (event) {
             if(auth) {
                 let eventInfo = $(this).closest('.event');
 
+                let eventId = eventInfo.data('id');
                 let leagueName = $(eventInfo).find('.league-name').text();
                 let disciplineIcon = $(eventInfo).find('.discipline-icon').attr('src');
                 let eventFormat = $(eventInfo).find('.event-format span').text();
@@ -1560,22 +1561,35 @@ $(document).ready(function () {
 
                 postData(ACTION_URL, {
                     action: "loadBetModal",
+                    id: eventId
                 }).then((response) => {
                         if (response.ok) {
-                            return response;
+                            return response.text();
                         }
                         return Promise.reject(response);
                     }
                 ).then(function (response) {
-                    $('#betModal .spinner-border').hide();
-
                     $('#betModal .outcomes')
                         .html($(response).find('.outcomes').html());
-                }).catch((error) => console.log('Something went wrong.', error));
 
+                    $('#betModal .bet-outcome').each(function () {
+                        let outcomeTypeId = $(this).data('outcome');
+                        $(this).find('.outcome-name').text(eventOutcome.find(e => e.Id == outcomeTypeId).Name);
+                    });
+
+                    $('#betModal .spinner-border').hide();
+                }).catch((error) => console.log('Something went wrong.', error));
             } else {
                 $('#loginModal').modal('show');
             }
+        });
+
+        $('#betModal').on('click', '.place-bet', function () {
+            $(this).closest('.flip-box-inner').css('transform', 'rotateY(180deg)');
+        });
+
+        $('#betModal').on('click', '.cancel', function () {
+            $(this).closest('.flip-box-inner').css('transform', 'rotateY(0deg)');
         });
     }
 

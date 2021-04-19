@@ -11,8 +11,10 @@ import by.epam.jwd.cyberbets.service.AccountService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import com.password4j.Hash;
 import com.password4j.Password;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -67,6 +69,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public boolean isAuthorizationValid(LoginDto loginDto) throws ServiceException {
+        String loginDtoEmail = loginDto.email();
+        String loginDtoPassword = loginDto.password();
+
+        Optional<Account> foundAccountOptional = findAccountByEmail(loginDtoEmail);
+        if (foundAccountOptional.isPresent()) {
+            Account foundAccount = foundAccountOptional.get();
+            String foundAccountPasswordHash = foundAccount.getPasswordHash();
+            return Password.check(loginDtoPassword, foundAccountPasswordHash).withArgon2();
+        }
+        return false;
+    }
+
+    @Override
     public void updateAccount(Account account) throws ServiceException {
         try {
             accountDao.updateAccount(account);
@@ -100,19 +116,5 @@ public class AccountServiceImpl implements AccountService {
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
-    }
-
-    @Override
-    public boolean isAuthorizationValid(LoginDto loginDto) throws ServiceException {
-        String loginDtoEmail = loginDto.email();
-        String loginDtoPassword = loginDto.password();
-
-        Optional<Account> foundAccountOptional = findAccountByEmail(loginDtoEmail);
-        if (foundAccountOptional.isPresent()) {
-            Account foundAccount = foundAccountOptional.get();
-            String foundAccountPasswordHash = foundAccount.getPasswordHash();
-            return Password.check(loginDtoPassword, foundAccountPasswordHash).withArgon2();
-        }
-        return false;
     }
 }
