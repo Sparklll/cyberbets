@@ -723,11 +723,23 @@ body.modal-open {
 #betModal .cancel.btn {
     background-color: rgba(200, 200, 200, 0.5);
 }
-#betModal .remove-bet.btn {
+#betModal .refund-bet.btn {
     background-color: rgba(255, 45, 65, 0.5);
 }
 #betModal .edit-bet.btn {
     background-color: rgba(45, 120, 255, 0.5);
+}
+
+.team-logo-flicker {
+    animation: boxShadowFlick 3s infinite ease-in-out;
+}
+
+@keyframes boxShadowFlick {
+    0%   {box-shadow: 0 0 5px 2px #00ff73;}
+    25%  {box-shadow: 0 0 15px 2px #00ff73;}
+    50%  {box-shadow: 0 0 25px 2px #00ff73;}
+    75%  {box-shadow: 0 0 15px 2px #00ff73;}
+    100% {box-shadow: 0 0 5px 2px #00ff73;}
 }
 
 .flip-box {

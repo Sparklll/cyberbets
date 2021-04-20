@@ -1584,12 +1584,66 @@ $(document).ready(function () {
             }
         });
 
-        $('#betModal').on('click', '.place-bet', function () {
+        $('#betModal').on('click', '.flip-box-front .place-bet', function () {
+            $(this).closest('.flip-box-back').attr('upshot', $(this).data('upshot'));
+            if($(this).data('upshot') == 1) {
+                $('#betModal .team-left .team-logo img').addClass('team-logo-flicker');
+
+            } else if ($(this).data('upshot') == 2) {
+                $('#betModal .team-right .team-logo img').addClass('team-logo-flicker');
+            }
+
+            let buttonUpshot = $(this).data('upshot');
+            let coefficient = 0;
+
+            if(buttonUpshot == 1) {
+                coefficient = $(this).siblings('.left-odds').find('span').text();
+            } else if (buttonUpshot == 2) {
+                coefficient = $(this).siblings('.right-odds').find('span').text();
+            }
+            $(this).closest('.flip-box-inner').find('.flip-box-back .odds').find('span').text(coefficient);
             $(this).closest('.flip-box-inner').css('transform', 'rotateY(180deg)');
         });
 
+        $('#betModal').on('keypress keyup blur', '.flip-box-back .bet-amount', function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+
+            if($(this).val()) {
+                let coefficient = $(this).closest('.flip-box-back').find('.odds span').text().trim();
+                let potentialPrize = $(this).val() * coefficient;
+                $(this).closest('.flip-box-back')
+                    .find('.potential-prize')
+                    .html(`<i class="fas fa-dollar-sign me-1">
+                           </i><span class="fw-bold">${potentialPrize}</span>`);
+            } else {
+                $(this).closest('.flip-box-back').find('.potential-prize').text('~');
+            }
+        });
+
         $('#betModal').on('click', '.cancel', function () {
+            $('#betModal .team-logo img').removeClass('team-logo-flicker');
+            $('#betModal .bet-amount').val('');
+            $('#betModal .potential-prize').text('~');
             $(this).closest('.flip-box-inner').css('transform', 'rotateY(0deg)');
+        });
+
+        $('#betModal').on('click', '.flip-box-back .place-bet', function () {
+
+        });
+
+        $('#betModal').on('click', '.flip-box-back .refund-bet', function () {
+
+        });
+
+        $('#betModal').on('click', '.flip-box-back .edit-bet', function () {
+
+        });
+
+        $('#betModal').off('show.bs.modal').on('show.bs.modal', function () {
+            $('#betModal .team-logo img').removeClass('team-logo-flicker');
         });
     }
 

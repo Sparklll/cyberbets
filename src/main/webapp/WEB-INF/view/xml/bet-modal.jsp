@@ -36,20 +36,24 @@
                             <div class="bet-module bet-outcome d-flex justify-content-between align-items-center"
                                  data-id="${eventResult.id}" data-outcome="${eventResult.eventOutcomeType.id}">
                                 <div class="d-flex flex-column align-items-sm-center flex-sm-row mb-2 mb-sm-0">
-                                    <span class="odds left-odds text-center m-2 order-sm-last">
-                                        <i>x</i><fmt:formatNumber value="${outcomeCoefficients.firstUpshotOdds}"
-                                                                  minIntegerDigits="1"
-                                                                  minFractionDigits="2" groupingUsed="false"/>
+                                    <span class="odds left-odds text-center d-flex m-2 order-sm-last">
+                                        <i>x</i>
+                                        <span>
+                                            <fmt:formatNumber value="${outcomeCoefficients.firstUpshotOdds}"
+                                                              minIntegerDigits="1"
+                                                              minFractionDigits="2" groupingUsed="false"/>
+                                        </span>
                                     </span>
                                     <c:choose>
                                         <c:when test="${empty outcomeBet}">
                                             <button type="button"
-                                                    class="place-bet btn btn-sm btn-secondary text-nowrap ms-1">Place Bet
+                                                    class="place-bet btn btn-sm btn-secondary text-nowrap ms-1" data-upshot="1">
+                                                <fmt:message key="bet_modal.place_bet_btn"/>
                                             </button>
                                         </c:when>
                                         <c:when test="${(not empty outcomeBet) and (outcomeBet.upshot eq 'FIRST_UPSHOT')}">
                                             <button type="button"
-                                                    class="place-bet btn btn-sm btn-secondary text-nowrap ms-1">
+                                                    class="place-bet btn btn-sm btn-secondary text-nowrap ms-1" data-upshot="1">
                                                 <img src="/resources/assets/interface/cash-icon.png" class="mx-1" style="width: 15px">
                                                 <span class="bet-sum">
                                                     <i class="fas fa-dollar-sign"></i>
@@ -69,20 +73,24 @@
                                 </div>
                                 <span class="outcome-name text-center mx-1"></span>
                                 <div class="d-flex flex-column align-items-sm-center flex-sm-row mb-2 mb-sm-0">
-                                    <span class="odds left-odds text-center m-2">
-                                        <i>x</i><fmt:formatNumber value="${outcomeCoefficients.secondUpshotOdds}"
-                                                                  minIntegerDigits="1"
-                                                                  minFractionDigits="2" groupingUsed="false"/>
+                                    <span class="odds right-odds text-center d-flex m-2">
+                                        <i>x</i>
+                                        <span>
+                                            <fmt:formatNumber value="${outcomeCoefficients.secondUpshotOdds}"
+                                                              minIntegerDigits="1"
+                                                              minFractionDigits="2" groupingUsed="false"/>
+                                        </span>
                                     </span>
                                     <c:choose>
                                         <c:when test="${empty outcomeBet}">
                                             <button type="button"
-                                                    class="place-bet btn btn-sm btn-secondary text-nowrap me-1">Place Bet
+                                                    class="place-bet btn btn-sm btn-secondary text-nowrap me-1" data-upshot="2">
+                                                <fmt:message key="bet_modal.place_bet_btn"/>
                                             </button>
                                         </c:when>
                                         <c:when test="${(not empty outcomeBet) and (outcomeBet.upshot eq 'SECOND_UPSHOT')}">
                                             <button type="button"
-                                                    class="place-bet btn btn-sm btn-secondary text-nowrap me-1">
+                                                    class="place-bet btn btn-sm btn-secondary text-nowrap me-1" data-upshot="2">
                                                 <img src="/resources/assets/interface/cash-icon.png" class="mx-1" style="width: 15px">
                                                 <span class="bet-sum">
                                                     <i class="fas fa-dollar-sign"></i>
@@ -103,16 +111,23 @@
                             </div>
                         </div>
                         <div class="flip-box-back">
-                            <div class="bet-module bet-confirm d-flex align-items-center">
+                            <div class="bet-module bet-confirm d-flex align-items-center" data-upshot="">
                                 <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center">
                                     <img src="/resources/assets/interface/cash-icon.png" class="m-1" style="width: 30px">
-                                    <input class="text-center" style="width: 80px; padding: 5px; border-radius: 5px;" maxlength="6" placeholder="Amount">
+                                    <input class="bet-amount text-center" style="width: 80px; padding: 5px; border-radius: 5px;" maxlength="6" placeholder="Amount">
                                 </div>
 
                                 <div class="d-flex flex-column align-items-center mx-auto">
                                     <div class="d-flex">
-                                        <span class="me-2">Выигрыш</span>
-                                        <span class="odds outcome-odd text-center"><i>x</i>1.80</span>
+                                        <span class="me-2">
+                                            <fmt:message key="bet_modal.prize_title"/>
+                                        </span>
+                                        <span class="odds outcome-odd text-center d-flex">
+                                            <i>x</i>
+                                            <span>
+
+                                            </span>
+                                        </span>
                                     </div>
                                     <span class="potential-prize">~</span>
                                 </div>
@@ -120,9 +135,11 @@
                                         <c:when test="${empty outcomeBet}">
                                             <div class="d-flex flex-column flex-sm-row ms-auto">
                                                 <button type="button"
-                                                        class="cancel btn btn-sm btn-secondary text-nowrap m-1">Cancel
+                                                        class="cancel btn btn-sm btn-secondary text-nowrap m-1">
+                                                    <fmt:message key="bet_modal.cancel_btn"/>
                                                 </button>
-                                                <button type="button" class="btn btn-sm btn-secondary text-nowrap m-1">Place Bet
+                                                <button type="button" class="place-bet btn btn-sm btn-secondary text-nowrap m-1">
+                                                    <fmt:message key="bet_modal.place_bet_btn"/>
                                                 </button>
                                             </div>
                                         </c:when>
@@ -132,7 +149,7 @@
                                                         class="cancel btn btn-sm btn-secondary text-nowrap mx-1" style="width: 30px" title="Back">
                                                     <i class="fas fa-long-arrow-alt-left"></i>
                                                 </button>
-                                                <button type="button" class="remove-bet btn btn-sm btn-secondary text-nowrap me-1" style="width: 30px" title="Cancel Bet">
+                                                <button type="button" class="refund-bet btn btn-sm btn-secondary text-nowrap me-1" style="width: 30px" title="Cancel Bet">
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                                 <button type="button" class="edit-bet btn btn-sm btn-secondary text-nowrap me-1" style="width: 30px" title="Edit Bet">
@@ -151,10 +168,13 @@
                 <div class="bet-module bet-outcome d-flex justify-content-between align-items-center"
                      data-id="${eventResult.id}" data-outcome="${eventResult.eventOutcomeType.id}">
                     <div class="d-flex flex-column align-items-sm-center flex-sm-row mb-2 mb-sm-0">
-                        <span class="odds left-odds text-center m-2 order-sm-last">
-                            <i>x</i><fmt:formatNumber value="${outcomeCoefficients.firstUpshotOdds}"
-                                                      minIntegerDigits="1"
-                                                      minFractionDigits="2" groupingUsed="false"/>
+                        <span class="odds left-odds text-center d-flex m-2 order-sm-last">
+                            <i>x</i>
+                            <span>
+                                <fmt:formatNumber value="${outcomeCoefficients.firstUpshotOdds}"
+                                                  minIntegerDigits="1"
+                                                  minFractionDigits="2" groupingUsed="false"/>
+                            </span>
                         </span>
                         <button type="button"
                                 class="btn btn-sm btn-secondary text-nowrap ms-1" disabled>
@@ -171,10 +191,13 @@
                     </div>
                     <span class="outcome-name text-center mx-1"></span>
                     <div class="d-flex flex-column align-items-sm-center flex-sm-row mb-2 mb-sm-0">
-                        <span class="odds left-odds text-center m-2">
-                            <i>x</i><fmt:formatNumber value="${outcomeCoefficients.secondUpshotOdds}"
-                                                      minIntegerDigits="1"
-                                                      minFractionDigits="2" groupingUsed="false"/>
+                        <span class="odds right-odds text-center d-flex m-2">
+                            <i>x</i>
+                            <span>
+                               <fmt:formatNumber value="${outcomeCoefficients.secondUpshotOdds}"
+                                                 minIntegerDigits="1"
+                                                 minFractionDigits="2" groupingUsed="false"/>
+                            </span>
                         </span>
                         <button type="button"
                                 class="btn btn-sm btn-secondary text-nowrap me-1" disabled>
@@ -192,7 +215,5 @@
                 </div>
             </c:if>
         </c:forEach>
-
-
     </div>
 </div>

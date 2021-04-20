@@ -18,6 +18,7 @@ public final class Parameters {
 
 
     // REQUEST PARAMS
+    public static final String AMOUNT_PARAM = "amount";
     public static final String EVENT_RESULTS_PARAM = "eventResults";
     public static final String LEAGUE_ID_PARAM = "leagueId";
     public static final String FIRST_TEAM_ID_PARAM = "firstTeamId";
