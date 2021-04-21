@@ -16,6 +16,7 @@ public enum DaoProvider {
 
     // Transactional modules
     private final EventManager eventManager = new EventManager();
+    private final BetManager betManager = new BetManager();
 
 
     public AccountDao getAccountDao() {
@@ -52,5 +53,9 @@ public enum DaoProvider {
 
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    public BetManager getBetManager() {
+        return betManager;
     }
 }

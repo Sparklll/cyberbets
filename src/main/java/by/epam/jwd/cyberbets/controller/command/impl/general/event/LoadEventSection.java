@@ -39,13 +39,15 @@ public final class LoadEventSection implements Action {
         Cookie langCookie = null;
         Cookie disciplineFilterCookie = null;
 
-        for (Cookie cookie : cookies) {
-            String cookieName = cookie.getName();
-            if (cookieName.equals(LANG_COOKIE)) {
-                langCookie = cookie;
-            }
-            if (cookieName.equals(DISCIPLINE_FILTER_COOKIE)) {
-                disciplineFilterCookie = cookie;
+        if(cookies != null) {
+            for (Cookie cookie : cookies) {
+                String cookieName = cookie.getName();
+                if (cookieName.equals(LANG_COOKIE)) {
+                    langCookie = cookie;
+                }
+                if (cookieName.equals(DISCIPLINE_FILTER_COOKIE)) {
+                    disciplineFilterCookie = cookie;
+                }
             }
         }
         Locale locale = langCookie != null

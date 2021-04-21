@@ -8,10 +8,8 @@ import by.epam.jwd.cyberbets.domain.Bet.Upshot;
 import by.epam.jwd.cyberbets.domain.dto.BetDto;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +21,7 @@ public class BetDaoImpl implements BetDao {
     private final boolean isTransactional;
 
     private static final String FIND_BET_BY_ID = "select * from bet where id = ?";
+    private static final String FIND_BET_BY_ACCOUNT_ID_AND_EVENT_RESULT_ID = "select * from bet where account_id = ? and event_result_id = ?";
     private static final String FIND_ALL_BETS_BY_ACCOUNT_ID = "select * from bet where account_id = ?";
     private static final String FIND_ALL_BETS_BY_EVENT_ID = """
             select b.id, b.account_id, b.event_result_id, b.amount, b.date, b.upshot_type_id
@@ -47,7 +46,7 @@ public class BetDaoImpl implements BetDao {
             from bet
             where event_result_id = ? and upshot_type_id = ?
             """;
-    private static final String CREATE_BET = "insert into bet (account_id, event_result_id, amount, date, upshot_type_id) values (?, ?, ?, ?, ?) returning id";
+    private static final String CREATE_BET = "insert into bet (account_id, event_result_id, amount, date, upshot_type_id) values (?, ?, ?, ?, ?)";
     private static final String UPDATE_BET = "update bet set account_id = ?, event_result_id = ?, amount = ?, date = ? upshot_type_id = ? where id = ?";
     private static final String DELETE_BET = "delete from bet where id = ?";
 
@@ -149,6 +148,27 @@ public class BetDaoImpl implements BetDao {
     }
 
     @Override
+    public Optional<Bet> findBetByAccountIdAndEventResultId(int accountId, int eventResultId) throws DaoException {
+        Connection connection = getConnection();
+
+        try (Connection connectionResource = isTransactional ? null : connection;
+             PreparedStatement ps = connection.prepareStatement(FIND_BET_BY_ACCOUNT_ID_AND_EVENT_RESULT_ID)) {
+            ps.setInt(1, accountId);
+            ps.setInt(2, eventResultId);
+            try (ResultSet rs = ps.executeQuery()) {
+                Optional<Bet> betOptional = Optional.empty();
+                if (rs.next()) {
+                    Bet bet = mapRow(rs);
+                    betOptional = Optional.of(bet);
+                }
+                return betOptional;
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public Optional<Bet> findBetById(int betId) throws DaoException {
         Connection connection = getConnection();
 
@@ -202,19 +222,16 @@ public class BetDaoImpl implements BetDao {
     }
 
     @Override
-    public int createBet(BetDto betDto) throws DaoException {
+    public void createBet(BetDto betDto) throws DaoException {
         Connection connection = getConnection();
-
         try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(CREATE_BET)) {
-
-            /////////
-
+            ps.setInt(1, betDto.accountId());
+            ps.setInt(2, betDto.eventResultId());
+            ps.setBigDecimal(3, betDto.amount());
+            ps.setTimestamp(4, Timestamp.from(Instant.now()));
+            ps.setInt(5, betDto.upshotId());
             ps.execute();
-            try (ResultSet rs = ps.getResultSet()) {
-                rs.next();
-                return rs.getInt(ID);
-            }
         } catch (SQLException e) {
             throw new DaoException(e);
         }

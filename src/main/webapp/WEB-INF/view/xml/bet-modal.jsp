@@ -10,6 +10,7 @@
 
 <%@ page import="by.epam.jwd.cyberbets.domain.ResultStatus" %>
 <%@ page import="by.epam.jwd.cyberbets.domain.Bet.Upshot" %>
+<%@ page import="by.epam.jwd.cyberbets.domain.EventOutcomeType" %>
 
 
 <div class="card-body p-3">
@@ -21,8 +22,8 @@
                 </c:if>
             </c:forEach>
 
+            <c:set var="outcomeBet" value=""/>
             <c:forEach items="${eventBets}" var="bet">
-                <c:set var="outcomeBet" value=""/>
                 <c:if test="${bet.eventResultId eq eventResult.id}">
                     <c:set var="outcomeBet" value="${bet}"/>
                 </c:if>
@@ -58,7 +59,9 @@
                                                 <span class="bet-sum">
                                                     <i class="fas fa-dollar-sign"></i>
                                                     <span class="sum">
-                                                        ${outcomeBet.amount}
+                                                        <fmt:formatNumber value="${outcomeBet.amount}"
+                                                                          maxFractionDigits="0"
+                                                                          groupingUsed="false"/>
                                                     </span>
                                                  </span>
                                             </button>
@@ -71,7 +74,28 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
-                                <span class="outcome-name text-center mx-1"></span>
+                                <span class="outcome-name text-center mx-1">
+                                    <c:choose>
+                                        <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.TOTAL_WINNER}">
+                                            <fmt:message key="bet_modal.event_outcome.total_winner" />
+                                        </c:when>
+                                        <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.MAP1_WINNER}">
+                                            <fmt:message key="bet_modal.event_outcome.map1_winner" />
+                                        </c:when>
+                                        <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.MAP2_WINNER}">
+                                            <fmt:message key="bet_modal.event_outcome.map2_winner" />
+                                        </c:when>
+                                        <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.MAP3_WINNER}">
+                                            <fmt:message key="bet_modal.event_outcome.map3_winner" />
+                                        </c:when>
+                                        <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.MAP4_WINNER}">
+                                            <fmt:message key="bet_modal.event_outcome.map4_winner" />
+                                        </c:when>
+                                        <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.MAP5_WINNER}">
+                                            <fmt:message key="bet_modal.event_outcome.map5_winner" />
+                                        </c:when>
+                                    </c:choose>
+                                </span>
                                 <div class="d-flex flex-column align-items-sm-center flex-sm-row mb-2 mb-sm-0">
                                     <span class="odds right-odds text-center d-flex m-2">
                                         <i>x</i>
@@ -95,7 +119,9 @@
                                                 <span class="bet-sum">
                                                     <i class="fas fa-dollar-sign"></i>
                                                     <span class="sum">
-                                                            ${outcomeBet.amount}
+                                                        <fmt:formatNumber value="${outcomeBet.amount}"
+                                                                          maxFractionDigits="0"
+                                                                          groupingUsed="false"/>
                                                     </span>
                                                  </span>
                                             </button>
@@ -189,7 +215,28 @@
                             </c:if>
                         </button>
                     </div>
-                    <span class="outcome-name text-center mx-1"></span>
+                    <span class="outcome-name text-center mx-1">
+                        <c:choose>
+                            <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.TOTAL_WINNER}">
+                                <fmt:message key="bet_modal.event_outcome.total_winner" />
+                            </c:when>
+                            <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.MAP1_WINNER}">
+                                <fmt:message key="bet_modal.event_outcome.map1_winner" />
+                            </c:when>
+                            <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.MAP2_WINNER}">
+                                <fmt:message key="bet_modal.event_outcome.map2_winner" />
+                            </c:when>
+                            <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.MAP3_WINNER}">
+                                <fmt:message key="bet_modal.event_outcome.map3_winner" />
+                            </c:when>
+                            <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.MAP4_WINNER}">
+                                <fmt:message key="bet_modal.event_outcome.map4_winner" />
+                            </c:when>
+                            <c:when test="${eventResult.eventOutcomeType eq EventOutcomeType.MAP5_WINNER}">
+                                <fmt:message key="bet_modal.event_outcome.map5_winner" />
+                            </c:when>
+                        </c:choose>
+                    </span>
                     <div class="d-flex flex-column align-items-sm-center flex-sm-row mb-2 mb-sm-0">
                         <span class="odds right-odds text-center d-flex m-2">
                             <i>x</i>

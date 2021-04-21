@@ -14,7 +14,7 @@ public interface BetService {
     List<Bet> findAllBetsByAccountIdAndEventId(int accountId, int eventId) throws ServiceException;
     List<Bet> findAllBetsByEventResultId(int eventResultId) throws ServiceException;
     Optional<Bet> findBetById(int betId) throws ServiceException;
-    int createBet(BetDto betDto) throws ServiceException;
-    void updateBet(Bet bet) throws ServiceException;
-    void deleteBet(int betId) throws ServiceException;
+    void placeBet(BetDto betDto) throws ServiceException;
+    void updateBet(BetDto betDto) throws ServiceException;
+    void deleteBet(BetDto betDto) throws ServiceException;
 }

@@ -152,6 +152,15 @@
                         </div>
                     </div>
 
+                    <div class="status-messages d-flex flex-column justify-content-center">
+                        <span id="betPlaced " class="text-success text-center mb-2" style="display: none">Bet was successfully placed<i class="fas fa-check ms-1"></i></span>
+                        <span id="betRefunded" class="text-success text-center mb-2" style="display: none">Bet was successfully refunded<i class="fas fa-check ms-1"></i></span>
+                        <span id="betEdited" class="text-success text-center mb-2" style="display: none">Bet was successfully edited<i class="fas fa-check ms-1"></i></span>
+
+                        <span id="betAmountFieldBlank" class="text-danger text-center mb-2" style="display: none">Don't leave the amount field blank<i class="fas fa-exclamation-triangle ms-1"></i></span>
+                        <span id="betOperationError" class="text-danger text-center mb-2" style="display: none">Operation execution error<i class="fas fa-exclamation-triangle ms-1"></i></span>
+                    </div>
+
                     <div class="row justify-content-center">
                         <div class="spinner-border" style="width: 4rem; height: 4rem;" role="status">
                             <span class="visually-hidden">Loading...</span>

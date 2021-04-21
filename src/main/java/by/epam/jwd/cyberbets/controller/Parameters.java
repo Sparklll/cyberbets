@@ -18,6 +18,8 @@ public final class Parameters {
 
 
     // REQUEST PARAMS
+    public static final String UPSHOT_ID_PARAM = "upshotId";
+    public static final String EVENT_RESULT_ID_PARAM = "eventResultId";
     public static final String AMOUNT_PARAM = "amount";
     public static final String EVENT_RESULTS_PARAM = "eventResults";
     public static final String LEAGUE_ID_PARAM = "leagueId";

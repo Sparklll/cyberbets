@@ -10,7 +10,7 @@ public final class CoefficientCalculator {
     public static BigDecimal calculateOdds(BigDecimal totalBetsAmount, BigDecimal upshotBetsAmount, BigDecimal royaltyPercent) {
         if (totalBetsAmount.compareTo(BigDecimal.ZERO) == 0
                 || upshotBetsAmount.compareTo(totalBetsAmount) == 0) {
-            return BigDecimal.ONE;
+            return BigDecimal.ONE.setScale(2);
         } else {
             BigDecimal upshotPercent = calculateUpshotPercent(totalBetsAmount, upshotBetsAmount);
             BigDecimal halfRoyalty = royaltyPercent.divide(new BigDecimal(2), 2, RoundingMode.HALF_UP);

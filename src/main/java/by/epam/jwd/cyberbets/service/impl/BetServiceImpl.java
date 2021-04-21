@@ -2,6 +2,7 @@ package by.epam.jwd.cyberbets.service.impl;
 
 import by.epam.jwd.cyberbets.dao.BetDao;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
+import by.epam.jwd.cyberbets.dao.impl.BetManager;
 import by.epam.jwd.cyberbets.dao.impl.DaoProvider;
 import by.epam.jwd.cyberbets.domain.Bet;
 import by.epam.jwd.cyberbets.domain.dto.BetDto;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 public class BetServiceImpl implements BetService {
     private final BetDao betDao = DaoProvider.INSTANCE.getBetDao();
+    private final BetManager betManager = DaoProvider.INSTANCE.getBetManager();
 
     BetServiceImpl() {
     }
@@ -63,27 +65,27 @@ public class BetServiceImpl implements BetService {
     }
 
     @Override
-    public int createBet(BetDto betDto) throws ServiceException {
+    public void placeBet(BetDto betDto) throws ServiceException {
         try {
-            return betDao.createBet(betDto);
+            betManager.createBet(betDto);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public void updateBet(Bet bet) throws ServiceException {
+    public void updateBet(BetDto betDto) throws ServiceException {
         try {
-            betDao.updateBet(bet);
+            betManager.updateBet(betDto);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public void deleteBet(int betId) throws ServiceException {
+    public void deleteBet(BetDto betDto) throws ServiceException {
         try {
-            betDao.deleteBet(betId);
+            betManager.deleteBet(betDto);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

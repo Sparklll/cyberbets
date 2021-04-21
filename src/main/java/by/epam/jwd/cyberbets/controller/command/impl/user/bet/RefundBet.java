@@ -1,7 +1,14 @@
 package by.epam.jwd.cyberbets.controller.command.impl.user.bet;
 
 import by.epam.jwd.cyberbets.controller.command.Action;
+import by.epam.jwd.cyberbets.controller.validator.Validator;
+import by.epam.jwd.cyberbets.controller.validator.ValidatorProvider;
 import by.epam.jwd.cyberbets.domain.Role;
+import by.epam.jwd.cyberbets.domain.dto.BetDto;
+import by.epam.jwd.cyberbets.service.BetService;
+import by.epam.jwd.cyberbets.service.exception.ServiceException;
+import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
+import com.google.gson.JsonObject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.Map;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
@@ -16,17 +25,37 @@ import static by.epam.jwd.cyberbets.controller.Parameters.*;
 public final class RefundBet implements Action {
     private static final Logger logger = LoggerFactory.getLogger(RefundBet.class);
 
+    private final BetService betService = ServiceProvider.INSTANCE.getBetService();
+
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Role role = Role.getRoleByName((String) request.getAttribute(ROLE_ATTR));
+        Role role = (Role) request.getAttribute(ROLE_ATTR);
 
         if (role.getId() >= Role.USER.getId()) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            Double eventResultId = (Double) jsonMap.get(ID_PARAM);
+            if (jsonMap != null) {
+                JsonObject jsonResponse = new JsonObject();
+                response.setContentType(JSON_UTF8_CONTENT_TYPE);
+                PrintWriter out = response.getWriter();
 
-            if(eventResultId != null) {
+                try {
+                    Double eventResultId = (Double) jsonMap.get(EVENT_RESULT_ID_PARAM);
 
+                    if (eventResultId != null) {
+                        int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
+                        BetDto betDto = new BetDto(accountId, eventResultId.intValue());
+
+                        betService.placeBet(betDto);
+                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
+                    } else {
+                        jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
+                    }
+                } catch (ServiceException | ClassCastException e) {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                    logger.error(e.getMessage(), e);
+                }
+                out.write(jsonResponse.toString());
             }
         }
     }

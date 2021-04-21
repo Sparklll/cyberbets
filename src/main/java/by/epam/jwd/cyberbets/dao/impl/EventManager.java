@@ -30,11 +30,14 @@ public class EventManager {
     }
 
     public int createEvent(EventDto eventDto, List<EventResult> eventResults) throws DaoException {
-        Connection connection = ConnectionPool.INSTANCE.getConnection();
-        try (connection) {
-            connection.setAutoCommit(false);
+        Connection transactionConnection = ConnectionPool.INSTANCE.getConnection();
+        try (transactionConnection) {
+            transactionConnection.setAutoCommit(false);
 
-            CompositeDao compositeDao = new CompositeDao(connection);
+            CompositeDao compositeDao = new CompositeDao.Builder(transactionConnection)
+                    .withEventDao()
+                    .withEventResultDao()
+                    .build();
             final EventDao eventDao = compositeDao.getEventDao();
             final EventResultDao eventResultDao = compositeDao.getEventResultDao();
 
@@ -43,11 +46,11 @@ public class EventManager {
                 eventResult.setEventId(eventId);
                 eventResultDao.createEventResult(eventResult);
             }
-            connection.commit();
+            transactionConnection.commit();
             return eventId;
         } catch (Exception e) {
             try {
-                connection.rollback();
+                transactionConnection.rollback();
                 throw new DaoException(e);
             } catch (SQLException sqlException) {
                 throw new DaoException(sqlException);
@@ -56,11 +59,14 @@ public class EventManager {
     }
 
     public void updateEvent(EventDto eventDto, List<EventResult> eventResults) throws DaoException {
-        Connection connection = ConnectionPool.INSTANCE.getConnection();
-        try (connection) {
-            connection.setAutoCommit(false);
+        Connection transactionConnection = ConnectionPool.INSTANCE.getConnection();
+        try (transactionConnection) {
+            transactionConnection.setAutoCommit(false);
 
-            CompositeDao compositeDao = new CompositeDao(connection);
+            CompositeDao compositeDao = new CompositeDao.Builder(transactionConnection)
+                    .withEventDao()
+                    .withEventResultDao()
+                    .build();
             final EventDao eventDao = compositeDao.getEventDao();
             final EventResultDao eventResultDao = compositeDao.getEventResultDao();
 
@@ -109,24 +115,28 @@ public class EventManager {
                                 payOutBets(compositeDao, changedEventResultId, Upshot.SECOND_UPSHOT);
                             }
                         } else if (oldResultStatus == ResultStatus.FIRST_UPSHOT) {
-                            // забрать выигрыш, если newStatus - disabled - вернуть ставку, если newStatus-  secondUpshot, перерасчитать
+                            // забрать выигрыш,
+                            // если newStatus - disabled - вернуть ставку,
+                            // если newStatus-  secondUpshot, перерасчитать
                         } else if (oldResultStatus == ResultStatus.SECOND_UPSHOT) {
-                            // забрать выигрыш, если newStatus - disabled - вернуть ставку, если newStatus - firstUpshot, перерасчитать
+                            // забрать выигрыш,
+                            // если newStatus - disabled - вернуть ставку,
+                            // если newStatus - firstUpshot, перерасчитать
                         }
                         eventResultDao.updateEventResult(changedEventResult);
                     }
                 } else {
-                    // if upshot 1/2 money back
+                    // if upshot 1/2 already set then money back
                     int eventResultToDeleteId = databaseEventResult.getId();
                     refundBets(compositeDao, eventResultToDeleteId);
                     eventResultDao.deleteEventResult(eventResultToDeleteId);
                 }
 
             }
-            connection.commit();
+            transactionConnection.commit();
         } catch (Exception e) {
             try {
-                connection.rollback();
+                transactionConnection.rollback();
             } catch (SQLException sqlException) {
                 throw new DaoException(sqlException);
             }
@@ -134,11 +144,16 @@ public class EventManager {
     }
 
     public void deleteEvent(int eventId) throws DaoException {
-        Connection connection = ConnectionPool.INSTANCE.getConnection();
-        try (connection) {
-            connection.setAutoCommit(false);
+        Connection transactionConnection = ConnectionPool.INSTANCE.getConnection();
+        try (transactionConnection) {
+            transactionConnection.setAutoCommit(false);
 
-            CompositeDao compositeDao = new CompositeDao(connection);
+            CompositeDao compositeDao = new CompositeDao.Builder(transactionConnection)
+                    .withEventDao()
+                    .withEventResultDao()
+                    .withAccountDao()
+                    .withBetDao()
+                    .build();
             final EventDao eventDao = compositeDao.getEventDao();
             final EventResultDao eventResultDao = compositeDao.getEventResultDao();
             final AccountDao accountDao = compositeDao.getAccountDao();
@@ -155,10 +170,10 @@ public class EventManager {
                 }
             }
             eventDao.deleteEvent(eventId);
-            connection.commit();
+            transactionConnection.commit();
         } catch (Exception e) {
             try {
-                connection.rollback();
+                transactionConnection.rollback();
             } catch (SQLException sqlException) {
                 throw new DaoException(sqlException);
             }
@@ -186,7 +201,7 @@ public class EventManager {
         final EventResultDao eventResultDao = compositeDao.getEventResultDao();
 
         Optional<EventResult> eventResultOptional = eventResultDao.findEventResultById(eventResultId);
-        if(eventResultOptional.isPresent()) {
+        if (eventResultOptional.isPresent()) {
             EventResult eventResult = eventResultOptional.get();
             int eventId = eventResult.getEventId();
 
@@ -197,44 +212,14 @@ public class EventManager {
             BigDecimal upshotOdds = CoefficientCalculator.calculateOdds(totalBetsAmount, totalUpshotBetsAmount, eventRoyalty);
 
             List<Bet> betsOnEventResult = betDao.findAllBetsByEventResultId(eventResultId);
-            for(Bet bet : betsOnEventResult) {
-                if(bet.getUpshot() == upshot) {
+            for (Bet bet : betsOnEventResult) {
+                if (bet.getUpshot() == upshot) {
                     int accountId = bet.getAccountId();
                     BigDecimal betAmount = bet.getAmount();
                     BigDecimal prize = betAmount.multiply(upshotOdds);
                     accountDao.addToAccountBalance(accountId, prize);
                 }
             }
-        }
-    }
-
-    static class CompositeDao {
-        private final EventDao eventDao;
-        private final EventResultDao eventResultDao;
-        private final AccountDao accountDao;
-        private final BetDao betDao;
-
-        public CompositeDao(Connection transactionConnection) {
-            this.eventDao = new EventDaoImpl(transactionConnection);
-            this.eventResultDao = new EventResultDaoImpl(transactionConnection);
-            this.accountDao = new AccountDaoImpl(transactionConnection);
-            this.betDao = new BetDaoImpl(transactionConnection);
-        }
-
-        public EventDao getEventDao() {
-            return eventDao;
-        }
-
-        public EventResultDao getEventResultDao() {
-            return eventResultDao;
-        }
-
-        public AccountDao getAccountDao() {
-            return accountDao;
-        }
-
-        public BetDao getBetDao() {
-            return betDao;
         }
     }
 }

@@ -33,7 +33,7 @@ public final class LoadBetModal implements Action {
 
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Role role = Role.getRoleByName((String) request.getAttribute(ROLE_ATTR));
+        Role role = (Role) request.getAttribute(ROLE_ATTR);
 
         if (role.getId() >= Role.USER.getId()) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);

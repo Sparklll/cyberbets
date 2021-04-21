@@ -3,6 +3,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page session="false" %>
 
+<%@ page import="by.epam.jwd.cyberbets.domain.Role" %>
+
 <nav class="navbar navbar-expand-lg navbar-dark smart-scroll">
     <div class="container">
         <a class="navbar-brand py-0" href="/"><img src="/resources/assets/logo.png" alt="logo"></a>
@@ -112,7 +114,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <c:if test="${param.role eq 'admin'}">
+                                <c:if test="${param.role eq Role.ADMIN}">
                                     <li>
                                         <a class="dropdown-item" href="/admin/">
                                             <i class="fas fa-cogs fa-fw me-2"></i>

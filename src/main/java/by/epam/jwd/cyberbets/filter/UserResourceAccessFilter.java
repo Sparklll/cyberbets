@@ -19,7 +19,7 @@ public class UserResourceAccessFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        Role requestRole = Role.getRoleByName((String) request.getAttribute(ROLE_ATTR));
+        Role requestRole = (Role) request.getAttribute(ROLE_ATTR);;
 
         if(requestRole.getId() < Role.USER.getId()) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(ERROR_PAGE);

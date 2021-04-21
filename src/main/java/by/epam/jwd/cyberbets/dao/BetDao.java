@@ -15,9 +15,10 @@ public interface BetDao {
     List<Bet> findAllBetsByAccountIdAndEventId(int accountId, int eventId) throws DaoException;
     List<Bet> findAllBetsByEventResultId(int eventResultId) throws DaoException;
     Optional<Bet> findBetById(int betId) throws DaoException;
+    Optional<Bet> findBetByAccountIdAndEventResultId(int accountId, int eventResultId) throws DaoException;
     BigDecimal getTotalAmountOfBets(int eventResultId) throws DaoException;
     BigDecimal getTotalAmountOfBetsForUpshot(int eventResultId, Upshot upshot) throws DaoException;
-    int createBet(BetDto betDto) throws DaoException;
+    void createBet(BetDto betDto) throws DaoException;
     void updateBet(Bet bet) throws DaoException;
     void deleteBet(int betId) throws DaoException;
 }

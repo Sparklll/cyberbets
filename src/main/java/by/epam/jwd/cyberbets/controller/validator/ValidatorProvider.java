@@ -10,6 +10,7 @@ public enum ValidatorProvider {
     private final LeagueValidator leagueValidator = new LeagueValidator();
     private final EventValidator eventValidator = new EventValidator();
     private final EventResultValidator eventResultValidator = new EventResultValidator();
+    public final BetValidator betValidator = new BetValidator();
 
     public RegisterValidator getRegisterValidator() {
         return registerValidator;
@@ -29,5 +30,9 @@ public enum ValidatorProvider {
 
     public EventResultValidator getEventResultValidator() {
         return eventResultValidator;
+    }
+
+    public BetValidator getBetValidator() {
+        return betValidator;
     }
 }

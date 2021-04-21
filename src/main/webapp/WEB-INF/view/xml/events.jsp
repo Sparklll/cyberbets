@@ -37,7 +37,11 @@
                             <div class="team team-left d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                                 <div class="d-flex flex-column justify-content-center align-items-center col-6">
                                     <span class="team-name text-center">${eventData.event.firstTeam.name}</span>
-                                    <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.firstUpshotOdds}</span>
+                                    <span class="odds m-2">
+                                        <i>x</i><fmt:formatNumber value="${eventData.totalCoefficients.firstUpshotOdds}"
+                                                                  minIntegerDigits="1"
+                                                                  minFractionDigits="2" groupingUsed="false"/>
+                                    </span>
                                 </div>
                                 <div class="team-logo ms-sm-2">
                                     <img src="${eventData.event.firstTeam.logoResource.path}">
@@ -90,7 +94,11 @@
                             <div class="team team-right d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                                 <div class="d-flex flex-column justify-content-center align-items-center col-6">
                                     <span class="team-name text-center">${eventData.event.secondTeam.name}</span>
-                                    <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.secondUpshotOdds}</span>
+                                    <span class="odds m-2">
+                                        <i>x</i><fmt:formatNumber value="${eventData.totalCoefficients.secondUpshotOdds}"
+                                                                  minIntegerDigits="1"
+                                                                  minFractionDigits="2" groupingUsed="false"/>
+                                    </span>
                                 </div>
                                 <div class="team-logo order-last order-sm-first me-sm-2">
                                     <img src="${eventData.event.secondTeam.logoResource.path}">
@@ -122,7 +130,11 @@
                             <div class="team team-left d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                                 <div class="d-flex flex-column justify-content-center align-items-center col-6">
                                     <span class="team-name text-center">${eventData.event.firstTeam.name}</span>
-                                    <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.firstUpshotOdds}</span>
+                                    <span class="odds m-2">
+                                        <i>x</i><fmt:formatNumber value="${eventData.totalCoefficients.firstUpshotOdds}"
+                                                          minIntegerDigits="1"
+                                                          minFractionDigits="2" groupingUsed="false"/>
+                                    </span>
                                 </div>
                                 <div class="team-logo ms-sm-2">
                                     <img src="${eventData.event.firstTeam.logoResource.path}">
@@ -175,7 +187,11 @@
                             <div class="team team-right d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                                 <div class="d-flex flex-column justify-content-center align-items-center col-6">
                                     <span class="team-name text-center">${eventData.event.secondTeam.name}</span>
-                                    <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.secondUpshotOdds}</span>
+                                    <span class="odds m-2">
+                                        <i>x</i><fmt:formatNumber value="${eventData.totalCoefficients.secondUpshotOdds}"
+                                                                  minIntegerDigits="1"
+                                                                  minFractionDigits="2" groupingUsed="false"/>
+                                    </span>
                                 </div>
                                 <div class="team-logo order-last order-sm-first me-sm-2">
                                     <img src="${eventData.event.secondTeam.logoResource.path}">
@@ -203,7 +219,11 @@
                         <div class="team team-left d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                             <div class="d-flex flex-column justify-content-center align-items-center col-6">
                                 <span class="team-name text-center">${eventData.event.firstTeam.name}</span>
-                                <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.firstUpshotOdds}</span>
+                                <span class="odds m-2">
+                                    <i>x</i><fmt:formatNumber value="${eventData.totalCoefficients.firstUpshotOdds}"
+                                                              minIntegerDigits="1"
+                                                              minFractionDigits="2" groupingUsed="false"/>
+                                </span>
                             </div>
                             <div class="team-logo ms-sm-2">
                                 <img src="${eventData.event.firstTeam.logoResource.path}">
@@ -256,7 +276,11 @@
                         <div class="team team-right d-flex flex-column flex-sm-row justify-content-center align-items-center col-4">
                             <div class="d-flex flex-column justify-content-center align-items-center col-6">
                                 <span class="team-name text-center">${eventData.event.secondTeam.name}</span>
-                                <span class="odds m-2"><i>x</i>${eventData.totalCoefficients.secondUpshotOdds}</span>
+                                <span class="odds m-2">
+                                    <i>x</i><fmt:formatNumber value="${eventData.totalCoefficients.secondUpshotOdds}"
+                                                              minIntegerDigits="1"
+                                                              minFractionDigits="2" groupingUsed="false"/>
+                                </span>
                             </div>
                             <div class="team-logo order-last order-sm-first me-sm-2">
                                 <img src="${eventData.event.secondTeam.logoResource.path}">

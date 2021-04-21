@@ -1526,14 +1526,35 @@ $(document).ready(function () {
         });
     }
 
+    function reloadBetModal(eventId) {
+        $('#betModal .bet-preview .team img').removeClass('team-logo-flicker');
+
+        postData(ACTION_URL, {
+            action: "loadBetModal",
+            id: eventId
+        }).then((response) => {
+                if (response.ok) {
+                    return response.text();
+                }
+                return Promise.reject(response);
+            }
+        ).then(function (response) {
+            $('#betModal .outcomes')
+                .html($(response).find('.outcomes').html());
+
+            $('#betModal .spinner-border').hide();
+        }).catch((error) => console.log('Something went wrong.', error));
+    }
+
     if ($('#eventsContainer').length > 0) {
         loadEventSection();
 
+        var eventId = null;
         $('#eventsContainer').on('click', '#currentEvents .team', function (event) {
             if(auth) {
                 let eventInfo = $(this).closest('.event');
 
-                let eventId = eventInfo.data('id');
+                eventId = eventInfo.data('id');
                 let leagueName = $(eventInfo).find('.league-name').text();
                 let disciplineIcon = $(eventInfo).find('.discipline-icon').attr('src');
                 let eventFormat = $(eventInfo).find('.event-format span').text();
@@ -1572,11 +1593,6 @@ $(document).ready(function () {
                     $('#betModal .outcomes')
                         .html($(response).find('.outcomes').html());
 
-                    $('#betModal .bet-outcome').each(function () {
-                        let outcomeTypeId = $(this).data('outcome');
-                        $(this).find('.outcome-name').text(eventOutcome.find(e => e.Id == outcomeTypeId).Name);
-                    });
-
                     $('#betModal .spinner-border').hide();
                 }).catch((error) => console.log('Something went wrong.', error));
             } else {
@@ -1585,10 +1601,12 @@ $(document).ready(function () {
         });
 
         $('#betModal').on('click', '.flip-box-front .place-bet', function () {
-            $(this).closest('.flip-box-back').attr('upshot', $(this).data('upshot'));
+            $(this).closest('.flip-box-inner')
+                .find('.flip-box-back .bet-confirm')
+                .attr('data-upshot', $(this).data('upshot'));
+
             if($(this).data('upshot') == 1) {
                 $('#betModal .team-left .team-logo img').addClass('team-logo-flicker');
-
             } else if ($(this).data('upshot') == 2) {
                 $('#betModal .team-right .team-logo img').addClass('team-logo-flicker');
             }
@@ -1602,6 +1620,11 @@ $(document).ready(function () {
                 coefficient = $(this).siblings('.right-odds').find('span').text();
             }
             $(this).closest('.flip-box-inner').find('.flip-box-back .odds').find('span').text(coefficient);
+            if($(this).find('.sum').length){
+                $(this).closest('.flip-box-inner').find('.flip-box-back .bet-amount').val($(this).find('.sum').text().trim());
+                $(this).closest('.flip-box-inner').find('.flip-box-back .bet-amount').trigger('keypress');
+            }
+
             $(this).closest('.flip-box-inner').css('transform', 'rotateY(180deg)');
         });
 
@@ -1613,7 +1636,7 @@ $(document).ready(function () {
 
             if($(this).val()) {
                 let coefficient = $(this).closest('.flip-box-back').find('.odds span').text().trim();
-                let potentialPrize = $(this).val() * coefficient;
+                let potentialPrize = Number(($(this).val() * coefficient).toFixed(2));
                 $(this).closest('.flip-box-back')
                     .find('.potential-prize')
                     .html(`<i class="fas fa-dollar-sign me-1">
@@ -1623,23 +1646,76 @@ $(document).ready(function () {
             }
         });
 
-        $('#betModal').on('click', '.cancel', function () {
-            $('#betModal .team-logo img').removeClass('team-logo-flicker');
-            $('#betModal .bet-amount').val('');
-            $('#betModal .potential-prize').text('~');
+        $('#betModal').on('click', '.flip-box-back .cancel', function () {
+            let currentUpshot = $(this).closest('.flip-box-back')
+                .find('.bet-confirm')
+                .attr('data-upshot');
+
             $(this).closest('.flip-box-inner').css('transform', 'rotateY(0deg)');
+            $(this).closest('.flip-box-back').find('.bet-confirm').attr('data-upshot', '');
+
+            let currentUpshotOpenedBoxCounter = 0;
+            $('#betModal .flip-box-back .bet-confirm').each(function () {
+               if($(this).attr('data-upshot').length
+                   && $(this).attr('data-upshot') == currentUpshot) {
+                   currentUpshotOpenedBoxCounter++;
+               }
+            });
+            if(currentUpshotOpenedBoxCounter == 0) {
+                if(currentUpshot == 1) {
+                    $('#betModal .bet-preview .team-left img').removeClass('team-logo-flicker');
+                } else if (currentUpshot == 2) {
+                    $('#betModal .bet-preview .team-right img').removeClass('team-logo-flicker');
+                }
+            }
+
+            $(this).closest('.flip-box-back').find('.bet-amount').val('');
+            $(this).closest('.flip-box-back').find('.potential-prize span').text('~');
         });
 
         $('#betModal').on('click', '.flip-box-back .place-bet', function () {
+            let currentBox = $(this).closest('.flip-box-inner');
 
+            let eventResultId = $(this).closest('.flip-box-inner').find('.flip-box-front .bet-outcome').attr('data-id');
+            let upshotId = $(this).closest('.flip-box-back').find('.bet-confirm').attr('data-upshot');
+            let amount = $(this).closest('.flip-box-back').find('.bet-amount').val();
+
+            if(amount > 0) {
+                postData(ACTION_URL, {
+                    action: "placeBet",
+                    "eventResultId": parseInt(eventResultId),
+                    "upshotId": parseInt(upshotId),
+                    "amount": parseInt(amount)
+                }).then((response) => {
+                        if (response.ok) {
+                            return response.text();
+                        }
+                        return Promise.reject(response);
+                    }
+                ).then(function (response) {
+                    if(response.status == 'ok') {
+
+                    } else {
+
+                    }
+                    $(currentBox).css('transform', 'rotateY(0deg)');
+                    setTimeout(function () {
+                        reloadBetModal(eventId);
+                    }, 500);
+                }).catch((error) => console.log('Something went wrong.', error));
+            } else {
+                $('#betAmountFieldBlank').show(200).delay(2000).hide(200);
+            }
         });
 
         $('#betModal').on('click', '.flip-box-back .refund-bet', function () {
-
+            let eventResultId = $(this).closest('.flip-box-inner').find('.flip-box-front .bet-outcome').attr('data-id');
+            let upshotId = $(this).closest('.flip-box-back').find('.bet-confirm').attr('data-upshot');
         });
 
         $('#betModal').on('click', '.flip-box-back .edit-bet', function () {
-
+            let eventResultId = $(this).closest('.flip-box-inner').find('.flip-box-front .bet-outcome').attr('data-id');
+            let upshotId = $(this).closest('.flip-box-back').find('.bet-confirm').attr('data-upshot');
         });
 
         $('#betModal').off('show.bs.modal').on('show.bs.modal', function () {
@@ -1652,7 +1728,9 @@ $(document).ready(function () {
 
         $('.discipline').off('click').click(function () {
             let disciplineCookie = getCookie('discipline_filter');
-            let selectedDisciplines = disciplineCookie.split('|').filter(e => e);
+            let selectedDisciplines = disciplineCookie != null
+                ? disciplineCookie.split('|').filter(e => e)
+                : [];
 
             if ($(this).hasClass('active')) {
                 let filterToRemove = $(this).attr('data-discipline');
