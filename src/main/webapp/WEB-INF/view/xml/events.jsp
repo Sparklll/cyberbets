@@ -48,40 +48,42 @@
                                 </div>
                             </div>
 
-
                             <div class="center d-flex flex-column flex-sm-row col-4 justify-content-center align-items-center">
                                 <div class="left-percent d-flex col-4 justify-content-center">
                                     <span class="odds-percentage">${eventData.totalCoefficients.firstUpshotPercent}%</span>
-
                                 </div>
 
                                 <div class="event-format d-flex flex-column col-4 justify-content-center align-items-center">
-                                    <c:if test="${eventData.event.discipline.id eq 1}">
-                                        <img class="discipline-icon" src="${csgoIcon}">
-                                    </c:if>
-                                    <c:if test="${eventData.event.discipline.id eq 2}">
-                                        <img class="discipline-icon" src="${dota2Icon}">
-                                    </c:if>
-                                    <c:if test="${eventData.event.discipline.id eq 3}">
-                                        <img class="discipline-icon" src="${lolIcon}">
-                                    </c:if>
-                                    <c:if test="${eventData.event.discipline.id eq 4}">
-                                        <img class="discipline-icon" src="${valorantIcon}">
-                                    </c:if>
+                                    <c:choose>
+                                        <c:when test="${eventData.event.discipline.id eq 1}">
+                                            <img class="discipline-icon" src="${csgoIcon}">
+                                        </c:when>
+                                        <c:when test="${eventData.event.discipline.id eq 2}">
+                                            <img class="discipline-icon" src="${dota2Icon}">
+                                        </c:when>
+                                        <c:when test="${eventData.event.discipline.id eq 3}">
+                                            <img class="discipline-icon" src="${lolIcon}">
+                                        </c:when>
+                                        <c:when test="${eventData.event.discipline.id eq 4}">
+                                            <img class="discipline-icon" src="${valorantIcon}">
+                                        </c:when>
+                                    </c:choose>
 
                                     <span>
-                                    <c:if test="${eventData.event.eventFormat.id eq 1}">
-                                        BO1
-                                    </c:if>
-                                    <c:if test="${eventData.event.eventFormat.id eq 2}">
-                                        BO2
-                                    </c:if>
-                                    <c:if test="${eventData.event.eventFormat.id eq 3}">
-                                        BO3
-                                    </c:if>
-                                    <c:if test="${eventData.event.eventFormat.id eq 4}">
-                                        BO5
-                                    </c:if>
+                                        <c:choose>
+                                            <c:when test="${eventData.event.eventFormat.id eq 1}">
+                                                BO1
+                                            </c:when>
+                                            <c:when test="${eventData.event.eventFormat.id eq 2}">
+                                                BO2
+                                            </c:when>
+                                            <c:when test="${eventData.event.eventFormat.id eq 3}">
+                                                BO3
+                                            </c:when>
+                                            <c:when test="${eventData.event.eventFormat.id eq 4}">
+                                                BO5
+                                            </c:when>
+                                        </c:choose>
                                     </span>
                                 </div>
 
@@ -149,32 +151,36 @@
                                 </div>
 
                                 <div class="event-format d-flex flex-column col-4 justify-content-center align-items-center">
-                                    <c:if test="${eventData.event.discipline.id eq 1}">
-                                        <img class="discipline-icon" src="${csgoIcon}">
-                                    </c:if>
-                                    <c:if test="${eventData.event.discipline.id eq 2}">
-                                        <img class="discipline-icon" src="${dota2Icon}">
-                                    </c:if>
-                                    <c:if test="${eventData.event.discipline.id eq 3}">
-                                        <img class="discipline-icon" src="${lolIcon}">
-                                    </c:if>
-                                    <c:if test="${eventData.event.discipline.id eq 4}">
-                                        <img class="discipline-icon" src="${valorantIcon}">
-                                    </c:if>
+                                    <c:choose>
+                                        <c:when test="${eventData.event.discipline.id eq 1}">
+                                            <img class="discipline-icon" src="${csgoIcon}">
+                                        </c:when>
+                                        <c:when test="${eventData.event.discipline.id eq 2}">
+                                            <img class="discipline-icon" src="${dota2Icon}">
+                                        </c:when>
+                                        <c:when test="${eventData.event.discipline.id eq 3}">
+                                            <img class="discipline-icon" src="${lolIcon}">
+                                        </c:when>
+                                        <c:when test="${eventData.event.discipline.id eq 4}">
+                                            <img class="discipline-icon" src="${valorantIcon}">
+                                        </c:when>
+                                    </c:choose>
 
                                     <span>
-                                    <c:if test="${eventData.event.eventFormat.id eq 1}">
-                                        BO1
-                                    </c:if>
-                                    <c:if test="${eventData.event.eventFormat.id eq 2}">
-                                        BO2
-                                    </c:if>
-                                    <c:if test="${eventData.event.eventFormat.id eq 3}">
-                                        BO3
-                                    </c:if>
-                                    <c:if test="${eventData.event.eventFormat.id eq 4}">
-                                        BO5
-                                    </c:if>
+                                        <c:choose>
+                                            <c:when test="${eventData.event.eventFormat.id eq 1}">
+                                                BO1
+                                            </c:when>
+                                            <c:when test="${eventData.event.eventFormat.id eq 2}">
+                                                BO2
+                                            </c:when>
+                                            <c:when test="${eventData.event.eventFormat.id eq 3}">
+                                                BO3
+                                            </c:when>
+                                            <c:when test="${eventData.event.eventFormat.id eq 4}">
+                                                BO5
+                                            </c:when>
+                                        </c:choose>
                                     </span>
                                 </div>
 
@@ -238,33 +244,37 @@
                             </div>
 
                             <div class="event-format d-flex flex-column col-4 justify-content-center align-items-center">
-                                <c:if test="${eventData.event.discipline.id eq 1}">
-                                    <img class="discipline-icon" src="${csgoIcon}">
-                                </c:if>
-                                <c:if test="${eventData.event.discipline.id eq 2}">
-                                    <img class="discipline-icon" src="${dota2Icon}">
-                                </c:if>
-                                <c:if test="${eventData.event.discipline.id eq 3}">
-                                    <img class="discipline-icon" src="${lolIcon}">
-                                </c:if>
-                                <c:if test="${eventData.event.discipline.id eq 4}">
-                                    <img class="discipline-icon" src="${valorantIcon}">
-                                </c:if>
+                                <c:choose>
+                                    <c:when test="${eventData.event.discipline.id eq 1}">
+                                        <img class="discipline-icon" src="${csgoIcon}">
+                                    </c:when>
+                                    <c:when test="${eventData.event.discipline.id eq 2}">
+                                        <img class="discipline-icon" src="${dota2Icon}">
+                                    </c:when>
+                                    <c:when test="${eventData.event.discipline.id eq 3}">
+                                        <img class="discipline-icon" src="${lolIcon}">
+                                    </c:when>
+                                    <c:when test="${eventData.event.discipline.id eq 4}">
+                                        <img class="discipline-icon" src="${valorantIcon}">
+                                    </c:when>
+                                </c:choose>
 
                                 <span>
-                                    <c:if test="${eventData.event.eventFormat.id eq 1}">
-                                        BO1
-                                    </c:if>
-                                    <c:if test="${eventData.event.eventFormat.id eq 2}">
-                                        BO2
-                                    </c:if>
-                                    <c:if test="${eventData.event.eventFormat.id eq 3}">
-                                        BO3
-                                    </c:if>
-                                    <c:if test="${eventData.event.eventFormat.id eq 4}">
-                                        BO5
-                                    </c:if>
-                                    </span>
+                                    <c:choose>
+                                        <c:when test="${eventData.event.eventFormat.id eq 1}">
+                                            BO1
+                                        </c:when>
+                                        <c:when test="${eventData.event.eventFormat.id eq 2}">
+                                            BO2
+                                        </c:when>
+                                        <c:when test="${eventData.event.eventFormat.id eq 3}">
+                                            BO3
+                                        </c:when>
+                                        <c:when test="${eventData.event.eventFormat.id eq 4}">
+                                            BO5
+                                        </c:when>
+                                    </c:choose>
+                                </span>
                             </div>
 
                             <div class="right-percent d-flex col-4 justify-content-center">

@@ -1,13 +1,15 @@
 package by.epam.jwd.cyberbets.dao;
 
+import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.domain.Transaction;
-import by.epam.jwd.cyberbets.domain.dto.TransactionDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TransactionDao {
-    List<Transaction> findTransactions(int limit);
-    List<Transaction> findTransactionsByAccountId(int accountId);
-    List<Transaction> findTransactionsByAccountId(int accountId, int limit);
-    void createTransaction(TransactionDto transactionDto);
+    List<Transaction> findAllTransactionsByAccountId(int accountId) throws DaoException;
+    Optional<Transaction> findTransactionById(int transactionId) throws DaoException;
+    int createTransaction(Transaction transaction) throws DaoException;
+    void updateTransaction(Transaction transaction) throws DaoException;
+    void deleteTransaction(int transactionId) throws DaoException;
 }

@@ -35,12 +35,11 @@ public class AuthorizationFilter implements Filter {
                     Optional<Account> optionalAccount = accountService.findAccountByEmail(accountEmail);
                     if(optionalAccount.isPresent()) {
                         Account foundAccount = optionalAccount.get();
-                        BigDecimal balance = foundAccount.getBalance();
-                        Role role = foundAccount.getRole();
                         request.setAttribute(AUTH_ATTR, true);
+                        request.setAttribute(ACCOUNT_EMAIL_ATTR, foundAccount.getEmail());
                         request.setAttribute(ACCOUNT_ID_ATTR, foundAccount.getId());
-                        request.setAttribute(ROLE_ATTR, role);
-                        request.setAttribute(BALANCE_ATTR, balance);
+                        request.setAttribute(ROLE_ATTR, foundAccount.getRole());
+                        request.setAttribute(BALANCE_ATTR, foundAccount.getBalance());
                     }
                 } catch (ServiceException e) {
                     logger.error(e.getMessage(), e);

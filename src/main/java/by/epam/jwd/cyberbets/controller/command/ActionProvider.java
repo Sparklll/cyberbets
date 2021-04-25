@@ -17,6 +17,7 @@ import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadEventSect
 import by.epam.jwd.cyberbets.controller.command.impl.page.ErrorPage;
 import by.epam.jwd.cyberbets.controller.command.impl.user.bet.PlaceBet;
 import by.epam.jwd.cyberbets.controller.command.impl.user.bet.RefundBet;
+import by.epam.jwd.cyberbets.controller.command.impl.user.bet.UpdateBet;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ public enum ActionProvider {
 
     private ActionProvider() {
         actions.put(PLACE_BET_ACTION, new PlaceBet());
-        actions.put(UPDATE_BET_ACTION, new UpdateEvent());
+        actions.put(UPDATE_BET_ACTION, new UpdateBet());
         actions.put(REFUND_BET_ACTION, new RefundBet());
         actions.put(LOAD_BET_MODAL_ACTION, new LoadBetModal());
         actions.put(LOAD_COEFFICIENTS_ACTION, new LoadCoefficients());

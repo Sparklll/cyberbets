@@ -47,7 +47,7 @@ public class BetDaoImpl implements BetDao {
             where event_result_id = ? and upshot_type_id = ?
             """;
     private static final String CREATE_BET = "insert into bet (account_id, event_result_id, amount, date, upshot_type_id) values (?, ?, ?, ?, ?)";
-    private static final String UPDATE_BET = "update bet set account_id = ?, event_result_id = ?, amount = ?, date = ? upshot_type_id = ? where id = ?";
+    private static final String UPDATE_BET = "update bet set account_id = ?, event_result_id = ?, amount = ?, date = ?, upshot_type_id = ? where id = ?";
     private static final String DELETE_BET = "delete from bet where id = ?";
 
     BetDaoImpl() {
@@ -224,6 +224,7 @@ public class BetDaoImpl implements BetDao {
     @Override
     public void createBet(BetDto betDto) throws DaoException {
         Connection connection = getConnection();
+
         try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(CREATE_BET)) {
             ps.setInt(1, betDto.accountId());
@@ -231,7 +232,7 @@ public class BetDaoImpl implements BetDao {
             ps.setBigDecimal(3, betDto.amount());
             ps.setTimestamp(4, Timestamp.from(Instant.now()));
             ps.setInt(5, betDto.upshotId());
-            ps.execute();
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -243,10 +244,12 @@ public class BetDaoImpl implements BetDao {
 
         try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(UPDATE_BET)) {
-
-
-            ///////
-
+            ps.setInt(1, bet.getAccountId());
+            ps.setInt(2, bet.getEventResultId());
+            ps.setBigDecimal(3, bet.getAmount());
+            ps.setTimestamp(4, Timestamp.from(Instant.now()));
+            ps.setInt(5, bet.getUpshot().getId());
+            ps.setInt(6, bet.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -259,10 +262,7 @@ public class BetDaoImpl implements BetDao {
 
         try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(DELETE_BET)) {
-
-
-            ///////
-
+            ps.setInt(1, betId);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -273,7 +273,7 @@ public class BetDaoImpl implements BetDao {
         return new Bet(rs.getInt(ID),
                 rs.getInt(ACCOUNT_ID),
                 rs.getInt(EVENT_RESULT_ID),
-                Bet.Upshot.getUpshotById(rs.getInt(UPSHOT_TYPE_ID)).get(),
+                Upshot.getUpshotById(rs.getInt(UPSHOT_TYPE_ID)).get(),
                 rs.getBigDecimal(AMOUNT),
                 rs.getTimestamp(DATE).toInstant());
     }

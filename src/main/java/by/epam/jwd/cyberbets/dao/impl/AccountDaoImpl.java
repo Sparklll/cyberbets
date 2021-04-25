@@ -35,6 +35,7 @@ public class AccountDaoImpl implements AccountDao {
             where a.email = ?
             """;
     private static final String FIND_ID_BY_EMAIL = "select id from account where email = ?";
+    private static final String GET_ACCOUNT_BALANCE = "select balance from account where id = ?";
     private static final String CREATE_ACCOUNT = "insert into account (email, password_hash) VALUES (?, ?)";
     private static final String UPDATE_ACCOUNT = "update account set email = ?, password_hash = ?, balance = ?, role_id = ?, avatar_resource_id = ? where id = ?";
     private static final String UPDATE_ACCOUNT_BALANCE = "update account set balance = ? where id = ?";
@@ -108,6 +109,26 @@ public class AccountDaoImpl implements AccountDao {
                     idOptional = OptionalInt.of(id);
                 }
                 return idOptional;
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Optional<BigDecimal> getAccountBalance(int accountId) throws DaoException {
+        Connection connection = getConnection();
+
+        try (Connection connectionResource = isTransactional ? null : connection;
+             PreparedStatement ps = connection.prepareStatement(GET_ACCOUNT_BALANCE)) {
+            ps.setInt(1, accountId);
+            try (ResultSet rs = ps.executeQuery()) {
+                Optional<BigDecimal> balanceOptional = Optional.empty();
+                if (rs.next()) {
+                    BigDecimal balance = rs.getBigDecimal(BALANCE);
+                    balanceOptional = Optional.of(balance);
+                }
+                return balanceOptional;
             }
         } catch (SQLException e) {
             throw new DaoException(e);

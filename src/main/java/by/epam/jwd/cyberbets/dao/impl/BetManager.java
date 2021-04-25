@@ -7,6 +7,8 @@ import by.epam.jwd.cyberbets.dao.connection.ConnectionPool;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.domain.*;
 import by.epam.jwd.cyberbets.domain.dto.BetDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -14,6 +16,8 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class BetManager {
+    private static final Logger logger = LoggerFactory.getLogger(BetManager.class);
+
     BetManager() {
 
     }
@@ -87,7 +91,6 @@ public class BetManager {
             if (accountOptional.isPresent()
                     && eventResultOptional.isPresent()
                     && placedBetOptional.isPresent()) {
-
                 Account account = accountOptional.get();
                 EventResult eventResult = eventResultOptional.get();
                 Bet placedBet = placedBetOptional.get();
@@ -101,6 +104,8 @@ public class BetManager {
                     BigDecimal newAccountBalance = accountBalance
                             .add(placedBetAmount)
                             .subtract(newBetAmount);
+
+                    placedBet.setAmount(newBetAmount);
                     accountDao.updateAccountBalance(accountId, newAccountBalance);
                     betDao.updateBet(placedBet);
                 }
@@ -109,6 +114,7 @@ public class BetManager {
         } catch (Exception e) {
             try {
                 transactionConnection.rollback();
+                throw new DaoException(e);
             } catch (SQLException sqlException) {
                 throw new DaoException(sqlException);
             }
@@ -125,6 +131,7 @@ public class BetManager {
         } catch (Exception e) {
             try {
                 transactionConnection.rollback();
+                throw new DaoException(e);
             } catch (SQLException sqlException) {
                 throw new DaoException(sqlException);
             }

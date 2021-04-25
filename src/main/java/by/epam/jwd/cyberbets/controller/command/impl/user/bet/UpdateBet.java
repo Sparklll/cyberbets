@@ -5,6 +5,7 @@ import by.epam.jwd.cyberbets.controller.validator.Validator;
 import by.epam.jwd.cyberbets.controller.validator.ValidatorProvider;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.dto.BetDto;
+import by.epam.jwd.cyberbets.service.AccountService;
 import by.epam.jwd.cyberbets.service.BetService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Optional;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
@@ -26,6 +28,7 @@ public final class UpdateBet implements Action {
     private static final Logger logger = LoggerFactory.getLogger(UpdateBet.class);
 
     private final BetService betService = ServiceProvider.INSTANCE.getBetService();
+    private final AccountService accountService = ServiceProvider.INSTANCE.getAccountService();
 
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,6 +59,12 @@ public final class UpdateBet implements Action {
 
                         if(betValidator.isValid(betDto)) {
                             betService.updateBet(betDto);
+
+                            Optional<BigDecimal> updatedBalanceOptional = accountService.getAccountBalance(accountId);
+                            if(updatedBalanceOptional.isPresent()) {
+                                BigDecimal updatedBalance = updatedBalanceOptional.get();
+                                jsonResponse.addProperty(BALANCE_PARAM, updatedBalance);
+                            }
                             jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                         } else {
                             jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);

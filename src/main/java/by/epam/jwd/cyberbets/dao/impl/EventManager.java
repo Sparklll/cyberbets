@@ -137,6 +137,7 @@ public class EventManager {
         } catch (Exception e) {
             try {
                 transactionConnection.rollback();
+                throw new DaoException(e);
             } catch (SQLException sqlException) {
                 throw new DaoException(sqlException);
             }
@@ -174,6 +175,7 @@ public class EventManager {
         } catch (Exception e) {
             try {
                 transactionConnection.rollback();
+                throw new DaoException(e);
             } catch (SQLException sqlException) {
                 throw new DaoException(sqlException);
             }

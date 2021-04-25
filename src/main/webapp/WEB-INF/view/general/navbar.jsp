@@ -65,14 +65,14 @@
                 <c:when test="${param.auth}">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-nowrap" href="#">
+                            <a class="nav-link text-nowrap" href="/deposit/">
                                 <img src="/resources/assets/interface/wallet.png" class="balance">
                                 <span>
-                            <i class="fas fa-dollar-sign"></i>
-                            <span>
-                                <fmt:formatNumber value="${param.balance}" minIntegerDigits="1" minFractionDigits="2" groupingUsed="false"/>
-                            </span>
-                        </span>
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <span id="balance">
+                                        <fmt:formatNumber value="${param.balance}" minIntegerDigits="1" minFractionDigits="2" groupingUsed="false"/>
+                                    </span>
+                                </span>
                             </a>
                         </li>
                         <li class="nav-item dropdown">

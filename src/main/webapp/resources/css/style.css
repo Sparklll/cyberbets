@@ -372,6 +372,189 @@ img {
     border: 2px solid rgb(102, 24, 179);
 }
 
+/* --WRAPPER-CONTAINER --- */
+.general-container {
+    border-radius: 5px;
+    margin: 15px;
+    padding: 10px;
+    min-height: 300px;
+    background-color: #3e454f;
+}
+
+@media all and (max-width: 768px) {
+    .general-container {
+        font-size: 0.8rem;
+    }
+}
+
+/* --USER TRANSACTIONS CONTAINER-- */
+.transaction-container-header {
+    padding: 10px;
+    border-bottom: 5px solid #8800ff;
+}
+
+.transacion-type-icon {
+    width: 20px
+}
+
+.transaction {
+    font-weight: bold;
+    padding: 15px;
+    margin: 5px 0;
+    transition: background-color 0.3s;
+}
+
+.transaction:nth-child(n):hover {
+    background-color: rgba(0, 156, 142, 0.8);
+    cursor: pointer;
+}
+
+
+.transaction:nth-child(n + 1) {
+    background-color: #2d3050;
+}
+
+.transaction:nth-child(2n + 1) {
+    background-color: #3f426c;
+}
+
+/* --DEPOSIT CONTAINER-- */
+.deposit-container .card {
+    box-shadow: 0px 0px 30px #6829aa;
+}
+
+.form-card .fa-cc-visa {
+    color: #4997eb;
+
+}
+.form-card .fa-cc-mastercard {
+    color: #ffb75f;
+}
+.form-card .fa-cc-amex {
+    color: #EB4960;
+}
+.form-card .fa-cc-discover {
+    color: #027878;
+}
+
+
+.page-content-wrapper-header {
+    padding: 20px;
+    box-shadow: 0px 35px 2px -35px lightgray
+}
+
+#menu-toggle {
+    height: 40px;
+}
+
+.bar4 {
+    width: 20px;
+    height: 2px;
+    background-color: white;
+    margin: 5px 0;
+}
+
+.list-group .tabs {
+    color: white;
+}
+
+#sidebar-wrapper {
+    border-radius: 5px 0 0 5px;
+    background-color: #3e454f;
+    min-height: 100vh;
+}
+
+.flex-column #sidebar-wrapper {
+    min-width: 250px;
+    min-height: 0;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    color: #8800ff;
+    text-align: center;
+    font-weight: bold;
+}
+
+#page-content-wrapper {
+    padding: 0 20px;
+}
+
+#page-content-wrapper .tab-content {
+    min-height: 500px;
+}
+
+.list-group-item {
+    background-color: #4e5061;
+    border: none;
+}
+
+.list-group-item.active {
+    background-color: #2a2f36 !important;
+    color: #941ffc;
+    font-weight: bold;
+}
+
+#page-content-wrapper {
+    width: 100%
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    display: none;
+}
+
+.form-card input,
+.form-card textarea {
+    font-family: arial;
+    border: none;
+    border: 1px solid lightgrey;
+    margin-bottom: 25px;
+    margin-top: 2px;
+    color: #2C3E50;
+    font-size: 14px;
+    letter-spacing: 1px
+}
+
+.pay-input-group.input-group input {
+    height: 40px ;
+    padding: 0 0 0 20px;
+    border-radius: 0 5px 5px 0 !important;
+}
+
+.pay-input-group.input-group .input-group-text {
+    border: none;
+    background-color: #83d7b1;
+}
+
+.input-group input {
+    z-index: unset !important;
+    height: 70px;
+    border-radius: 5px !important;
+    padding-top: 30px;
+    padding-left: 30px
+}
+
+.input-group label {
+    position: absolute;
+    height: 25px;
+    line-height: 45px;
+    font-size: 0.8rem;
+    color: gray;
+    font-weight: 100;
+    padding-left: 30px
+}
+
+.form-card input:focus,
+.form-card textarea:focus,
+.pay-input-group.input-group input:focus {
+    box-shadow: 0px 0px 0px 2px #8346db !important;
+}
+
+input:focus + label {
+    font-weight: 500;
+    color: #8346db;
+}
+
+
 /* FOOTER */
 footer {
     padding: 50px 0;

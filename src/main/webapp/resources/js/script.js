@@ -1,6 +1,6 @@
 $(document).ready(function () {
     const lang = ['de', 'en', 'fr', 'ru'];
-    const discipline = ['csgo', 'dota2','lol','valorant'];
+    const discipline = ['csgo', 'dota2', 'lol', 'valorant'];
     const DEFAULT_LANG = 'en';
     const ACTION_URL = "/action/"
 
@@ -42,16 +42,16 @@ $(document).ready(function () {
         let disciplineCookie = getCookie('discipline_filter');
         $('.discipline').removeClass('active');
 
-        if(disciplineCookie !== undefined)  {
+        if (disciplineCookie !== undefined) {
             let selectedDisciplines = disciplineCookie.split('|');
             selectedDisciplines.forEach(d => {
-                if(discipline.includes(d)) {
+                if (discipline.includes(d)) {
                     $(`.discipline[data-discipline='${d}']`).addClass('active');
                 }
             });
         } else {
             setCookie("discipline_filter", discipline.join('|'), 365)
-            $('.discipline').each(function() {
+            $('.discipline').each(function () {
                 $(this).addClass('active');
             });
         }
@@ -60,25 +60,25 @@ $(document).ready(function () {
     function loadEventSection() {
         $.post(ACTION_URL, JSON.stringify({action: "loadEventSection"}))
             .done(function (responseXml) {
-            $('#liveEvents .events').html($(responseXml).find('#liveEvents .events').html()).fadeIn(200);
-            $('#upcomingEvents .events').html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(200);
-            $('#pastEvents .events').html($(responseXml).find('#pastEvents .events').html()).fadeIn(200);
-        });
+                $('#liveEvents .events').html($(responseXml).find('#liveEvents .events').html()).fadeIn(200);
+                $('#upcomingEvents .events').html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(200);
+                $('#pastEvents .events').html($(responseXml).find('#pastEvents .events').html()).fadeIn(200);
+            });
     }
 
     function reloadEventSection() {
         $.post(ACTION_URL, JSON.stringify({action: "loadEventSection"}))
             .done(function (responseXml) {
-            $('#liveEvents .events').fadeOut(300, function () {
-                $(this).html($(responseXml).find('#liveEvents .events').html());
-            }).fadeIn(300);
-            $('#upcomingEvents .events').fadeOut(300, function () {
-                $(this).html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(300);
+                $('#liveEvents .events').fadeOut(300, function () {
+                    $(this).html($(responseXml).find('#liveEvents .events').html());
+                }).fadeIn(300);
+                $('#upcomingEvents .events').fadeOut(300, function () {
+                    $(this).html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(300);
+                });
+                $('#pastEvents .events').fadeOut(300, function () {
+                    $(this).html($(responseXml).find('#pastEvents .events').html()).fadeIn(300);
+                });
             });
-            $('#pastEvents .events').fadeOut(300, function () {
-                $(this).html($(responseXml).find('#pastEvents .events').html()).fadeIn(300);
-            });
-        });
     }
 
     async function postData(url = '', data = {}) {
@@ -446,8 +446,8 @@ $(document).ready(function () {
                 $('.selectpicker').selectpicker('refresh');
 
                 postData(ACTION_URL, {
-                    "action" : "loadEventResults",
-                    "id" : event.id
+                    "action": "loadEventResults",
+                    "id": event.id
                 }).then((response) => {
                         if (response.ok) {
                             return response.json();
@@ -456,36 +456,36 @@ $(document).ready(function () {
                     }
                 ).then(function (response) {
                     response.data.forEach(eventResult => {
-                        let eventOutcomeTemplate = $($("#eventOutcomeTemplate").html());
-                        let eventOutcomeType = eventResult.eventOutcomeType;
+                            let eventOutcomeTemplate = $($("#eventOutcomeTemplate").html());
+                            let eventOutcomeType = eventResult.eventOutcomeType;
 
-                        eventOutcomeTemplate.attr('data-type', eventOutcomeType);
-                        eventOutcomeTemplate.find('label[for=firstUpshot]').text(event.firstTeam.teamName);
-                        eventOutcomeTemplate.find('label[for=secondUpshot]').text(event.secondTeam.teamName);
+                            eventOutcomeTemplate.attr('data-type', eventOutcomeType);
+                            eventOutcomeTemplate.find('label[for=firstUpshot]').text(event.firstTeam.teamName);
+                            eventOutcomeTemplate.find('label[for=secondUpshot]').text(event.secondTeam.teamName);
 
-                        eventOutcomeTemplate.find(':input:radio').each(function (index, item) {
-                            $(item).attr({
-                                'id': $(this).attr('id') + eventOutcomeType,
-                                'name': eventOutcomeType,
+                            eventOutcomeTemplate.find(':input:radio').each(function (index, item) {
+                                $(item).attr({
+                                    'id': $(this).attr('id') + eventOutcomeType,
+                                    'name': eventOutcomeType,
+                                });
                             });
-                        });
-                        eventOutcomeTemplate
-                            .find(`:input:radio[value=${eventResult.resultStatus}]`)
-                            .prop('checked', true);
-                        eventOutcomeTemplate.find('label').each(function (index, item) {
-                            $(item).attr('for', $(this).attr('for') + eventOutcomeType);
-                        });
-                        eventOutcomeTemplate.find('.outcome-type-name').text(
-                            eventOutcome.find(eo => eo.Id == eventOutcomeType).Name
-                        );
+                            eventOutcomeTemplate
+                                .find(`:input:radio[value=${eventResult.resultStatus}]`)
+                                .prop('checked', true);
+                            eventOutcomeTemplate.find('label').each(function (index, item) {
+                                $(item).attr('for', $(this).attr('for') + eventOutcomeType);
+                            });
+                            eventOutcomeTemplate.find('.outcome-type-name').text(
+                                eventOutcome.find(eo => eo.Id == eventOutcomeType).Name
+                            );
 
-                        $('#eventModal #eventOutcomeCollapse .accordion-body').append(eventOutcomeTemplate);
+                            $('#eventModal #eventOutcomeCollapse .accordion-body').append(eventOutcomeTemplate);
                         }
                     );
 
                     postData(ACTION_URL, {
-                        "action" : "loadEventCoefficients",
-                        "id" : event.id
+                        "action": "loadEventCoefficients",
+                        "id": event.id
                     }).then((response) => {
                             if (response.ok) {
                                 return response.json();
@@ -493,10 +493,10 @@ $(document).ready(function () {
                             return Promise.reject(response);
                         }
                     ).then(function (response) {
-                        if(response.data != null) {
+                        if (response.data != null) {
                             let eventCoefficients = response.data;
                             eventCoefficients.forEach(c => {
-                                if(c.eventOutcomeTypeId == 1) { // Total Winner, filling preview
+                                if (c.eventOutcomeTypeId == 1) { // Total Winner, filling preview
                                     $('#eventModal .team-left .odds').empty().append(`<i>x</i>${c.firstUpshotOdds}`);
                                     $('#eventModal .team-right .odds').empty().append(`<i>x</i>${c.secondUpshotOdds}`);
                                     $('#eventModal .center .left-percent .odds-percentage').text(`${c.firstUpshotPercent}%`);
@@ -505,7 +505,7 @@ $(document).ready(function () {
 
                                 let foundedEventOutcome = $('#eventOutcomeCollapse .accordion-body')
                                     .find(`.event-outcome[data-type=${c.eventOutcomeTypeId}]`);
-                                if(foundedEventOutcome != null) {
+                                if (foundedEventOutcome != null) {
                                     $(foundedEventOutcome).find('.left-outcome-odds').empty().append(`<i>x</i>${c.firstUpshotOdds}`);
                                     $(foundedEventOutcome).find('.right-outcome-odds').empty().append(`<i>x</i>${c.secondUpshotOdds}`);
                                 }
@@ -761,7 +761,7 @@ $(document).ready(function () {
                     let eventOutcomeType = $(this).data('type').toString();
                     let resultStatus = $(this).find('input:radio:checked').val();
                     let result = new Result(eventOutcomeType, resultStatus);
-                    if(isEventEditing) {
+                    if (isEventEditing) {
                         result.eventId = editingItem.id;
                     }
                     eventResults.push(result);
@@ -1551,7 +1551,7 @@ $(document).ready(function () {
 
         var eventId = null;
         $('#eventsContainer').on('click', '#currentEvents .team', function (event) {
-            if(auth) {
+            if (auth) {
                 let eventInfo = $(this).closest('.event');
 
                 eventId = eventInfo.data('id');
@@ -1571,7 +1571,7 @@ $(document).ready(function () {
                 $('#betModal .team-right .team-name').text(teamRightName);
                 $('#betModal .team-right .team-logo img').attr('src', teamRightLogo);
 
-                if($(eventInfo).find('.live-icon').length > 0) {
+                if ($(eventInfo).find('.live-icon').length > 0) {
                     $('#betModal .live-icon').show();
                 } else {
                     $('#betModal .live-icon').hide();
@@ -1605,7 +1605,7 @@ $(document).ready(function () {
                 .find('.flip-box-back .bet-confirm')
                 .attr('data-upshot', $(this).data('upshot'));
 
-            if($(this).data('upshot') == 1) {
+            if ($(this).data('upshot') == 1) {
                 $('#betModal .team-left .team-logo img').addClass('team-logo-flicker');
             } else if ($(this).data('upshot') == 2) {
                 $('#betModal .team-right .team-logo img').addClass('team-logo-flicker');
@@ -1614,13 +1614,13 @@ $(document).ready(function () {
             let buttonUpshot = $(this).data('upshot');
             let coefficient = 0;
 
-            if(buttonUpshot == 1) {
+            if (buttonUpshot == 1) {
                 coefficient = $(this).siblings('.left-odds').find('span').text();
             } else if (buttonUpshot == 2) {
                 coefficient = $(this).siblings('.right-odds').find('span').text();
             }
             $(this).closest('.flip-box-inner').find('.flip-box-back .odds').find('span').text(coefficient);
-            if($(this).find('.sum').length){
+            if ($(this).find('.sum').length) {
                 $(this).closest('.flip-box-inner').find('.flip-box-back .bet-amount').val($(this).find('.sum').text().trim());
                 $(this).closest('.flip-box-inner').find('.flip-box-back .bet-amount').trigger('keypress');
             }
@@ -1634,7 +1634,7 @@ $(document).ready(function () {
                 event.preventDefault();
             }
 
-            if($(this).val()) {
+            if ($(this).val()) {
                 let coefficient = $(this).closest('.flip-box-back').find('.odds span').text().trim();
                 let potentialPrize = Number(($(this).val() * coefficient).toFixed(2));
                 $(this).closest('.flip-box-back')
@@ -1656,13 +1656,13 @@ $(document).ready(function () {
 
             let currentUpshotOpenedBoxCounter = 0;
             $('#betModal .flip-box-back .bet-confirm').each(function () {
-               if($(this).attr('data-upshot').length
-                   && $(this).attr('data-upshot') == currentUpshot) {
-                   currentUpshotOpenedBoxCounter++;
-               }
+                if ($(this).attr('data-upshot').length
+                    && $(this).attr('data-upshot') == currentUpshot) {
+                    currentUpshotOpenedBoxCounter++;
+                }
             });
-            if(currentUpshotOpenedBoxCounter == 0) {
-                if(currentUpshot == 1) {
+            if (currentUpshotOpenedBoxCounter == 0) {
+                if (currentUpshot == 1) {
                     $('#betModal .bet-preview .team-left img').removeClass('team-logo-flicker');
                 } else if (currentUpshot == 2) {
                     $('#betModal .bet-preview .team-right img').removeClass('team-logo-flicker');
@@ -1680,7 +1680,7 @@ $(document).ready(function () {
             let upshotId = $(this).closest('.flip-box-back').find('.bet-confirm').attr('data-upshot');
             let amount = $(this).closest('.flip-box-back').find('.bet-amount').val();
 
-            if(amount > 0) {
+            if (amount > 0) {
                 postData(ACTION_URL, {
                     action: "placeBet",
                     "eventResultId": parseInt(eventResultId),
@@ -1688,15 +1688,13 @@ $(document).ready(function () {
                     "amount": parseInt(amount)
                 }).then((response) => {
                         if (response.ok) {
-                            return response.text();
+                            return response.json();
                         }
                         return Promise.reject(response);
                     }
                 ).then(function (response) {
-                    if(response.status == 'ok') {
-
-                    } else {
-
+                    if (response.balance != null) {
+                        $('#balance').fadeOut(200).text(parseFloat(response.balance).toFixed(2)).fadeIn(200);
                     }
                     $(currentBox).css('transform', 'rotateY(0deg)');
                     setTimeout(function () {
@@ -1714,8 +1712,36 @@ $(document).ready(function () {
         });
 
         $('#betModal').on('click', '.flip-box-back .edit-bet', function () {
+            let currentBox = $(this).closest('.flip-box-inner');
+
             let eventResultId = $(this).closest('.flip-box-inner').find('.flip-box-front .bet-outcome').attr('data-id');
             let upshotId = $(this).closest('.flip-box-back').find('.bet-confirm').attr('data-upshot');
+            let amount = $(this).closest('.flip-box-back').find('.bet-amount').val();
+
+            if (amount > 0) {
+                postData(ACTION_URL, {
+                    action: "updateBet",
+                    "eventResultId": parseInt(eventResultId),
+                    "upshotId": parseInt(upshotId),
+                    "amount": parseInt(amount)
+                }).then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        return Promise.reject(response);
+                    }
+                ).then(function (response) {
+                    if (response.balance != null) {
+                        $('#balance').fadeOut(200).text(parseFloat(response.balance).toFixed(2)).fadeIn(200);
+                    }
+                    $(currentBox).css('transform', 'rotateY(0deg)');
+                    setTimeout(function () {
+                        reloadBetModal(eventId);
+                    }, 500);
+                }).catch((error) => console.log('Something went wrong.', error));
+            } else {
+                $('#betAmountFieldBlank').show(200).delay(2000).hide(200);
+            }
         });
 
         $('#betModal').off('show.bs.modal').on('show.bs.modal', function () {
@@ -1736,25 +1762,94 @@ $(document).ready(function () {
                 let filterToRemove = $(this).attr('data-discipline');
                 let filterToRemoveIndex = selectedDisciplines.indexOf(filterToRemove);
 
-                if(filterToRemoveIndex != null) {
+                if (filterToRemoveIndex != null) {
                     selectedDisciplines.splice(filterToRemoveIndex, 1);
                 }
 
                 if (selectedDisciplines.length == 0) {
                     let filterToAdd = $('.discipline').first().attr('data-discipline');
-                    if(!selectedDisciplines.includes(filterToAdd)) {
+                    if (!selectedDisciplines.includes(filterToAdd)) {
                         selectedDisciplines = selectedDisciplines.concat(filterToAdd);
                     }
                 }
             } else {
                 let filterToAdd = $(this).attr('data-discipline');
-                if(!selectedDisciplines.includes(filterToAdd)) {
+                if (!selectedDisciplines.includes(filterToAdd)) {
                     selectedDisciplines = selectedDisciplines.concat(filterToAdd);
                 }
             }
             setCookie("discipline_filter", selectedDisciplines.join('|'), 365);
             reloadDisciplineFilter();
             reloadEventSection();
+        });
+    }
+
+    if ($('#depositContainer').length > 0) {
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+
+        $('#depositContainer .tabs').off('click').click(function () {
+            $('#depositContainer  .tab-content').css('opacity', 0);
+            $('#depositContainer  .tab-content').fadeTo(500, 1);
+        });
+
+
+        var ccnum = document.getElementById('cp_cardNumber'),
+            expiry = document.getElementById('cp_cardExpiry'),
+            cvc = document.getElementById('cp_cvv');
+
+        payform.cardNumberInput(ccnum);
+        payform.expiryInput(expiry);
+        payform.cvcInput(cvc);
+
+        $('#cp_cardNumber').off('input').on('input', function () {
+            let cardNumber = $('#cp_cardNumber').val();
+            if (payform.validateCardNumber(cardNumber)) {
+                $('#cp_cardNumber').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#cp_cardNumber').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#cp_cardExpiry').off('input').on('input', function () {
+            let cardNumber = $('#cp_cardExpiry').val();
+            let month, year;
+            if (cardNumber != null) {
+                let monthAndYear = cardNumber.split('/');
+                if(monthAndYear.length == 2) {
+                    month = monthAndYear[0].trim();
+                    year = monthAndYear[1].trim();
+                }
+            }
+            if (payform.validateCardExpiry(month, year)) {
+                $('#cp_cardExpiry').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#cp_cardExpiry').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#cp_cvv').off('input').on('input', function () {
+            let cvv = $('#cp_cvv').val();
+            if (payform.validateCardCVC(cvv, null)) {
+                $('#cp_cvv').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#cp_cvv').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#depositContainer .pay-input-group input').on('keypress keyup blur', function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+
+            if ($(this).val()) {
+                $('#depositContainer .payment-button-amount .sum').text($(this).val());
+            } else {
+                $('#depositContainer .payment-button-amount .sum').text('~');
+            }
         });
     }
 
@@ -1821,17 +1916,17 @@ $(document).ready(function () {
     $('.modal').on('hidden.bs.modal', function (e) {
         $(this)
             .find("input[type!=radio][type!=checkbox], textarea, select")
-                .val('')
+            .val('')
             .end()
             .find("input[type=checkbox], input[type=radio]")
-                .prop('checked', '')
+            .prop('checked', '')
             .end()
             .find('.selectpicker')
-                .selectpicker('refresh')
+            .selectpicker('refresh')
             .end()
             .find('*')
-                .removeClass('is-invalid')
-                .removeClass('is-valid')
+            .removeClass('is-invalid')
+            .removeClass('is-valid')
             .end()
     });
 });

@@ -53,6 +53,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Optional<BigDecimal> getAccountBalance(int accountId) throws ServiceException {
+        try {
+            return accountDao.getAccountBalance(accountId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void createAccount(RegisterDto registerDto) throws ServiceException {
         try {
             String email = registerDto.email();
