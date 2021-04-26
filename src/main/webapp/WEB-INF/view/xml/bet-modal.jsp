@@ -175,7 +175,7 @@
                                                         class="cancel btn btn-sm btn-secondary text-nowrap mx-1" style="width: 30px" title="Back">
                                                     <i class="fas fa-long-arrow-alt-left"></i>
                                                 </button>
-                                                <button type="button" class="refund-bet btn btn-sm btn-secondary text-nowrap me-1" style="width: 30px" title="Cancel Bet">
+                                                <button type="button" class="refund-bet btn btn-sm btn-secondary text-nowrap me-1" style="width: 30px" title="Refund Bet">
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                                 <button type="button" class="edit-bet btn btn-sm btn-secondary text-nowrap me-1" style="width: 30px" title="Edit Bet">

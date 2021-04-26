@@ -66,7 +66,7 @@
                 <div class="nav nav-tabs" id="eventsTab" role="tablist">
                     <button class="nav-link col-6 col-lg-3 active" id="currentEventsTab" data-bs-toggle="tab"
                             data-bs-target="#currentEvents" type="button" role="tab" aria-selected="true">
-                        <i class="fas fa-calendar-alt me-2"></i>
+                        <i class="fas fa-calendar-alt fa-lg me-2"></i>
                         <span class="text-uppercase">
                             <fmt:message key="events.container.tab.current_events"/>
                         </span>
@@ -74,7 +74,7 @@
                     <button class="nav-link col-6 col-lg-3" id="pastEventsTab" data-bs-toggle="tab"
                             data-bs-target="#pastEvents"
                             type="button" role="tab" aria-selected="false">
-                        <i class="fas fa-calendar-check me-2"></i>
+                        <i class="fas fa-calendar-check fa-lg me-2"></i>
                         <span class="text-uppercase">
                             <fmt:message key="events.container.tab.past_events"/>
                         </span>
@@ -142,7 +142,7 @@
                         <div class="center d-flex flex-column justify-content-center align-items-center col-4">
                             <h5 class="text-center text-uppercase fst-italic fw-bold">Vs</h5>
                             <img class="live-icon live-blink mb-1" src="/resources/assets/interface/live.png" style="display: none">
-                            <span class="date fw-bold text-center"></span>
+                            <span class="timer fw-bold text-center" data-start="">00:00:00</span>
                         </div>
                         <div class="team team-right d-flex flex-column justify-content-center align-items-center col-4">
                             <span class="team-name fw-bold text-truncate mb-2"></span>

@@ -7,6 +7,7 @@ import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.dao.impl.DaoProvider;
 import by.epam.jwd.cyberbets.domain.Bet.Upshot;
 import by.epam.jwd.cyberbets.domain.EventResult;
+import by.epam.jwd.cyberbets.domain.ResultStatus;
 import by.epam.jwd.cyberbets.domain.dto.CoefficientsDto;
 import by.epam.jwd.cyberbets.service.EventResultService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
@@ -69,6 +70,7 @@ public class EventResultServiceImpl implements EventResultService {
                 EventResult eventResult = eventResultOptional.get();
                 int eventId = eventResult.getEventId();
                 int eventOutcomeTypeId = eventResult.getEventOutcomeType().getId();
+                ResultStatus resultStatus = eventResult.getResultStatus();
 
                 BigDecimal eventRoyalty = eventDao.findRoyaltyByEventId(eventId).get();
                 BigDecimal totalBetsAmount = betDao.getTotalAmountOfBets(eventResultId);
@@ -80,8 +82,15 @@ public class EventResultServiceImpl implements EventResultService {
                 BigDecimal firstUpshotPercent = CoefficientCalculator.calculateUpshotPercent(totalBetsAmount, firstUpshotBetsAmount);
                 BigDecimal secondUpshotPercent = CoefficientCalculator.calculateUpshotPercent(totalBetsAmount, secondUpshotBetsAmount);
 
+                Upshot result = null;
+                if(resultStatus == ResultStatus.FIRST_UPSHOT) {
+                    result = Upshot.FIRST_UPSHOT;
+                } else if (resultStatus == ResultStatus.SECOND_UPSHOT) {
+                    result = Upshot.SECOND_UPSHOT;
+                }
+
                 return Optional.of(new CoefficientsDto(eventResultId, eventOutcomeTypeId, firstUpshotOdds,
-                        firstUpshotPercent, secondUpshotOdds, secondUpshotPercent));
+                        firstUpshotPercent, secondUpshotOdds, secondUpshotPercent, result));
             } else {
                 return Optional.empty();
             }

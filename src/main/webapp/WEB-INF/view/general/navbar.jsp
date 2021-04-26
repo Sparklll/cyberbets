@@ -39,16 +39,16 @@
             </ul>
 
             <ul class="navbar-nav ms-auto me-3">
-                <li class="nav-item dropdown timezone-select">
-                    <a class="nav-link dropdown-toggle" href="#" id="timezoneDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false"><i class="far fa-clock me-2"></i></a>
-                    <ul class="dropdown-menu fade-down" aria-labelledby="timezoneDropdown">
+<%--                <li class="nav-item dropdown timezone-select">--%>
+<%--                    <a class="nav-link dropdown-toggle" href="#" id="timezoneDropdown" role="button"--%>
+<%--                       data-bs-toggle="dropdown" aria-expanded="false"><i class="far fa-clock me-2"></i></a>--%>
+<%--                    <ul class="dropdown-menu fade-down" aria-labelledby="timezoneDropdown">--%>
 <%--                        <li><a class="dropdown-item" href="#">UTC-0</a></li>--%>
 <%--                        <li><a class="dropdown-item" href="#">UTC-1</a></li>--%>
 <%--                        <li><a class="dropdown-item" href="#">UTC-2</a></li>--%>
 <%--                        <li><a class="dropdown-item" href="#">UTC-3</a></li>--%>
-                    </ul>
-                </li>
+<%--                    </ul>--%>
+<%--                </li>--%>
                 <li class="nav-item dropdown lang-select">
                     <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false"></a>
@@ -78,7 +78,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false"><img
-                                    src="/resources/assets/interface/profile-avatar.png"
+                                    src="${accountAvatarPath}"
                                     class="profile-avatar rounded-circle"></a>
                             <ul class="dropdown-menu fade-down" aria-labelledby="profileDropdown">
                                 <li>
@@ -258,7 +258,7 @@
                                 <label for="loginEmail" class="col-sm-2 col-form-label">
                                     <i class="fas fa-user px-2"></i>
                                 </label>
-                                <div>
+                                <div class="input-wrapper">
                                     <input type="email" class="form-control" id="loginEmail" placeholder="${email}"
                                            maxlength="50"
                                            required>
@@ -268,7 +268,7 @@
                                 <label for="loginPassword" class="col-sm-2 col-form-label">
                                     <i class="fas fa-lock px-2"></i>
                                 </label>
-                                <div>
+                                <div class="input-wrapper">
                                     <input type="password" class="form-control" id="loginPassword"
                                            placeholder="${password}"
                                            maxlength="50"

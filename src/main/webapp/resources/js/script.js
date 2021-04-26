@@ -10,6 +10,25 @@ $(document).ready(function () {
     var isLeagueEditing = false;
     var editingItem = null;
 
+    var timer = setInterval(function() {
+        let now = dayjs().unix();
+
+        $('span.timer').each(function () {
+            let startDate = $(this).attr('data-start');
+            let diff = Math.abs(now - startDate);
+
+            let duration = dayjs.duration(diff, 's');
+            let days = duration.days();
+
+            if(days != 0) {
+                // TODO : add i18n day abbreviation
+                $(this).text(days + "d " + duration.format('HH:mm:ss'));
+            } else {
+                $(this).text(duration.format('HH:mm:ss'));
+            }
+        })
+    }, 1000);
+
     function setCookie(name, value, days) {
         if (days) {
             let date = new Date();
@@ -1383,6 +1402,7 @@ $(document).ready(function () {
             } else {
                 $('#registerPassword').removeClass('is-valid is-invalid');
             }
+            $('#registerRepeatedPassword').trigger('input');
         });
 
         $('#registerModal #registerRepeatedPassword').off('input').on('input', function () {
@@ -1561,7 +1581,8 @@ $(document).ready(function () {
                 let teamLeftName = $(eventInfo).find('.team-left .team-name').text();
                 let teamLeftLogo = $(eventInfo).find('.team-left .team-logo img').attr('src');
                 let teamRightName = $(eventInfo).find('.team-right .team-name').text();
-                let teamRightLogo = $(eventInfo).find('.team-right .team-logo img').attr('src')
+                let teamRightLogo = $(eventInfo).find('.team-right .team-logo img').attr('src');
+                let startDate = $(eventInfo).attr('data-start');
 
                 $('#betModal .discipline-icon').attr('src', disciplineIcon);
                 $('#betModal .league-name').text(leagueName);
@@ -1570,6 +1591,8 @@ $(document).ready(function () {
                 $('#betModal .team-left .team-logo img').attr('src', teamLeftLogo);
                 $('#betModal .team-right .team-name').text(teamRightName);
                 $('#betModal .team-right .team-logo img').attr('src', teamRightLogo);
+
+                $('#betModal .timer').attr('data-start', startDate);
 
                 if ($(eventInfo).find('.live-icon').length > 0) {
                     $('#betModal .live-icon').show();
@@ -1707,8 +1730,27 @@ $(document).ready(function () {
         });
 
         $('#betModal').on('click', '.flip-box-back .refund-bet', function () {
+            let currentBox = $(this).closest('.flip-box-inner');
             let eventResultId = $(this).closest('.flip-box-inner').find('.flip-box-front .bet-outcome').attr('data-id');
-            let upshotId = $(this).closest('.flip-box-back').find('.bet-confirm').attr('data-upshot');
+
+            postData(ACTION_URL, {
+                action: "refundBet",
+                "eventResultId": parseInt(eventResultId),
+            }).then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    return Promise.reject(response);
+                }
+            ).then(function (response) {
+                if (response.balance != null) {
+                    $('#balance').fadeOut(200).text(parseFloat(response.balance).toFixed(2)).fadeIn(200);
+                }
+                $(currentBox).css('transform', 'rotateY(0deg)');
+                setTimeout(function () {
+                    reloadBetModal(eventId);
+                }, 500);
+            }).catch((error) => console.log('Something went wrong.', error));
         });
 
         $('#betModal').on('click', '.flip-box-back .edit-bet', function () {
@@ -1746,6 +1788,7 @@ $(document).ready(function () {
 
         $('#betModal').off('show.bs.modal').on('show.bs.modal', function () {
             $('#betModal .team-logo img').removeClass('team-logo-flicker');
+            $('#betModal .timer').text('00:00:00');
         });
     }
 
@@ -1814,10 +1857,10 @@ $(document).ready(function () {
         });
 
         $('#cp_cardExpiry').off('input').on('input', function () {
-            let cardNumber = $('#cp_cardExpiry').val();
+            let cardExpiry = $('#cp_cardExpiry').val();
             let month, year;
-            if (cardNumber != null) {
-                let monthAndYear = cardNumber.split('/');
+            if (cardExpiry != null) {
+                let monthAndYear = cardExpiry.split('/');
                 if(monthAndYear.length == 2) {
                     month = monthAndYear[0].trim();
                     year = monthAndYear[1].trim();
@@ -1849,6 +1892,252 @@ $(document).ready(function () {
                 $('#depositContainer .payment-button-amount .sum').text($(this).val());
             } else {
                 $('#depositContainer .payment-button-amount .sum').text('~');
+            }
+        });
+
+        // validation
+        $('#depositContainer .payment-button').off('click').click(function () {
+            let isFormValid = null;
+            let paySum = $('.pay-input-group input').val();
+
+            if(paySum > 0) {
+                if($('#bankTab').hasClass('active')) {
+                    // stub
+                    isFormValid = true;
+                } else if ($('#cardTab').hasClass('active')) {
+                    let cardHolder = $('#cp_cardHolder').val();
+                    let cardNumber = $('#cp_cardNumber').val();
+                    let cvv = $('#cp_cvv').val();
+                    let cardExpiry = $('#cp_cardExpiry').val();
+                    let month, year;
+                    if (cardExpiry != null) {
+                        let monthAndYear = cardExpiry.split('/');
+                        if(monthAndYear.length == 2) {
+                            month = monthAndYear[0].trim();
+                            year = monthAndYear[1].trim();
+                        }
+                    }
+                    if(payform.validateCardNumber(cardNumber)
+                        && payform.validateCardExpiry(month, year)
+                        && payform.validateCardCVC(cvv, null)
+                        && cardHolder.length) {
+                        isFormValid = true;
+                    } else {
+                        isFormValid = false;
+                        $('#checkEnteredData').fadeIn(200).delay(2000).fadeOut(200);
+                    }
+                }
+
+                if(isFormValid) {
+                    postData(ACTION_URL, {
+                        action: "deposit",
+                        "amount": parseFloat(paySum)
+                    }).then((response) => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            return Promise.reject(response);
+                        }
+                    ).then(function (response) {
+                        if (response.status == "ok") {
+                            window.location.href = '/';
+                        } else if(response.status == "deny") {
+                            $('#paymentError').fadeIn(200).delay(2000).fadeOut(200);
+                        }
+                    }).catch((error) => console.log('Something went wrong.', error));
+                }
+            } else {
+                $('#incorrectPaySum').fadeIn(200).delay(2000).fadeOut(200);
+            }
+        });
+    }
+
+    if ($('#withdrawContainer').length > 0) {
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+
+        $('#withdrawContainer .tabs').off('click').click(function () {
+            $('#withdrawContainer  .tab-content').css('opacity', 0);
+            $('#withdrawContainer  .tab-content').fadeTo(500, 1);
+        });
+
+        var ccnum = document.getElementById('cp_cardNumber');
+        payform.cardNumberInput(ccnum);
+
+        $('#cp_cardNumber').off('input').on('input', function () {
+            let cardNumber = $('#cp_cardNumber').val();
+            if (payform.validateCardNumber(cardNumber)) {
+                $('#cp_cardNumber').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#cp_cardNumber').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#withdrawContainer .pay-input-group input').on('keypress keyup blur', function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+
+            if ($(this).val()) {
+                $('#withdrawContainer .payment-button-amount .sum').text($(this).val());
+            } else {
+                $('#withdrawContainer .payment-button-amount .sum').text('~');
+            }
+        });
+
+        // validation
+        $('#withdrawContainer .payment-button').off('click').click(function () {
+            let isFormValid = null;
+            let paySum = $('.pay-input-group input').val();
+
+            if(paySum > 0) {
+                if($('#bankTab').hasClass('active')) {
+                    // stub
+                    isFormValid = true;
+                } else if ($('#cardTab').hasClass('active')) {
+                    let cardHolder = $('#cp_cardHolder').val();
+                    let cardNumber = $('#cp_cardNumber').val();
+
+                    if(payform.validateCardNumber(cardNumber) && cardHolder.length) {
+                        isFormValid = true;
+                    } else {
+                        isFormValid = false;
+                        $('#checkEnteredData').fadeIn(200).delay(2000).fadeOut(200);
+                    }
+                }
+
+                if(isFormValid) {
+                    postData(ACTION_URL, {
+                        action: "withdraw",
+                        "amount": parseFloat(paySum)
+                    }).then((response) => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            return Promise.reject(response);
+                        }
+                    ).then(function (response) {
+                        if (response.status == "ok") {
+                            window.location.href = '/';
+                        } else if(response.status == "deny") {
+                            $('#paymentError').fadeIn(200).delay(2000).fadeOut(200);
+                        }
+                    }).catch((error) => console.log('Something went wrong.', error));
+                }
+            } else {
+                $('#incorrectPaySum').fadeIn(200).delay(2000).fadeOut(200);
+            }
+        });
+    }
+
+    if($('#settingsContainer').length > 0) {
+        $('#currentPassword').off('input').on('input', function () {
+            let currentPassword = $('#currentPassword').val();
+            if (currentPassword.length > 0) {
+                if (validatePasswordLength(currentPassword)) {
+                    $('#currentPassword').removeClass('is-invalid').addClass('is-valid');
+                } else {
+                    $('#currentPassword').removeClass('is-valid').addClass('is-invalid');
+                }
+            } else {
+                $('#currentPassword').removeClass('is-valid is-invalid');
+            }
+        });
+
+        $('#newPassword').off('input').on('input', function () {
+            let newPassword = $('#newPassword').val();
+            if (newPassword.length > 0) {
+                if (validatePasswordLength(newPassword)) {
+                    $('#newPassword').removeClass('is-invalid').addClass('is-valid');
+                } else {
+                    $('#newPassword').removeClass('is-valid').addClass('is-invalid');
+                }
+            } else {
+                $('#newPassword').removeClass('is-valid is-invalid');
+            }
+            $('#repeatedNewPassword').trigger('input');
+        });
+
+        $('#repeatedNewPassword').off('input').on('input', function () {
+            let newPassword = $('#newPassword').val();
+            let repeatedNewPassword = $('#repeatedNewPassword').val();
+            if (repeatedNewPassword.length > 0) {
+                if (validatePasswordMatching(newPassword, repeatedNewPassword)) {
+                    $('#repeatedNewPassword').removeClass('is-invalid').addClass('is-valid');
+                } else {
+                    $('#repeatedNewPassword').removeClass('is-valid').addClass('is-invalid');
+                }
+            } else {
+                $('#repeatedNewPassword').removeClass('is-valid is-invalid');
+            }
+        });
+
+        var previousAvatar = $('.profile-avatar img').attr('src');
+        var avatarBase64Input = null;
+        $('#avatarInput').off('change').on('change', function () {
+            let fileLength = $('#avatarInput').get(0).files.length;
+            if (fileLength > 0) {
+                let imageFile = $('#avatarInput').get(0).files[0];
+
+                let fileReader = new FileReader();
+                fileReader.onload = function () {
+                    $('.profile-avatar img').css('opacity', 0)
+                        .attr('src', fileReader.result)
+                        .fadeTo(500, 1);
+                    avatarBase64Input = fileReader.result
+                }
+                fileReader.readAsDataURL(imageFile);
+            } else {
+                avatarBase64Input = null;
+                $('.profile-avatar img').css('opacity', 0)
+                    .attr('src', previousAvatar)
+                    .fadeTo(500, 1);
+            }
+        });
+
+        $('#updateProfile').off('click').click(function (e) {
+            e.preventDefault();
+            let currentPassword = $('#currentPassword').val();
+            let newPassword = $('#newPassword').val();
+            let repeatedNewPassword = $('#repeatedNewPassword').val();
+
+            if ((validatePasswordLength(currentPassword)
+                && validatePasswordLength(newPassword)
+                && validatePasswordMatching(newPassword, repeatedNewPassword)) || avatarBase64Input != null) {
+
+                postData(ACTION_URL, {
+                    "action": "updateAccount",
+                    "currentPassword": currentPassword === "" ? null : currentPassword,
+                    "newPassword": newPassword === "" ? null : newPassword,
+                    "repeatedNewPassword": repeatedNewPassword === "" ? null : repeatedNewPassword,
+                    "newAvatar": avatarBase64Input
+                }).then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        return Promise.reject(response);
+                    }
+                ).then(function (data) {
+                    if (data.status === 'ok') {
+                        window.location.href = '/';
+                    } else if (data.status === 'deny' || data.status === "exception") {
+                        $('#accountUpdateError').show(200).delay(3000).hide(200);
+                    }
+                }).catch((error) => console.log('Something went wrong.', error));
+
+            } else {
+                if (!$('#currentPassword').val()) {
+                    $('#currentPassword').addClass('is-invalid');
+                }
+                if (!$('#newPassword').val()) {
+                    $('#newPassword').addClass('is-invalid');
+                }
+                if (!$('#repeatedNewPassword').val()) {
+                    $('#repeatedNewPassword').addClass('is-invalid');
+                }
             }
         });
     }

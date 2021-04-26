@@ -2,7 +2,7 @@ package by.epam.jwd.cyberbets.service.impl;
 
 import by.epam.jwd.cyberbets.dao.BetDao;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
-import by.epam.jwd.cyberbets.dao.impl.BetManager;
+import by.epam.jwd.cyberbets.dao.impl.transactional.BetManager;
 import by.epam.jwd.cyberbets.dao.impl.DaoProvider;
 import by.epam.jwd.cyberbets.domain.Bet;
 import by.epam.jwd.cyberbets.domain.dto.BetDto;

@@ -1,4 +1,4 @@
-package by.epam.jwd.cyberbets.dao.impl;
+package by.epam.jwd.cyberbets.dao.impl.transactional;
 
 import by.epam.jwd.cyberbets.dao.AccountDao;
 import by.epam.jwd.cyberbets.dao.BetDao;
@@ -6,6 +6,7 @@ import by.epam.jwd.cyberbets.dao.EventDao;
 import by.epam.jwd.cyberbets.dao.EventResultDao;
 import by.epam.jwd.cyberbets.dao.connection.ConnectionPool;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
+import by.epam.jwd.cyberbets.dao.impl.CompositeDao;
 import by.epam.jwd.cyberbets.domain.Bet;
 import by.epam.jwd.cyberbets.domain.Bet.Upshot;
 import by.epam.jwd.cyberbets.domain.EventResult;
@@ -24,10 +25,6 @@ import java.util.stream.Collectors;
 
 public class EventManager {
     private static final Logger logger = LoggerFactory.getLogger(EventManager.class);
-
-    EventManager() {
-
-    }
 
     public int createEvent(EventDto eventDto, List<EventResult> eventResults) throws DaoException {
         Connection transactionConnection = ConnectionPool.INSTANCE.getConnection();
@@ -66,6 +63,8 @@ public class EventManager {
             CompositeDao compositeDao = new CompositeDao.Builder(transactionConnection)
                     .withEventDao()
                     .withEventResultDao()
+                    .withAccountDao()
+                    .withBetDao()
                     .build();
             final EventDao eventDao = compositeDao.getEventDao();
             final EventResultDao eventResultDao = compositeDao.getEventResultDao();
@@ -157,8 +156,6 @@ public class EventManager {
                     .build();
             final EventDao eventDao = compositeDao.getEventDao();
             final EventResultDao eventResultDao = compositeDao.getEventResultDao();
-            final AccountDao accountDao = compositeDao.getAccountDao();
-            final BetDao betDao = compositeDao.getBetDao();
 
             List<EventResult> eventResults = eventResultDao.findAllByEventId(eventId);
             for (EventResult eventResult : eventResults) {

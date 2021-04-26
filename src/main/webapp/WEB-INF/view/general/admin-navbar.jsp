@@ -15,16 +15,16 @@
         <div class="collapse navbar-collapse text-uppercase" id="navbarSupportedContent">
 
             <ul class="navbar-nav ms-auto me-3">
-                <li class="nav-item dropdown timezone-select">
-                    <a class="nav-link dropdown-toggle" href="#" id="timezoneDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false"><i class="far fa-clock me-2"></i></a>
-                    <ul class="dropdown-menu fade-down" aria-labelledby="timezoneDropdown">
+<%--                <li class="nav-item dropdown timezone-select">--%>
+<%--                    <a class="nav-link dropdown-toggle" href="#" id="timezoneDropdown" role="button"--%>
+<%--                       data-bs-toggle="dropdown" aria-expanded="false"><i class="far fa-clock me-2"></i></a>--%>
+<%--                    <ul class="dropdown-menu fade-down" aria-labelledby="timezoneDropdown">--%>
 <%--                        <li><a class="dropdown-item active" href="#">UTC-0</a></li>--%>
 <%--                        <li><a class="dropdown-item" href="#">UTC-1</a></li>--%>
 <%--                        <li><a class="dropdown-item" href="#">UTC-2</a></li>--%>
 <%--                        <li><a class="dropdown-item" href="#">UTC-3</a></li>--%>
-                    </ul>
-                </li>
+<%--                    </ul>--%>
+<%--                </li>--%>
                 <li class="nav-item dropdown lang-select">
                     <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false"></a>
@@ -39,8 +39,10 @@
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="adminControlDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false"><img src="/resources/assets/interface/profile-avatar.png"
-                                                                            class="profile-avatar rounded-circle"></a>
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="${accountAvatarPath}"
+                             class="profile-avatar rounded-circle">
+                    </a>
                     <ul class="dropdown-menu fade-down" aria-labelledby="adminControlDropdown">
                         <li class="d-block d-md-none">
                             <a class="dropdown-item" href="/admin/">
@@ -99,8 +101,16 @@
                         <li class="d-block d-md-none">
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a id="logout" class="dropdown-item" href="#"><i
-                                class="fas fa-sign-out-alt me-2"></i><fmt:message key="navbar.account.log_out"/></a>
+                        <li class="d-block">
+                            <a class="dropdown-item" href="/">
+                                <i class="fas fa-home fa-fw me-2"></i>
+                                <span><fmt:message key="admin_panel.navigation.home"/></span>
+                            </a>
+                        </li>
+                        <li><a id="logout" class="dropdown-item" href="#">
+                            <i class="fas fa-sign-out-alt fa-fw me-2"></i>
+                            <span><fmt:message key="navbar.account.log_out"/></span>
+                        </a>
                         </li>
                     </ul>
                 </li>

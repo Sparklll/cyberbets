@@ -48,7 +48,7 @@ public final class RefundBet implements Action {
                     if (eventResultId != null) {
                         int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
                         BetDto betDto = new BetDto(accountId, eventResultId.intValue());
-                        betService.placeBet(betDto);
+                        betService.deleteBet(betDto);
 
                         Optional<BigDecimal> updatedBalanceOptional = accountService.getAccountBalance(accountId);
                         if(updatedBalanceOptional.isPresent()) {

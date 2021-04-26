@@ -36,10 +36,11 @@ public class AuthorizationFilter implements Filter {
                     if(optionalAccount.isPresent()) {
                         Account foundAccount = optionalAccount.get();
                         request.setAttribute(AUTH_ATTR, true);
+                        request.setAttribute(ROLE_ATTR, foundAccount.getRole());
                         request.setAttribute(ACCOUNT_EMAIL_ATTR, foundAccount.getEmail());
                         request.setAttribute(ACCOUNT_ID_ATTR, foundAccount.getId());
-                        request.setAttribute(ROLE_ATTR, foundAccount.getRole());
                         request.setAttribute(BALANCE_ATTR, foundAccount.getBalance());
+                        request.setAttribute(ACCOUNT_AVATAR_PATH_ATTR, foundAccount.getAvatarResource().getPath());
                     }
                 } catch (ServiceException e) {
                     logger.error(e.getMessage(), e);

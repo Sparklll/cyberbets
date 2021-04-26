@@ -1,10 +1,11 @@
-package by.epam.jwd.cyberbets.dao.impl;
+package by.epam.jwd.cyberbets.dao.impl.transactional;
 
 import by.epam.jwd.cyberbets.dao.AccountDao;
 import by.epam.jwd.cyberbets.dao.BetDao;
 import by.epam.jwd.cyberbets.dao.EventResultDao;
 import by.epam.jwd.cyberbets.dao.connection.ConnectionPool;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
+import by.epam.jwd.cyberbets.dao.impl.CompositeDao;
 import by.epam.jwd.cyberbets.domain.*;
 import by.epam.jwd.cyberbets.domain.dto.BetDto;
 import org.slf4j.Logger;
@@ -17,10 +18,6 @@ import java.util.Optional;
 
 public class BetManager {
     private static final Logger logger = LoggerFactory.getLogger(BetManager.class);
-
-    BetManager() {
-
-    }
 
     public void createBet(BetDto betDto) throws DaoException {
         Connection transactionConnection = ConnectionPool.INSTANCE.getConnection();
@@ -42,10 +39,12 @@ public class BetManager {
 
             Optional<Account> accountOptional = accountDao.findAccountById(accountId);
             Optional<EventResult> eventResultOptional = eventResultDao.findEventResultById(eventResultId);
-            boolean isThereAccountBetOnResult = betDao.findBetByAccountIdAndEventResultId(accountId, eventResultId).isEmpty();
+            boolean isBetAlreadyOnResult = betDao.findBetByAccountIdAndEventResultId(accountId, eventResultId).isPresent();
+
             if (accountOptional.isPresent()
                     && eventResultOptional.isPresent()
-                    && !isThereAccountBetOnResult) {
+                    && !isBetAlreadyOnResult) {
+
                 Account account = accountOptional.get();
                 EventResult eventResult = eventResultOptional.get();
                 BigDecimal accountBalance = account.getBalance();
@@ -126,7 +125,36 @@ public class BetManager {
         try (transactionConnection) {
             transactionConnection.setAutoCommit(false);
 
+            CompositeDao compositeDao = new CompositeDao.Builder(transactionConnection)
+                    .withEventResultDao()
+                    .withAccountDao()
+                    .withBetDao()
+                    .build();
+            final EventResultDao eventResultDao = compositeDao.getEventResultDao();
+            final AccountDao accountDao = compositeDao.getAccountDao();
+            final BetDao betDao = compositeDao.getBetDao();
 
+            int eventResultId = betDto.eventResultId();
+            int accountId = betDto.accountId();
+
+            Optional<Account> accountOptional = accountDao.findAccountById(accountId);
+            Optional<EventResult> eventResultOptional = eventResultDao.findEventResultById(eventResultId);
+            Optional<Bet> placedBetOptional = betDao.findBetByAccountIdAndEventResultId(accountId, eventResultId);
+            if (accountOptional.isPresent()
+                    && eventResultOptional.isPresent()
+                    && placedBetOptional.isPresent()) {
+
+                EventResult eventResult = eventResultOptional.get();
+                Bet placedBet = placedBetOptional.get();
+
+                BigDecimal placedBetAmount = placedBet.getAmount();
+                ResultStatus resultStatus = eventResult.getResultStatus();
+
+                if (resultStatus == ResultStatus.UNBLOCKED) {
+                    accountDao.addToAccountBalance(accountId, placedBetAmount);
+                    betDao.deleteBet(placedBet.getId());
+                }
+            }
             transactionConnection.commit();
         } catch (Exception e) {
             try {

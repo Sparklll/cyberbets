@@ -1,9 +1,7 @@
 package by.epam.jwd.cyberbets.dao.impl;
 
-import by.epam.jwd.cyberbets.dao.AccountDao;
-import by.epam.jwd.cyberbets.dao.BetDao;
-import by.epam.jwd.cyberbets.dao.EventDao;
-import by.epam.jwd.cyberbets.dao.EventResultDao;
+import by.epam.jwd.cyberbets.dao.*;
+import by.epam.jwd.cyberbets.domain.Transaction;
 
 import java.sql.Connection;
 
@@ -12,12 +10,14 @@ public class CompositeDao {
     private final EventResultDao eventResultDao;
     private final AccountDao accountDao;
     private final BetDao betDao;
+    private final TransactionDao transactionDao;
 
     public CompositeDao(Builder builder) {
         this.eventDao = builder.eventDao;
         this.eventResultDao = builder.eventResultDao;
         this.accountDao = builder.accountDao;
         this.betDao = builder.betDao;
+        this.transactionDao = builder.transactionDao;
     }
 
     public EventDao getEventDao() {
@@ -36,6 +36,9 @@ public class CompositeDao {
         return betDao;
     }
 
+    public TransactionDao getTransactionDao() {
+        return transactionDao;
+    }
 
     public static class Builder {
         private final Connection transactionConnection;
@@ -44,6 +47,7 @@ public class CompositeDao {
         private EventResultDao eventResultDao;
         private AccountDao accountDao;
         private BetDao betDao;
+        private TransactionDao transactionDao;
 
         public Builder(Connection transactionConnection) {
             this.transactionConnection = transactionConnection;
@@ -66,6 +70,11 @@ public class CompositeDao {
 
         public Builder withBetDao() {
             this.betDao = new BetDaoImpl(transactionConnection);
+            return this;
+        }
+
+        public Builder withTransactionDao() {
+            this.transactionDao = new TransactionDaoImpl(transactionConnection);
             return this;
         }
 

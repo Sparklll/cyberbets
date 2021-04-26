@@ -7,6 +7,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/dayjs.min.js"
         integrity="sha512-0fcCRl828lBlrSCa8QJY51mtNqTcHxabaXVLPgw/jPA5Nutujh6CbTdDgRzl9aSPYW/uuE7c4SffFUQFBAy6lg=="
         crossorigin="anonymous"></script>
-<script>dayjs().format()</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/plugin/duration.min.js"
+        integrity="sha512-XUsvKIkiWBzrbGDV47N4s4cPe090+ZJ2hNY1b4bIBVE1IIUaFBqmbVll+Q5c6G/vthDtJwS1IH4jJs83mk/1Xw=="
+        crossorigin="anonymous"></script>
+<script>
+    dayjs().format();
+    dayjs.extend(window.dayjs_plugin_duration);
+</script>
 <script src="/resources/js/notify.js"></script>
 <script src="/resources/js/script.js"></script>

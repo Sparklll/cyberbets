@@ -1,6 +1,7 @@
 package by.epam.jwd.cyberbets.domain;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Objects;
 
 public class Account extends Entity {
@@ -11,6 +12,7 @@ public class Account extends Entity {
     private BigDecimal balance;
     private Role role;
     private Resource avatarResource;
+    private Instant registrationDate;
 
     public Account(int id, String email, String passwordHash, BigDecimal balance, Role role, Resource avatarResource) {
         super(id);
@@ -19,6 +21,17 @@ public class Account extends Entity {
         this.balance = balance;
         this.role = role;
         this.avatarResource = avatarResource;
+    }
+
+    public Account(int id, String email, String passwordHash, BigDecimal balance, Role role, Resource avatarResource,
+                   Instant registrationDate) {
+        super(id);
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.balance = balance;
+        this.role = role;
+        this.avatarResource = avatarResource;
+        this.registrationDate = registrationDate;
     }
 
     public Account(String email, String passwordHash, BigDecimal balance, Role role, Resource avatarResource) {
@@ -69,6 +82,14 @@ public class Account extends Entity {
         this.avatarResource = avatarResource;
     }
 
+    public Instant getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Instant registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -78,12 +99,13 @@ public class Account extends Entity {
                 && Objects.equals(passwordHash, account.passwordHash)
                 && Objects.equals(balance, account.balance)
                 && role == account.role
-                && Objects.equals(avatarResource, account.avatarResource);
+                && Objects.equals(avatarResource, account.avatarResource)
+                && Objects.equals(registrationDate, account.registrationDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, passwordHash, balance, role, avatarResource);
+        return Objects.hash(email, passwordHash, balance, role, avatarResource, registrationDate);
     }
 
     @Override
@@ -94,6 +116,7 @@ public class Account extends Entity {
                 ", balance=" + balance +
                 ", role=" + role +
                 ", avatarResource=" + avatarResource +
+                ", registrationDate=" + registrationDate +
                 '}';
     }
 }

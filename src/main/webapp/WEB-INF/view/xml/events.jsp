@@ -23,7 +23,7 @@
 
             <div class="events">
                 <c:forEach items="${liveEvents}" var="eventData">
-                    <div class="event mb-3" data-id="${eventData.event.id}">
+                    <div class="event mb-3" data-id="${eventData.event.id}" data-start="${eventData.event.startDate.getEpochSecond()}">
                         <div class="event-header d-flex align-items-center">
                             <span class="date ms-1">
                                 <datetime:format value="${eventData.event.startDate}" pattern="EEE, dd MMM YYYY HH:mm" locale="${locale}"/>
@@ -119,7 +119,7 @@
 
             <div class="events">
                 <c:forEach items="${upcomingEvents}" var="eventData">
-                    <div class="event mb-3" data-id="${eventData.event.id}">
+                    <div class="event mb-3" data-id="${eventData.event.id}" data-start="${eventData.event.startDate.getEpochSecond()}">
                         <div class="event-header d-flex align-items-center">
                             <span class="date ms-1">
                                 <datetime:format value="${eventData.event.startDate}" pattern="EEE, dd MMM YYYY HH:mm" locale="${locale}"/>
@@ -212,7 +212,7 @@
     <div class="tab-pane fade" id="pastEvents" role="tabpanel" aria-labelledby="pastEventsTab">
         <div class="events">
             <c:forEach items="${pastEvents}" var="eventData">
-                <div class="event mb-3" data-id="${eventData.event.id}">
+                <div class="event mb-3" data-id="${eventData.event.id}" data-start="${eventData.event.startDate.getEpochSecond()}">
                     <div class="event-header d-flex align-items-center">
                             <span class="date ms-1">
                                 <datetime:format value="${eventData.event.startDate}" pattern="EEE, dd MMM YYYY HH:mm" locale="${locale}"/>
@@ -231,7 +231,14 @@
                                                               minFractionDigits="2" groupingUsed="false"/>
                                 </span>
                             </div>
+                            <c:choose>
+                                <c:when test="${eventData.totalCoefficients.result eq 'FIRST_UPSHOT'}">
+                            <div class="team-logo left-winner ms-sm-2">
+                                </c:when>
+                                <c:otherwise>
                             <div class="team-logo ms-sm-2">
+                                </c:otherwise>
+                            </c:choose>
                                 <img src="${eventData.event.firstTeam.logoResource.path}">
                             </div>
                         </div>
@@ -292,7 +299,14 @@
                                                               minFractionDigits="2" groupingUsed="false"/>
                                 </span>
                             </div>
-                            <div class="team-logo order-last order-sm-first me-sm-2">
+                            <c:choose>
+                                <c:when test="${eventData.totalCoefficients.result eq 'SECOND_UPSHOT'}">
+                                    <div class="team-logo right-winner order-last order-sm-first me-sm-2">
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="team-logo order-last order-sm-first me-sm-2">
+                                </c:otherwise>
+                            </c:choose>
                                 <img src="${eventData.event.secondTeam.logoResource.path}">
                             </div>
                         </div>

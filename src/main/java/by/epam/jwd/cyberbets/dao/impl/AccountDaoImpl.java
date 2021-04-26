@@ -7,6 +7,7 @@ import by.epam.jwd.cyberbets.domain.Account;
 import by.epam.jwd.cyberbets.domain.Resource;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.dto.CreateAccountDto;
+import org.apache.logging.log4j.core.time.Instant;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -23,13 +24,13 @@ public class AccountDaoImpl implements AccountDao {
     private final boolean isTransactional;
 
     private static final String FIND_ACCOUNT_BY_ID = """
-            select a.id, a.email, a.password_hash, a.role_id, a.balance, a.avatar_resource_id, r.path
+            select a.id, a.email, a.password_hash, a.role_id, a.balance, a.avatar_resource_id, r.path, a.registration_date
             from account a
             inner join resource r on r.id = a.avatar_resource_id
             where a.id = ?
             """;
     private static final String FIND_ACCOUNT_BY_EMAIL = """
-            select a.id, a.email, a.password_hash, a.role_id, a.balance, a.avatar_resource_id, r.path
+            select a.id, a.email, a.password_hash, a.role_id, a.balance, a.avatar_resource_id, r.path, a.registration_date
             from account a
             inner join resource r on r.id = a.avatar_resource_id
             where a.email = ?
@@ -216,7 +217,7 @@ public class AccountDaoImpl implements AccountDao {
                 rs.getString(PASSWORD_HASH),
                 rs.getBigDecimal(BALANCE),
                 Role.getRoleById(rs.getInt(ROLE_ID)),
-                new Resource(rs.getInt(AVATAR_RESOURCE_ID), rs.getString(PATH))
-        );
+                new Resource(rs.getInt(AVATAR_RESOURCE_ID), rs.getString(PATH)),
+                rs.getTimestamp(REGISTRATION_DATE).toInstant());
     }
 }

@@ -11,6 +11,7 @@ public enum ValidatorProvider {
     private final EventValidator eventValidator = new EventValidator();
     private final EventResultValidator eventResultValidator = new EventResultValidator();
     public final BetValidator betValidator = new BetValidator();
+    public final UpdatePasswordValidator updatePasswordValidator = new UpdatePasswordValidator();
 
     public RegisterValidator getRegisterValidator() {
         return registerValidator;
@@ -34,5 +35,9 @@ public enum ValidatorProvider {
 
     public BetValidator getBetValidator() {
         return betValidator;
+    }
+
+    public UpdatePasswordValidator getUpdatePasswordValidator() {
+        return updatePasswordValidator;
     }
 }

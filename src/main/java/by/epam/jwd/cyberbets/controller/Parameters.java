@@ -18,6 +18,10 @@ public final class Parameters {
 
 
     // REQUEST PARAMS
+    public static final String NEW_AVATAR_PARAM = "newAvatar";
+    public static final String CURRENT_PASSWORD_PARAM = "currentPassword";
+    public static final String NEW_PASSWORD_PARAM = "newPassword";
+    public static final String REPEATED_NEW_PASSWORD_PARAM = "repeatedNewPassword";
     public static final String UPSHOT_ID_PARAM = "upshotId";
     public static final String EVENT_RESULT_ID_PARAM = "eventResultId";
     public static final String AMOUNT_PARAM = "amount";
@@ -60,8 +64,10 @@ public final class Parameters {
     public static final String LIVE_EVENTS_ATTR = "liveEvents";
     public static final String UPCOMING_EVENTS_ATTR = "upcomingEvents";
     public static final String PAST_EVENTS_ATTR = "pastEvents";
+    public static final String ACCOUNT_ATTR = "account";
     public static final String ACCOUNT_ID_ATTR = "accountId";
     public static final String ACCOUNT_EMAIL_ATTR = "accountEmail";
+    public static final String ACCOUNT_AVATAR_PATH_ATTR = "accountAvatarPath";
     public static final String AUTH_ATTR = "auth";
     public static final String ROLE_ATTR = "role";
     public static final String BALANCE_ATTR = "balance";
@@ -77,6 +83,9 @@ public final class Parameters {
     public static final String VALORANT_DISC = "valorant";
 
     // ACTION NAMES
+    public static final String UPDATE_ACCOUNT_ACTION = "updateAccount";
+    public static final String DEPOSIT_ACTION = "deposit";
+    public static final String WITHDRAW_ACTION = "withdraw";
     public static final String PLACE_BET_ACTION = "placeBet";
     public static final String UPDATE_BET_ACTION = "updateBet";
     public static final String REFUND_BET_ACTION = "refundBet";

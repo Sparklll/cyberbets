@@ -10,9 +10,9 @@ import by.epam.jwd.cyberbets.domain.Resource;
 import by.epam.jwd.cyberbets.domain.dto.LeagueDto;
 import by.epam.jwd.cyberbets.service.LeagueService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
-import by.epam.jwd.cyberbets.utils.ResourceManager;
-import by.epam.jwd.cyberbets.utils.ResourceManager.ResourceType;
-import by.epam.jwd.cyberbets.utils.exception.UtilException;
+import by.epam.jwd.cyberbets.util.ResourceManager;
+import by.epam.jwd.cyberbets.util.ResourceManager.ResourceType;
+import by.epam.jwd.cyberbets.util.exception.UtilException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
