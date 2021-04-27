@@ -3,7 +3,7 @@ package by.epam.jwd.cyberbets.service.impl;
 import by.epam.jwd.cyberbets.dao.EventDao;
 import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.dao.impl.DaoProvider;
-import by.epam.jwd.cyberbets.dao.impl.EventManager;
+import by.epam.jwd.cyberbets.dao.impl.transactional.EventManager;
 import by.epam.jwd.cyberbets.domain.Event;
 import by.epam.jwd.cyberbets.domain.EventResult;
 import by.epam.jwd.cyberbets.domain.EventStatus;

@@ -1,4 +1,4 @@
-package by.epam.jwd.cyberbets.utils.exception;
+package by.epam.jwd.cyberbets.util.exception;
 
 public class UtilException extends Exception {
     public UtilException() {

@@ -1,6 +1,6 @@
 $(document).ready(function () {
     const lang = ['de', 'en', 'fr', 'ru'];
-    const discipline = ['csgo', 'dota2','lol','valorant'];
+    const discipline = ['csgo', 'dota2', 'lol', 'valorant'];
     const DEFAULT_LANG = 'en';
     const ACTION_URL = "/action/"
 
@@ -9,6 +9,25 @@ $(document).ready(function () {
     var isTeamEditing = false;
     var isLeagueEditing = false;
     var editingItem = null;
+
+    var timer = setInterval(function() {
+        let now = dayjs().unix();
+
+        $('span.timer').each(function () {
+            let startDate = $(this).attr('data-start');
+            let diff = Math.abs(now - startDate);
+
+            let duration = dayjs.duration(diff, 's');
+            let days = duration.days();
+
+            if(days != 0) {
+                // TODO : add i18n day abbreviation
+                $(this).text(days + "d " + duration.format('HH:mm:ss'));
+            } else {
+                $(this).text(duration.format('HH:mm:ss'));
+            }
+        })
+    }, 1000);
 
     function setCookie(name, value, days) {
         if (days) {
@@ -42,16 +61,16 @@ $(document).ready(function () {
         let disciplineCookie = getCookie('discipline_filter');
         $('.discipline').removeClass('active');
 
-        if(disciplineCookie !== undefined)  {
+        if (disciplineCookie !== undefined) {
             let selectedDisciplines = disciplineCookie.split('|');
             selectedDisciplines.forEach(d => {
-                if(discipline.includes(d)) {
+                if (discipline.includes(d)) {
                     $(`.discipline[data-discipline='${d}']`).addClass('active');
                 }
             });
         } else {
             setCookie("discipline_filter", discipline.join('|'), 365)
-            $('.discipline').each(function() {
+            $('.discipline').each(function () {
                 $(this).addClass('active');
             });
         }
@@ -60,25 +79,25 @@ $(document).ready(function () {
     function loadEventSection() {
         $.post(ACTION_URL, JSON.stringify({action: "loadEventSection"}))
             .done(function (responseXml) {
-            $('#liveEvents .events').html($(responseXml).find('#liveEvents .events').html()).fadeIn(200);
-            $('#upcomingEvents .events').html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(200);
-            $('#pastEvents .events').html($(responseXml).find('#pastEvents .events').html()).fadeIn(200);
-        });
+                $('#liveEvents .events').html($(responseXml).find('#liveEvents .events').html()).fadeIn(200);
+                $('#upcomingEvents .events').html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(200);
+                $('#pastEvents .events').html($(responseXml).find('#pastEvents .events').html()).fadeIn(200);
+            });
     }
 
     function reloadEventSection() {
         $.post(ACTION_URL, JSON.stringify({action: "loadEventSection"}))
             .done(function (responseXml) {
-            $('#liveEvents .events').fadeOut(300, function () {
-                $(this).html($(responseXml).find('#liveEvents .events').html());
-            }).fadeIn(300);
-            $('#upcomingEvents .events').fadeOut(300, function () {
-                $(this).html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(300);
+                $('#liveEvents .events').fadeOut(300, function () {
+                    $(this).html($(responseXml).find('#liveEvents .events').html());
+                }).fadeIn(300);
+                $('#upcomingEvents .events').fadeOut(300, function () {
+                    $(this).html($(responseXml).find('#upcomingEvents .events').html()).fadeIn(300);
+                });
+                $('#pastEvents .events').fadeOut(300, function () {
+                    $(this).html($(responseXml).find('#pastEvents .events').html()).fadeIn(300);
+                });
             });
-            $('#pastEvents .events').fadeOut(300, function () {
-                $(this).html($(responseXml).find('#pastEvents .events').html()).fadeIn(300);
-            });
-        });
     }
 
     async function postData(url = '', data = {}) {
@@ -128,41 +147,41 @@ $(document).ready(function () {
         {Name: "VALORANT", Id: 4, Logo: "/resources/assets/disciplines/valorant_icon.jpg"}
     ];
 
+    var eventFormat = [
+        {Name: "", Id: 0},
+        {Name: "BO1", Id: 1},
+        {Name: "BO2", Id: 2},
+        {Name: "BO3", Id: 3},
+        {Name: "BO5", Id: 4}
+    ];
+
+    var eventStatus = [
+        {Name: "", Id: 0},
+        {Name: "Pending", Id: 1, Logo: "/resources/assets/status/pending.png"},
+        {Name: "Live", Id: 2, Logo: "/resources/assets/status/live.png"},
+        {Name: "Finished", Id: 3, Logo: "/resources/assets/status/finished.png"},
+        {Name: "Canceled", Id: 4, Logo: "/resources/assets/status/canceled.png"},
+    ];
+
+    var eventOutcome = [
+        // TODO: i18n
+
+        // general
+        {Name: "Total winner", Discipline: "all", Format: "all", Id: 1},
+        {Name: "[Map #1] Victory on the map", Discipline: "all", Format: 1, Id: 2},
+        {Name: "[Map #2] Victory on the map", Discipline: "all", Format: 2, Id: 3},
+        {Name: "[Map #3] Victory on the map", Discipline: "all", Format: 3, Id: 4},
+        {Name: "[Map #4] Victory on the map", Discipline: "all", Format: 4, Id: 5},
+        {Name: "[Map #5] Victory on the map", Discipline: "all", Format: 4, Id: 6},
+
+        //Specific\\
+        // csgo
+        // dota2
+        // lol
+        // valorant
+    ];
+
     if ($('#eventsGrid').length > 0) {
-        var eventFormat = [
-            {Name: "", Id: 0},
-            {Name: "BO1", Id: 1},
-            {Name: "BO2", Id: 2},
-            {Name: "BO3", Id: 3},
-            {Name: "BO5", Id: 4}
-        ];
-
-        var eventStatus = [
-            {Name: "", Id: 0},
-            {Name: "Pending", Id: 1, Logo: "/resources/assets/status/pending.png"},
-            {Name: "Live", Id: 2, Logo: "/resources/assets/status/live.png"},
-            {Name: "Finished", Id: 3, Logo: "/resources/assets/status/finished.png"},
-            {Name: "Canceled", Id: 4, Logo: "/resources/assets/status/canceled.png"},
-        ];
-
-        var eventOutcome = [
-            // TODO: i18n
-
-            // general
-            {Name: "Total winner", Discipline: "all", Format: "all", Id: 1},
-            {Name: "[Map #1] Victory on the map", Discipline: "all", Format: 1, Id: 2},
-            {Name: "[Map #2] Victory on the map", Discipline: "all", Format: 2, Id: 3},
-            {Name: "[Map #3] Victory on the map", Discipline: "all", Format: 3, Id: 4},
-            {Name: "[Map #4] Victory on the map", Discipline: "all", Format: 4, Id: 5},
-            {Name: "[Map #5] Victory on the map", Discipline: "all", Format: 4, Id: 6},
-
-            //Specific\\
-            // csgo
-            // dota2
-            // lol
-            // valorant
-        ];
-
         $('#eventsGrid').jsGrid({
             fields: [
                 {name: "id", title: "Id", type: "number", width: 50, align: "center"},
@@ -446,8 +465,8 @@ $(document).ready(function () {
                 $('.selectpicker').selectpicker('refresh');
 
                 postData(ACTION_URL, {
-                    "action" : "loadEventResults",
-                    "id" : event.id
+                    "action": "loadEventResults",
+                    "id": event.id
                 }).then((response) => {
                         if (response.ok) {
                             return response.json();
@@ -456,36 +475,36 @@ $(document).ready(function () {
                     }
                 ).then(function (response) {
                     response.data.forEach(eventResult => {
-                        let eventOutcomeTemplate = $($("#eventOutcomeTemplate").html());
-                        let eventOutcomeType = eventResult.eventOutcomeType;
+                            let eventOutcomeTemplate = $($("#eventOutcomeTemplate").html());
+                            let eventOutcomeType = eventResult.eventOutcomeType;
 
-                        eventOutcomeTemplate.attr('data-type', eventOutcomeType);
-                        eventOutcomeTemplate.find('label[for=firstUpshot]').text(event.firstTeam.teamName);
-                        eventOutcomeTemplate.find('label[for=secondUpshot]').text(event.secondTeam.teamName);
+                            eventOutcomeTemplate.attr('data-type', eventOutcomeType);
+                            eventOutcomeTemplate.find('label[for=firstUpshot]').text(event.firstTeam.teamName);
+                            eventOutcomeTemplate.find('label[for=secondUpshot]').text(event.secondTeam.teamName);
 
-                        eventOutcomeTemplate.find(':input:radio').each(function (index, item) {
-                            $(item).attr({
-                                'id': $(this).attr('id') + eventOutcomeType,
-                                'name': eventOutcomeType,
+                            eventOutcomeTemplate.find(':input:radio').each(function (index, item) {
+                                $(item).attr({
+                                    'id': $(this).attr('id') + eventOutcomeType,
+                                    'name': eventOutcomeType,
+                                });
                             });
-                        });
-                        eventOutcomeTemplate
-                            .find(`:input:radio[value=${eventResult.resultStatus}]`)
-                            .prop('checked', true);
-                        eventOutcomeTemplate.find('label').each(function (index, item) {
-                            $(item).attr('for', $(this).attr('for') + eventOutcomeType);
-                        });
-                        eventOutcomeTemplate.find('.outcome-type-name').text(
-                            eventOutcome.find(eo => eo.Id == eventOutcomeType).Name
-                        );
+                            eventOutcomeTemplate
+                                .find(`:input:radio[value=${eventResult.resultStatus}]`)
+                                .prop('checked', true);
+                            eventOutcomeTemplate.find('label').each(function (index, item) {
+                                $(item).attr('for', $(this).attr('for') + eventOutcomeType);
+                            });
+                            eventOutcomeTemplate.find('.outcome-type-name').text(
+                                eventOutcome.find(eo => eo.Id == eventOutcomeType).Name
+                            );
 
-                        $('#eventModal #eventOutcomeCollapse .accordion-body').append(eventOutcomeTemplate);
+                            $('#eventModal #eventOutcomeCollapse .accordion-body').append(eventOutcomeTemplate);
                         }
                     );
 
                     postData(ACTION_URL, {
-                        "action" : "loadEventCoefficients",
-                        "id" : event.id
+                        "action": "loadEventCoefficients",
+                        "id": event.id
                     }).then((response) => {
                             if (response.ok) {
                                 return response.json();
@@ -493,10 +512,10 @@ $(document).ready(function () {
                             return Promise.reject(response);
                         }
                     ).then(function (response) {
-                        if(response.data != null) {
+                        if (response.data != null) {
                             let eventCoefficients = response.data;
                             eventCoefficients.forEach(c => {
-                                if(c.eventOutcomeTypeId == 1) { // Total Winner, filling preview
+                                if (c.eventOutcomeTypeId == 1) { // Total Winner, filling preview
                                     $('#eventModal .team-left .odds').empty().append(`<i>x</i>${c.firstUpshotOdds}`);
                                     $('#eventModal .team-right .odds').empty().append(`<i>x</i>${c.secondUpshotOdds}`);
                                     $('#eventModal .center .left-percent .odds-percentage').text(`${c.firstUpshotPercent}%`);
@@ -505,7 +524,7 @@ $(document).ready(function () {
 
                                 let foundedEventOutcome = $('#eventOutcomeCollapse .accordion-body')
                                     .find(`.event-outcome[data-type=${c.eventOutcomeTypeId}]`);
-                                if(foundedEventOutcome != null) {
+                                if (foundedEventOutcome != null) {
                                     $(foundedEventOutcome).find('.left-outcome-odds').empty().append(`<i>x</i>${c.firstUpshotOdds}`);
                                     $(foundedEventOutcome).find('.right-outcome-odds').empty().append(`<i>x</i>${c.secondUpshotOdds}`);
                                 }
@@ -761,7 +780,7 @@ $(document).ready(function () {
                     let eventOutcomeType = $(this).data('type').toString();
                     let resultStatus = $(this).find('input:radio:checked').val();
                     let result = new Result(eventOutcomeType, resultStatus);
-                    if(isEventEditing) {
+                    if (isEventEditing) {
                         result.eventId = editingItem.id;
                     }
                     eventResults.push(result);
@@ -1383,6 +1402,7 @@ $(document).ready(function () {
             } else {
                 $('#registerPassword').removeClass('is-valid is-invalid');
             }
+            $('#registerRepeatedPassword').trigger('input');
         });
 
         $('#registerModal #registerRepeatedPassword').off('input').on('input', function () {
@@ -1526,20 +1546,43 @@ $(document).ready(function () {
         });
     }
 
+    function reloadBetModal(eventId) {
+        $('#betModal .bet-preview .team img').removeClass('team-logo-flicker');
+
+        postData(ACTION_URL, {
+            action: "loadBetModal",
+            id: eventId
+        }).then((response) => {
+                if (response.ok) {
+                    return response.text();
+                }
+                return Promise.reject(response);
+            }
+        ).then(function (response) {
+            $('#betModal .outcomes')
+                .html($(response).find('.outcomes').html());
+
+            $('#betModal .spinner-border').hide();
+        }).catch((error) => console.log('Something went wrong.', error));
+    }
+
     if ($('#eventsContainer').length > 0) {
         loadEventSection();
 
-        $('#eventsContainer').on('click', ' .team', function (event) {
-            if(auth) {
+        var eventId = null;
+        $('#eventsContainer').on('click', '#currentEvents .team', function (event) {
+            if (auth) {
                 let eventInfo = $(this).closest('.event');
 
+                eventId = eventInfo.data('id');
                 let leagueName = $(eventInfo).find('.league-name').text();
                 let disciplineIcon = $(eventInfo).find('.discipline-icon').attr('src');
                 let eventFormat = $(eventInfo).find('.event-format span').text();
                 let teamLeftName = $(eventInfo).find('.team-left .team-name').text();
                 let teamLeftLogo = $(eventInfo).find('.team-left .team-logo img').attr('src');
                 let teamRightName = $(eventInfo).find('.team-right .team-name').text();
-                let teamRightLogo = $(eventInfo).find('.team-right .team-logo img').attr('src')
+                let teamRightLogo = $(eventInfo).find('.team-right .team-logo img').attr('src');
+                let startDate = $(eventInfo).attr('data-start');
 
                 $('#betModal .discipline-icon').attr('src', disciplineIcon);
                 $('#betModal .league-name').text(leagueName);
@@ -1549,12 +1592,203 @@ $(document).ready(function () {
                 $('#betModal .team-right .team-name').text(teamRightName);
                 $('#betModal .team-right .team-logo img').attr('src', teamRightLogo);
 
+                $('#betModal .timer').attr('data-start', startDate);
 
+                if ($(eventInfo).find('.live-icon').length > 0) {
+                    $('#betModal .live-icon').show();
+                } else {
+                    $('#betModal .live-icon').hide();
+                }
 
+                $('#betModal .spinner-border').show();
                 $('#betModal').modal('show');
+
+                postData(ACTION_URL, {
+                    action: "loadBetModal",
+                    id: eventId
+                }).then((response) => {
+                        if (response.ok) {
+                            return response.text();
+                        }
+                        return Promise.reject(response);
+                    }
+                ).then(function (response) {
+                    $('#betModal .outcomes')
+                        .html($(response).find('.outcomes').html());
+
+                    $('#betModal .spinner-border').hide();
+                }).catch((error) => console.log('Something went wrong.', error));
             } else {
                 $('#loginModal').modal('show');
             }
+        });
+
+        $('#betModal').on('click', '.flip-box-front .place-bet', function () {
+            $(this).closest('.flip-box-inner')
+                .find('.flip-box-back .bet-confirm')
+                .attr('data-upshot', $(this).data('upshot'));
+
+            if ($(this).data('upshot') == 1) {
+                $('#betModal .team-left .team-logo img').addClass('team-logo-flicker');
+            } else if ($(this).data('upshot') == 2) {
+                $('#betModal .team-right .team-logo img').addClass('team-logo-flicker');
+            }
+
+            let buttonUpshot = $(this).data('upshot');
+            let coefficient = 0;
+
+            if (buttonUpshot == 1) {
+                coefficient = $(this).siblings('.left-odds').find('span').text();
+            } else if (buttonUpshot == 2) {
+                coefficient = $(this).siblings('.right-odds').find('span').text();
+            }
+            $(this).closest('.flip-box-inner').find('.flip-box-back .odds').find('span').text(coefficient);
+            if ($(this).find('.sum').length) {
+                $(this).closest('.flip-box-inner').find('.flip-box-back .bet-amount').val($(this).find('.sum').text().trim());
+                $(this).closest('.flip-box-inner').find('.flip-box-back .bet-amount').trigger('keypress');
+            }
+
+            $(this).closest('.flip-box-inner').css('transform', 'rotateY(180deg)');
+        });
+
+        $('#betModal').on('keypress keyup blur', '.flip-box-back .bet-amount', function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+
+            if ($(this).val()) {
+                let coefficient = $(this).closest('.flip-box-back').find('.odds span').text().trim();
+                let potentialPrize = Number(($(this).val() * coefficient).toFixed(2));
+                $(this).closest('.flip-box-back')
+                    .find('.potential-prize')
+                    .html(`<i class="fas fa-dollar-sign me-1">
+                           </i><span class="fw-bold">${potentialPrize}</span>`);
+            } else {
+                $(this).closest('.flip-box-back').find('.potential-prize').text('~');
+            }
+        });
+
+        $('#betModal').on('click', '.flip-box-back .cancel', function () {
+            let currentUpshot = $(this).closest('.flip-box-back')
+                .find('.bet-confirm')
+                .attr('data-upshot');
+
+            $(this).closest('.flip-box-inner').css('transform', 'rotateY(0deg)');
+            $(this).closest('.flip-box-back').find('.bet-confirm').attr('data-upshot', '');
+
+            let currentUpshotOpenedBoxCounter = 0;
+            $('#betModal .flip-box-back .bet-confirm').each(function () {
+                if ($(this).attr('data-upshot').length
+                    && $(this).attr('data-upshot') == currentUpshot) {
+                    currentUpshotOpenedBoxCounter++;
+                }
+            });
+            if (currentUpshotOpenedBoxCounter == 0) {
+                if (currentUpshot == 1) {
+                    $('#betModal .bet-preview .team-left img').removeClass('team-logo-flicker');
+                } else if (currentUpshot == 2) {
+                    $('#betModal .bet-preview .team-right img').removeClass('team-logo-flicker');
+                }
+            }
+
+            $(this).closest('.flip-box-back').find('.bet-amount').val('');
+            $(this).closest('.flip-box-back').find('.potential-prize span').text('~');
+        });
+
+        $('#betModal').on('click', '.flip-box-back .place-bet', function () {
+            let currentBox = $(this).closest('.flip-box-inner');
+
+            let eventResultId = $(this).closest('.flip-box-inner').find('.flip-box-front .bet-outcome').attr('data-id');
+            let upshotId = $(this).closest('.flip-box-back').find('.bet-confirm').attr('data-upshot');
+            let amount = $(this).closest('.flip-box-back').find('.bet-amount').val();
+
+            if (amount > 0) {
+                postData(ACTION_URL, {
+                    action: "placeBet",
+                    "eventResultId": parseInt(eventResultId),
+                    "upshotId": parseInt(upshotId),
+                    "amount": parseInt(amount)
+                }).then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        return Promise.reject(response);
+                    }
+                ).then(function (response) {
+                    if (response.balance != null) {
+                        $('#balance').fadeOut(200).text(parseFloat(response.balance).toFixed(2)).fadeIn(200);
+                    }
+                    $(currentBox).css('transform', 'rotateY(0deg)');
+                    setTimeout(function () {
+                        reloadBetModal(eventId);
+                    }, 500);
+                }).catch((error) => console.log('Something went wrong.', error));
+            } else {
+                $('#betAmountFieldBlank').show(200).delay(2000).hide(200);
+            }
+        });
+
+        $('#betModal').on('click', '.flip-box-back .refund-bet', function () {
+            let currentBox = $(this).closest('.flip-box-inner');
+            let eventResultId = $(this).closest('.flip-box-inner').find('.flip-box-front .bet-outcome').attr('data-id');
+
+            postData(ACTION_URL, {
+                action: "refundBet",
+                "eventResultId": parseInt(eventResultId),
+            }).then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    return Promise.reject(response);
+                }
+            ).then(function (response) {
+                if (response.balance != null) {
+                    $('#balance').fadeOut(200).text(parseFloat(response.balance).toFixed(2)).fadeIn(200);
+                }
+                $(currentBox).css('transform', 'rotateY(0deg)');
+                setTimeout(function () {
+                    reloadBetModal(eventId);
+                }, 500);
+            }).catch((error) => console.log('Something went wrong.', error));
+        });
+
+        $('#betModal').on('click', '.flip-box-back .edit-bet', function () {
+            let currentBox = $(this).closest('.flip-box-inner');
+
+            let eventResultId = $(this).closest('.flip-box-inner').find('.flip-box-front .bet-outcome').attr('data-id');
+            let upshotId = $(this).closest('.flip-box-back').find('.bet-confirm').attr('data-upshot');
+            let amount = $(this).closest('.flip-box-back').find('.bet-amount').val();
+
+            if (amount > 0) {
+                postData(ACTION_URL, {
+                    action: "updateBet",
+                    "eventResultId": parseInt(eventResultId),
+                    "upshotId": parseInt(upshotId),
+                    "amount": parseInt(amount)
+                }).then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        return Promise.reject(response);
+                    }
+                ).then(function (response) {
+                    if (response.balance != null) {
+                        $('#balance').fadeOut(200).text(parseFloat(response.balance).toFixed(2)).fadeIn(200);
+                    }
+                    $(currentBox).css('transform', 'rotateY(0deg)');
+                    setTimeout(function () {
+                        reloadBetModal(eventId);
+                    }, 500);
+                }).catch((error) => console.log('Something went wrong.', error));
+            } else {
+                $('#betAmountFieldBlank').show(200).delay(2000).hide(200);
+            }
+        });
+
+        $('#betModal').off('show.bs.modal').on('show.bs.modal', function () {
+            $('#betModal .team-logo img').removeClass('team-logo-flicker');
+            $('#betModal .timer').text('00:00:00');
         });
     }
 
@@ -1563,31 +1797,348 @@ $(document).ready(function () {
 
         $('.discipline').off('click').click(function () {
             let disciplineCookie = getCookie('discipline_filter');
-            let selectedDisciplines = disciplineCookie.split('|').filter(e => e);
+            let selectedDisciplines = disciplineCookie != null
+                ? disciplineCookie.split('|').filter(e => e)
+                : [];
 
             if ($(this).hasClass('active')) {
                 let filterToRemove = $(this).attr('data-discipline');
                 let filterToRemoveIndex = selectedDisciplines.indexOf(filterToRemove);
 
-                if(filterToRemoveIndex != null) {
+                if (filterToRemoveIndex != null) {
                     selectedDisciplines.splice(filterToRemoveIndex, 1);
                 }
 
                 if (selectedDisciplines.length == 0) {
                     let filterToAdd = $('.discipline').first().attr('data-discipline');
-                    if(!selectedDisciplines.includes(filterToAdd)) {
+                    if (!selectedDisciplines.includes(filterToAdd)) {
                         selectedDisciplines = selectedDisciplines.concat(filterToAdd);
                     }
                 }
             } else {
                 let filterToAdd = $(this).attr('data-discipline');
-                if(!selectedDisciplines.includes(filterToAdd)) {
+                if (!selectedDisciplines.includes(filterToAdd)) {
                     selectedDisciplines = selectedDisciplines.concat(filterToAdd);
                 }
             }
             setCookie("discipline_filter", selectedDisciplines.join('|'), 365);
             reloadDisciplineFilter();
             reloadEventSection();
+        });
+    }
+
+    if ($('#depositContainer').length > 0) {
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+
+        $('#depositContainer .tabs').off('click').click(function () {
+            $('#depositContainer  .tab-content').css('opacity', 0);
+            $('#depositContainer  .tab-content').fadeTo(500, 1);
+        });
+
+
+        var ccnum = document.getElementById('cp_cardNumber'),
+            expiry = document.getElementById('cp_cardExpiry'),
+            cvc = document.getElementById('cp_cvv');
+
+        payform.cardNumberInput(ccnum);
+        payform.expiryInput(expiry);
+        payform.cvcInput(cvc);
+
+        $('#cp_cardNumber').off('input').on('input', function () {
+            let cardNumber = $('#cp_cardNumber').val();
+            if (payform.validateCardNumber(cardNumber)) {
+                $('#cp_cardNumber').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#cp_cardNumber').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#cp_cardExpiry').off('input').on('input', function () {
+            let cardExpiry = $('#cp_cardExpiry').val();
+            let month, year;
+            if (cardExpiry != null) {
+                let monthAndYear = cardExpiry.split('/');
+                if(monthAndYear.length == 2) {
+                    month = monthAndYear[0].trim();
+                    year = monthAndYear[1].trim();
+                }
+            }
+            if (payform.validateCardExpiry(month, year)) {
+                $('#cp_cardExpiry').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#cp_cardExpiry').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#cp_cvv').off('input').on('input', function () {
+            let cvv = $('#cp_cvv').val();
+            if (payform.validateCardCVC(cvv, null)) {
+                $('#cp_cvv').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#cp_cvv').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#depositContainer .pay-input-group input').on('keypress keyup blur', function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+
+            if ($(this).val()) {
+                $('#depositContainer .payment-button-amount .sum').text($(this).val());
+            } else {
+                $('#depositContainer .payment-button-amount .sum').text('~');
+            }
+        });
+
+        // validation
+        $('#depositContainer .payment-button').off('click').click(function () {
+            let isFormValid = null;
+            let paySum = $('.pay-input-group input').val();
+
+            if(paySum > 0) {
+                if($('#bankTab').hasClass('active')) {
+                    // stub
+                    isFormValid = true;
+                } else if ($('#cardTab').hasClass('active')) {
+                    let cardHolder = $('#cp_cardHolder').val();
+                    let cardNumber = $('#cp_cardNumber').val();
+                    let cvv = $('#cp_cvv').val();
+                    let cardExpiry = $('#cp_cardExpiry').val();
+                    let month, year;
+                    if (cardExpiry != null) {
+                        let monthAndYear = cardExpiry.split('/');
+                        if(monthAndYear.length == 2) {
+                            month = monthAndYear[0].trim();
+                            year = monthAndYear[1].trim();
+                        }
+                    }
+                    if(payform.validateCardNumber(cardNumber)
+                        && payform.validateCardExpiry(month, year)
+                        && payform.validateCardCVC(cvv, null)
+                        && cardHolder.length) {
+                        isFormValid = true;
+                    } else {
+                        isFormValid = false;
+                        $('#checkEnteredData').fadeIn(200).delay(2000).fadeOut(200);
+                    }
+                }
+
+                if(isFormValid) {
+                    postData(ACTION_URL, {
+                        action: "deposit",
+                        "amount": parseFloat(paySum)
+                    }).then((response) => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            return Promise.reject(response);
+                        }
+                    ).then(function (response) {
+                        if (response.status == "ok") {
+                            window.location.href = '/';
+                        } else if(response.status == "deny") {
+                            $('#paymentError').fadeIn(200).delay(2000).fadeOut(200);
+                        }
+                    }).catch((error) => console.log('Something went wrong.', error));
+                }
+            } else {
+                $('#incorrectPaySum').fadeIn(200).delay(2000).fadeOut(200);
+            }
+        });
+    }
+
+    if ($('#withdrawContainer').length > 0) {
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+
+        $('#withdrawContainer .tabs').off('click').click(function () {
+            $('#withdrawContainer  .tab-content').css('opacity', 0);
+            $('#withdrawContainer  .tab-content').fadeTo(500, 1);
+        });
+
+        var ccnum = document.getElementById('cp_cardNumber');
+        payform.cardNumberInput(ccnum);
+
+        $('#cp_cardNumber').off('input').on('input', function () {
+            let cardNumber = $('#cp_cardNumber').val();
+            if (payform.validateCardNumber(cardNumber)) {
+                $('#cp_cardNumber').removeClass('is-invalid').addClass('is-valid');
+            } else {
+                $('#cp_cardNumber').removeClass('is-valid').addClass('is-invalid');
+            }
+        });
+
+        $('#withdrawContainer .pay-input-group input').on('keypress keyup blur', function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+
+            if ($(this).val()) {
+                $('#withdrawContainer .payment-button-amount .sum').text($(this).val());
+            } else {
+                $('#withdrawContainer .payment-button-amount .sum').text('~');
+            }
+        });
+
+        // validation
+        $('#withdrawContainer .payment-button').off('click').click(function () {
+            let isFormValid = null;
+            let paySum = $('.pay-input-group input').val();
+
+            if(paySum > 0) {
+                if($('#bankTab').hasClass('active')) {
+                    // stub
+                    isFormValid = true;
+                } else if ($('#cardTab').hasClass('active')) {
+                    let cardHolder = $('#cp_cardHolder').val();
+                    let cardNumber = $('#cp_cardNumber').val();
+
+                    if(payform.validateCardNumber(cardNumber) && cardHolder.length) {
+                        isFormValid = true;
+                    } else {
+                        isFormValid = false;
+                        $('#checkEnteredData').fadeIn(200).delay(2000).fadeOut(200);
+                    }
+                }
+
+                if(isFormValid) {
+                    postData(ACTION_URL, {
+                        action: "withdraw",
+                        "amount": parseFloat(paySum)
+                    }).then((response) => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            return Promise.reject(response);
+                        }
+                    ).then(function (response) {
+                        if (response.status == "ok") {
+                            window.location.href = '/';
+                        } else if(response.status == "deny") {
+                            $('#paymentError').fadeIn(200).delay(2000).fadeOut(200);
+                        }
+                    }).catch((error) => console.log('Something went wrong.', error));
+                }
+            } else {
+                $('#incorrectPaySum').fadeIn(200).delay(2000).fadeOut(200);
+            }
+        });
+    }
+
+    if($('#settingsContainer').length > 0) {
+        $('#currentPassword').off('input').on('input', function () {
+            let currentPassword = $('#currentPassword').val();
+            if (currentPassword.length > 0) {
+                if (validatePasswordLength(currentPassword)) {
+                    $('#currentPassword').removeClass('is-invalid').addClass('is-valid');
+                } else {
+                    $('#currentPassword').removeClass('is-valid').addClass('is-invalid');
+                }
+            } else {
+                $('#currentPassword').removeClass('is-valid is-invalid');
+            }
+        });
+
+        $('#newPassword').off('input').on('input', function () {
+            let newPassword = $('#newPassword').val();
+            if (newPassword.length > 0) {
+                if (validatePasswordLength(newPassword)) {
+                    $('#newPassword').removeClass('is-invalid').addClass('is-valid');
+                } else {
+                    $('#newPassword').removeClass('is-valid').addClass('is-invalid');
+                }
+            } else {
+                $('#newPassword').removeClass('is-valid is-invalid');
+            }
+            $('#repeatedNewPassword').trigger('input');
+        });
+
+        $('#repeatedNewPassword').off('input').on('input', function () {
+            let newPassword = $('#newPassword').val();
+            let repeatedNewPassword = $('#repeatedNewPassword').val();
+            if (repeatedNewPassword.length > 0) {
+                if (validatePasswordMatching(newPassword, repeatedNewPassword)) {
+                    $('#repeatedNewPassword').removeClass('is-invalid').addClass('is-valid');
+                } else {
+                    $('#repeatedNewPassword').removeClass('is-valid').addClass('is-invalid');
+                }
+            } else {
+                $('#repeatedNewPassword').removeClass('is-valid is-invalid');
+            }
+        });
+
+        var previousAvatar = $('.profile-avatar img').attr('src');
+        var avatarBase64Input = null;
+        $('#avatarInput').off('change').on('change', function () {
+            let fileLength = $('#avatarInput').get(0).files.length;
+            if (fileLength > 0) {
+                let imageFile = $('#avatarInput').get(0).files[0];
+
+                let fileReader = new FileReader();
+                fileReader.onload = function () {
+                    $('.profile-avatar img').css('opacity', 0)
+                        .attr('src', fileReader.result)
+                        .fadeTo(500, 1);
+                    avatarBase64Input = fileReader.result
+                }
+                fileReader.readAsDataURL(imageFile);
+            } else {
+                avatarBase64Input = null;
+                $('.profile-avatar img').css('opacity', 0)
+                    .attr('src', previousAvatar)
+                    .fadeTo(500, 1);
+            }
+        });
+
+        $('#updateProfile').off('click').click(function (e) {
+            e.preventDefault();
+            let currentPassword = $('#currentPassword').val();
+            let newPassword = $('#newPassword').val();
+            let repeatedNewPassword = $('#repeatedNewPassword').val();
+
+            if ((validatePasswordLength(currentPassword)
+                && validatePasswordLength(newPassword)
+                && validatePasswordMatching(newPassword, repeatedNewPassword)) || avatarBase64Input != null) {
+
+                postData(ACTION_URL, {
+                    "action": "updateAccount",
+                    "currentPassword": currentPassword === "" ? null : currentPassword,
+                    "newPassword": newPassword === "" ? null : newPassword,
+                    "repeatedNewPassword": repeatedNewPassword === "" ? null : repeatedNewPassword,
+                    "newAvatar": avatarBase64Input
+                }).then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        return Promise.reject(response);
+                    }
+                ).then(function (data) {
+                    if (data.status === 'ok') {
+                        window.location.href = '/';
+                    } else if (data.status === 'deny' || data.status === "exception") {
+                        $('#accountUpdateError').show(200).delay(3000).hide(200);
+                    }
+                }).catch((error) => console.log('Something went wrong.', error));
+
+            } else {
+                if (!$('#currentPassword').val()) {
+                    $('#currentPassword').addClass('is-invalid');
+                }
+                if (!$('#newPassword').val()) {
+                    $('#newPassword').addClass('is-invalid');
+                }
+                if (!$('#repeatedNewPassword').val()) {
+                    $('#repeatedNewPassword').addClass('is-invalid');
+                }
+            }
         });
     }
 

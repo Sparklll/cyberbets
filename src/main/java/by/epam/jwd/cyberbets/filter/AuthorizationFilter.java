@@ -26,7 +26,7 @@ public class AuthorizationFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpSession httpSession = request.getSession(false);
-        request.setAttribute(ROLE_ATTR, GUEST_ROLE);
+        request.setAttribute(ROLE_ATTR, Role.GUEST);
 
         if(httpSession != null) {
             String accountEmail = (String) httpSession.getAttribute(ACCOUNT_EMAIL_ATTR);
@@ -35,12 +35,12 @@ public class AuthorizationFilter implements Filter {
                     Optional<Account> optionalAccount = accountService.findAccountByEmail(accountEmail);
                     if(optionalAccount.isPresent()) {
                         Account foundAccount = optionalAccount.get();
-                        BigDecimal balance = foundAccount.getBalance();
-                        Role role = foundAccount.getRole();
                         request.setAttribute(AUTH_ATTR, true);
+                        request.setAttribute(ROLE_ATTR, foundAccount.getRole());
+                        request.setAttribute(ACCOUNT_EMAIL_ATTR, foundAccount.getEmail());
                         request.setAttribute(ACCOUNT_ID_ATTR, foundAccount.getId());
-                        request.setAttribute(ROLE_ATTR, role.getName());
-                        request.setAttribute(BALANCE_ATTR, balance);
+                        request.setAttribute(BALANCE_ATTR, foundAccount.getBalance());
+                        request.setAttribute(ACCOUNT_AVATAR_PATH_ATTR, foundAccount.getAvatarResource().getPath());
                     }
                 } catch (ServiceException e) {
                     logger.error(e.getMessage(), e);

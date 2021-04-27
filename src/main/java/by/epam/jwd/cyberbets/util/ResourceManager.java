@@ -1,9 +1,7 @@
-package by.epam.jwd.cyberbets.utils;
+package by.epam.jwd.cyberbets.util;
 
 import by.epam.jwd.cyberbets.domain.Resource;
-import by.epam.jwd.cyberbets.utils.exception.UtilException;
-
-import java.io.File;
+import by.epam.jwd.cyberbets.util.exception.UtilException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;

@@ -1,6 +1,9 @@
 package by.epam.jwd.cyberbets.dao.impl;
 
 import by.epam.jwd.cyberbets.dao.*;
+import by.epam.jwd.cyberbets.dao.impl.transactional.AccountManager;
+import by.epam.jwd.cyberbets.dao.impl.transactional.BetManager;
+import by.epam.jwd.cyberbets.dao.impl.transactional.EventManager;
 
 public enum DaoProvider {
     INSTANCE;
@@ -16,6 +19,8 @@ public enum DaoProvider {
 
     // Transactional modules
     private final EventManager eventManager = new EventManager();
+    private final BetManager betManager = new BetManager();
+    private final AccountManager accountManager = new AccountManager();
 
 
     public AccountDao getAccountDao() {
@@ -52,5 +57,13 @@ public enum DaoProvider {
 
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    public BetManager getBetManager() {
+        return betManager;
+    }
+
+    public AccountManager getAccountManager() {
+        return accountManager;
     }
 }

@@ -20,7 +20,7 @@ public class AdminResourceAccessFilter implements Filter{
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        Role requestRole = Role.getRoleByName((String) request.getAttribute(ROLE_ATTR));
+        Role requestRole = (Role) request.getAttribute(ROLE_ATTR);
 
         if(requestRole.getId() < Role.ADMIN.getId()) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(ERROR_PAGE);

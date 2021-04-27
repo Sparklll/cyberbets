@@ -10,10 +10,17 @@ import by.epam.jwd.cyberbets.controller.command.impl.admin.team.InsertTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.team.LoadTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.team.UpdateTeam;
 import by.epam.jwd.cyberbets.controller.command.impl.general.*;
+import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadBetModal;
 import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadCoefficients;
 import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadEventCoefficients;
 import by.epam.jwd.cyberbets.controller.command.impl.general.event.LoadEventSection;
 import by.epam.jwd.cyberbets.controller.command.impl.page.ErrorPage;
+import by.epam.jwd.cyberbets.controller.command.impl.user.bet.PlaceBet;
+import by.epam.jwd.cyberbets.controller.command.impl.user.bet.RefundBet;
+import by.epam.jwd.cyberbets.controller.command.impl.user.bet.UpdateBet;
+import by.epam.jwd.cyberbets.controller.command.impl.user.settings.UpdateAccount;
+import by.epam.jwd.cyberbets.controller.command.impl.user.transaction.Deposit;
+import by.epam.jwd.cyberbets.controller.command.impl.user.transaction.Withdraw;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +34,13 @@ public enum ActionProvider {
     private final Map<String, Action> actions = new HashMap<>();
 
     private ActionProvider() {
+        actions.put(UPDATE_ACCOUNT_ACTION, new UpdateAccount());
+        actions.put(WITHDRAW_ACTION, new Withdraw());
+        actions.put(DEPOSIT_ACTION, new Deposit());
+        actions.put(PLACE_BET_ACTION, new PlaceBet());
+        actions.put(UPDATE_BET_ACTION, new UpdateBet());
+        actions.put(REFUND_BET_ACTION, new RefundBet());
+        actions.put(LOAD_BET_MODAL_ACTION, new LoadBetModal());
         actions.put(LOAD_COEFFICIENTS_ACTION, new LoadCoefficients());
         actions.put(LOAD_EVENT_COEFFICIENTS_ACTION, new LoadEventCoefficients());
         actions.put(LOAD_EVENT_RESULTS_ACTION, new LoadEventResults());

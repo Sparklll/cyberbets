@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
-public class LoadEventCoefficients implements Action {
+public final class LoadEventCoefficients implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);

@@ -18,6 +18,13 @@ public final class Parameters {
 
 
     // REQUEST PARAMS
+    public static final String NEW_AVATAR_PARAM = "newAvatar";
+    public static final String CURRENT_PASSWORD_PARAM = "currentPassword";
+    public static final String NEW_PASSWORD_PARAM = "newPassword";
+    public static final String REPEATED_NEW_PASSWORD_PARAM = "repeatedNewPassword";
+    public static final String UPSHOT_ID_PARAM = "upshotId";
+    public static final String EVENT_RESULT_ID_PARAM = "eventResultId";
+    public static final String AMOUNT_PARAM = "amount";
     public static final String EVENT_RESULTS_PARAM = "eventResults";
     public static final String LEAGUE_ID_PARAM = "leagueId";
     public static final String FIRST_TEAM_ID_PARAM = "firstTeamId";
@@ -40,19 +47,27 @@ public final class Parameters {
     public static final String REPEATED_PASSWORD_PARAM = "repeatedPassword";
 
     // RESPONSE PARAMS / PROPERTIES
+    public static final String BALANCE_PARAM = "balance";
     public static final String STATUS_PARAM = "status";
     public static final String STATUS_OK = "ok";
     public static final String STATUS_DENY = "deny";
     public static final String STATUS_EXCEPTION = "exception";
     public static final String DATA_PROPERTY = "data";
 
+
     // REQUEST & SESSION ATTRIBUTES
+    public static final String ACCOUNT_TRANSACTIONS_ATTR = "accountTransactions";
+    public static final String EVENT_COEFFICIENTS_ATTR = "eventCoefficients";
+    public static final String EVENT_RESULTS_ATTR = "eventResults";
+    public static final String EVENT_BETS_ATTR = "eventBets";
     public static final String LOCALE_ATTR = "locale";
     public static final String LIVE_EVENTS_ATTR = "liveEvents";
     public static final String UPCOMING_EVENTS_ATTR = "upcomingEvents";
     public static final String PAST_EVENTS_ATTR = "pastEvents";
+    public static final String ACCOUNT_ATTR = "account";
     public static final String ACCOUNT_ID_ATTR = "accountId";
     public static final String ACCOUNT_EMAIL_ATTR = "accountEmail";
+    public static final String ACCOUNT_AVATAR_PATH_ATTR = "accountAvatarPath";
     public static final String AUTH_ATTR = "auth";
     public static final String ROLE_ATTR = "role";
     public static final String BALANCE_ATTR = "balance";
@@ -68,6 +83,13 @@ public final class Parameters {
     public static final String VALORANT_DISC = "valorant";
 
     // ACTION NAMES
+    public static final String UPDATE_ACCOUNT_ACTION = "updateAccount";
+    public static final String DEPOSIT_ACTION = "deposit";
+    public static final String WITHDRAW_ACTION = "withdraw";
+    public static final String PLACE_BET_ACTION = "placeBet";
+    public static final String UPDATE_BET_ACTION = "updateBet";
+    public static final String REFUND_BET_ACTION = "refundBet";
+    public static final String LOAD_BET_MODAL_ACTION = "loadBetModal";
     public static final String LOAD_EVENT_COEFFICIENTS_ACTION = "loadEventCoefficients";
     public static final String LOAD_COEFFICIENTS_ACTION = "loadCoefficients";
     public static final String LOAD_EVENT_RESULTS_ACTION = "loadEventResults";
@@ -91,6 +113,7 @@ public final class Parameters {
     public static final String FORWARD_ERROR_PAGE_ACTION = "forwardErrorPage";
 
     // PAGES / SECTIONS
+    public static final String BET_MODAL = "/WEB-INF/view/xml/bet-modal.jsp";
     public static final String EVENT_SECTION = "/WEB-INF/view/xml/events.jsp";
     public static final String ERROR_PAGE = "/WEB-INF/view/error404.jsp";
     public static final String HOME_PAGE = "/WEB-INF/view/home.jsp";
@@ -118,7 +141,6 @@ public final class Parameters {
 
     // ROUTES
     public static final String ACTION_LISTENER_ROUTE = "/action/";
-    public static final String EVENT_SECTION_ROUTE = "/loadEventSection/";
     public static final String HOME_ROUTE = "/";
     public static final String NEWS_ROUTE = "/news/";
     public static final String TEAM_RATING_ROUTE = "/rating/";

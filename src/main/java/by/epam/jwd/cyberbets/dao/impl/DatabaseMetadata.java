@@ -40,7 +40,7 @@ public final class DatabaseMetadata {
     static final String SECOND_TEAM_LOGO_RESOURCE_ID = "second_team_logo_resource_id";
     static final String SECOND_TEAM_LOGO_RESOURCE_PATH = "second_team_logo_resource_path";
 
-
+    static final String REGISTRATION_DATE = "registration_date";
     static final String PATH = "path";
     static final String NAME = "name";
     static final String RATING = "rating";

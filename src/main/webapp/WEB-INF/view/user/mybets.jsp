@@ -24,7 +24,7 @@
 </jsp:include>
 
 
-<div class="support container wrapper my-5">
+<div class="container wrapper my-5">
     <div class="row">
         <div class="header col-12 d-flex justify-content-start align-items-center">
             <i class="fas fa-angle-double-right"></i>

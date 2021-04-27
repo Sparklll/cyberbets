@@ -66,7 +66,7 @@
                 <div class="nav nav-tabs" id="eventsTab" role="tablist">
                     <button class="nav-link col-6 col-lg-3 active" id="currentEventsTab" data-bs-toggle="tab"
                             data-bs-target="#currentEvents" type="button" role="tab" aria-selected="true">
-                        <i class="fas fa-calendar-alt me-2"></i>
+                        <i class="fas fa-calendar-alt fa-lg me-2"></i>
                         <span class="text-uppercase">
                             <fmt:message key="events.container.tab.current_events"/>
                         </span>
@@ -74,7 +74,7 @@
                     <button class="nav-link col-6 col-lg-3" id="pastEventsTab" data-bs-toggle="tab"
                             data-bs-target="#pastEvents"
                             type="button" role="tab" aria-selected="false">
-                        <i class="fas fa-calendar-check me-2"></i>
+                        <i class="fas fa-calendar-check fa-lg me-2"></i>
                         <span class="text-uppercase">
                             <fmt:message key="events.container.tab.past_events"/>
                         </span>
@@ -132,16 +132,17 @@
                     </a>
                 </div>
                 <div class="card-body p-3">
-                    <div class="bet-preview row mx-3">
+                    <div class="bet-preview row mx-3 mb-3">
                         <div class="team team-left d-flex flex-column justify-content-center align-items-center col-4">
                             <span class="team-name fw-bold text-truncate mb-2"></span>
                             <div class="team-logo">
                                 <img src="">
                             </div>
                         </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center col-4">
+                        <div class="center d-flex flex-column justify-content-center align-items-center col-4">
                             <h5 class="text-center text-uppercase fst-italic fw-bold">Vs</h5>
-                            <span class="date text-center"></span>
+                            <img class="live-icon live-blink mb-1" src="/resources/assets/interface/live.png" style="display: none">
+                            <span class="timer fw-bold text-center" data-start="">00:00:00</span>
                         </div>
                         <div class="team team-right d-flex flex-column justify-content-center align-items-center col-4">
                             <span class="team-name fw-bold text-truncate mb-2"></span>
@@ -151,10 +152,23 @@
                         </div>
                     </div>
 
-                    <div class="row justify-content-center mt-3 mx-3">
+                    <div class="status-messages d-flex flex-column justify-content-center">
+                        <span id="betPlaced " class="text-success text-center mb-2" style="display: none">Bet was successfully placed<i class="fas fa-check ms-1"></i></span>
+                        <span id="betRefunded" class="text-success text-center mb-2" style="display: none">Bet was successfully refunded<i class="fas fa-check ms-1"></i></span>
+                        <span id="betEdited" class="text-success text-center mb-2" style="display: none">Bet was successfully edited<i class="fas fa-check ms-1"></i></span>
+
+                        <span id="betAmountFieldBlank" class="text-danger text-center mb-2" style="display: none">Don't leave the amount field blank<i class="fas fa-exclamation-triangle ms-1"></i></span>
+                        <span id="betOperationError" class="text-danger text-center mb-2" style="display: none">Operation execution error<i class="fas fa-exclamation-triangle ms-1"></i></span>
+                    </div>
+
+                    <div class="row justify-content-center">
                         <div class="spinner-border" style="width: 4rem; height: 4rem;" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
+                    </div>
+
+                    <div class="outcomes">
+
                     </div>
                 </div>
             </div>

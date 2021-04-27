@@ -4,8 +4,6 @@ import by.epam.jwd.cyberbets.controller.command.Action;
 import by.epam.jwd.cyberbets.domain.Event;
 import by.epam.jwd.cyberbets.domain.EventOutcomeType;
 import by.epam.jwd.cyberbets.domain.dto.CoefficientsDto;
-import by.epam.jwd.cyberbets.service.EventService;
-import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
 import by.epam.jwd.cyberbets.service.job.LoadCoefficientsJob;
 import by.epam.jwd.cyberbets.service.job.LoadEventJob;
 import jakarta.servlet.RequestDispatcher;
@@ -26,7 +24,6 @@ public final class LoadEventSection implements Action {
 
     private static final String VERTICAL_BAR_PATTERN = "\\|";
 
-    private final EventService eventService = ServiceProvider.INSTANCE.getEventService();
     private final HashMap<Integer, String> disciplineMap = new HashMap<>();
 
     {
@@ -42,13 +39,15 @@ public final class LoadEventSection implements Action {
         Cookie langCookie = null;
         Cookie disciplineFilterCookie = null;
 
-        for (Cookie cookie : cookies) {
-            String cookieName = cookie.getName();
-            if (cookieName.equals(LANG_COOKIE)) {
-                langCookie = cookie;
-            }
-            if (cookieName.equals(DISCIPLINE_FILTER_COOKIE)) {
-                disciplineFilterCookie = cookie;
+        if(cookies != null) {
+            for (Cookie cookie : cookies) {
+                String cookieName = cookie.getName();
+                if (cookieName.equals(LANG_COOKIE)) {
+                    langCookie = cookie;
+                }
+                if (cookieName.equals(DISCIPLINE_FILTER_COOKIE)) {
+                    disciplineFilterCookie = cookie;
+                }
             }
         }
         Locale locale = langCookie != null

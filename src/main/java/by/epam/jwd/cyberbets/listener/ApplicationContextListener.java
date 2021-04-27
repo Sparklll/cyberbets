@@ -4,7 +4,7 @@ import by.epam.jwd.cyberbets.dao.connection.ConnectionPool;
 import by.epam.jwd.cyberbets.service.job.LoadCoefficientsJob;
 import by.epam.jwd.cyberbets.service.job.LoadEventJob;
 import by.epam.jwd.cyberbets.service.job.UpdateEventStatusJob;
-import by.epam.jwd.cyberbets.utils.ResourceManager;
+import by.epam.jwd.cyberbets.util.ResourceManager;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
