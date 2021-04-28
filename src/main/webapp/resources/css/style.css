@@ -801,7 +801,7 @@ footer .copyright {
 
 .input-field .input-wrapper {
     width: 100%;
-    margin-right: 10px;
+    margin: 0 5px 0 5px;
 }
 
 .custom-controls input::placeholder {

@@ -37,13 +37,11 @@
                             <div class="bet-module bet-outcome d-flex justify-content-between align-items-center"
                                  data-id="${eventResult.id}" data-outcome="${eventResult.eventOutcomeType.id}">
                                 <div class="d-flex flex-column align-items-sm-center flex-sm-row mb-2 mb-sm-0">
-                                    <span class="odds left-odds text-center d-flex m-2 order-sm-last">
-                                        <i>x</i>
-                                        <span>
-                                            <fmt:formatNumber value="${outcomeCoefficients.firstUpshotOdds}"
-                                                              minIntegerDigits="1"
-                                                              minFractionDigits="2" groupingUsed="false"/>
-                                        </span>
+                                    <span class="odds left-odds text-center m-2 order-sm-last">
+                                        <i>x</i><fmt:formatNumber value="${outcomeCoefficients.firstUpshotOdds}"
+                                                                  minIntegerDigits="1"
+                                                                  minFractionDigits="2"
+                                                                  groupingUsed="false"/>
                                     </span>
                                     <c:choose>
                                         <c:when test="${empty outcomeBet}">
@@ -97,13 +95,11 @@
                                     </c:choose>
                                 </span>
                                 <div class="d-flex flex-column align-items-sm-center flex-sm-row mb-2 mb-sm-0">
-                                    <span class="odds right-odds text-center d-flex m-2">
-                                        <i>x</i>
-                                        <span>
-                                            <fmt:formatNumber value="${outcomeCoefficients.secondUpshotOdds}"
-                                                              minIntegerDigits="1"
-                                                              minFractionDigits="2" groupingUsed="false"/>
-                                        </span>
+                                    <span class="odds right-odds text-center m-2">
+                                        <i>x</i><fmt:formatNumber value="${outcomeCoefficients.secondUpshotOdds}"
+                                                                  minIntegerDigits="1"
+                                                                  minFractionDigits="2"
+                                                                  groupingUsed="false"/>
                                     </span>
                                     <c:choose>
                                         <c:when test="${empty outcomeBet}">
@@ -194,13 +190,11 @@
                 <div class="bet-module bet-outcome d-flex justify-content-between align-items-center"
                      data-id="${eventResult.id}" data-outcome="${eventResult.eventOutcomeType.id}">
                     <div class="d-flex flex-column align-items-sm-center flex-sm-row mb-2 mb-sm-0">
-                        <span class="odds left-odds text-center d-flex m-2 order-sm-last">
-                            <i>x</i>
-                            <span>
-                                <fmt:formatNumber value="${outcomeCoefficients.firstUpshotOdds}"
-                                                  minIntegerDigits="1"
-                                                  minFractionDigits="2" groupingUsed="false"/>
-                            </span>
+                        <span class="odds left-odds text-center m-2 order-sm-last">
+                            <i>x</i><fmt:formatNumber value="${outcomeCoefficients.firstUpshotOdds}"
+                                                      minIntegerDigits="1"
+                                                      minFractionDigits="2"
+                                                      groupingUsed="false"/>
                         </span>
                         <button type="button"
                                 class="btn btn-sm btn-secondary text-nowrap ms-1" disabled>
@@ -238,13 +232,11 @@
                         </c:choose>
                     </span>
                     <div class="d-flex flex-column align-items-sm-center flex-sm-row mb-2 mb-sm-0">
-                        <span class="odds right-odds text-center d-flex m-2">
-                            <i>x</i>
-                            <span>
-                               <fmt:formatNumber value="${outcomeCoefficients.secondUpshotOdds}"
-                                                 minIntegerDigits="1"
-                                                 minFractionDigits="2" groupingUsed="false"/>
-                            </span>
+                        <span class="odds right-odds text-center m-2">
+                            <i>x</i><fmt:formatNumber value="${outcomeCoefficients.secondUpshotOdds}"
+                                                      minIntegerDigits="1"
+                                                      minFractionDigits="2"
+                                                      groupingUsed="false"/>
                         </span>
                         <button type="button"
                                 class="btn btn-sm btn-secondary text-nowrap me-1" disabled>
