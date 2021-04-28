@@ -1,2 +1,2 @@
-# <center>Cyberbets Database Diagram</center>
-# <center><img src="db/db.png"></center> 
+# <p align="center">Cyberbets Database Diagram</p>
+# <p align="center"><img src="db/db.png"></p> 
