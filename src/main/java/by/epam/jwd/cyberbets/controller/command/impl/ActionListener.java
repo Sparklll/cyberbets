@@ -29,7 +29,6 @@ public class ActionListener implements Action {
         String actionName = null;
         if(jsonMap != null) {
             actionName = (String) jsonMap.get(ACTION);
-            logger.info(actionName);
             request.setAttribute(JSON_MAP, jsonMap);
         }
         Action action = ActionProvider.INSTANCE.getAction(actionName);

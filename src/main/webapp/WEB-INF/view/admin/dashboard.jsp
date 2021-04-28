@@ -127,10 +127,10 @@
 
             <div class="container">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-12 col-md-6">
                         <canvas id="depositsChart"></canvas>
                     </div>
-                    <div class="col-6">
+                    <div class="col-12 col-md-6">
                         <canvas id="registrationsChart"></canvas>
                     </div>
                 </div>

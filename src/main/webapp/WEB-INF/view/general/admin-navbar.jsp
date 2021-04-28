@@ -44,61 +44,61 @@
                              class="profile-avatar rounded-circle">
                     </a>
                     <ul class="dropdown-menu fade-down" aria-labelledby="adminControlDropdown">
-                        <li class="d-block d-md-none">
+                        <li class="d-block d-lg-none">
                             <a class="dropdown-item" href="/admin/">
                                 <i class="fas fa-chart-pie fa-fw me-2"></i>
                                 <span><fmt:message key="admin_panel.navigation.dashboard"/></span>
                             </a>
                         </li>
-                        <li class="d-block d-md-none">
+                        <li class="d-block d-lg-none">
                             <a class="dropdown-item" href="/admin/events/">
                                 <i class="fas fa-calendar-week fa-fw me-2"></i>
                                 <span><fmt:message key="admin_panel.navigation.events"/></span>
                             </a>
                         </li>
-                        <li class="d-block d-md-none">
+                        <li class="d-block d-lg-none">
                             <a class="dropdown-item" href="/admin/teams/">
                                 <i class="fas fa-users fa-fw me-2"></i>
                                 <span><fmt:message key="admin_panel.navigation.teams"/></span>
                             </a>
                         </li>
-                        <li class="d-block d-md-none">
+                        <li class="d-block d-lg-none">
                             <a class="dropdown-item" href="/admin/leagues/">
                                 <i class="fas fa-trophy fa-fw me-2"></i>
                                 <span><fmt:message key="admin_panel.navigation.leagues"/></span>
                             </a>
                         </li>
-                        <li class="d-block d-md-none">
+                        <li class="d-block d-lg-none">
                             <a class="dropdown-item" href="/admin/transactions/">
                                 <i class="fas fa-money-check-alt fa-fw me-2"></i>
                                 <span><fmt:message key="admin_panel.navigation.transactions"/></span>
                             </a>
                         </li>
-                        <li class="d-block d-md-none">
+                        <li class="d-block d-lg-none">
                             <a class="dropdown-item" href="/admin/news/">
                                 <i class="fas fa-newspaper fa-fw me-2"></i>
                                 <span><fmt:message key="admin_panel.navigation.news"/></span>
                             </a>
                         </li>
-                        <li class="d-block d-md-none">
+                        <li class="d-block d-lg-none">
                             <a class="dropdown-item" href="/admin/accounts/">
                                 <i class="fas fa-user-shield fa-fw me-2"></i>
                                 <span><fmt:message key="admin_panel.navigation.accounts"/></span>
                             </a>
                         </li>
-                        <li class="d-block d-md-none">
+                        <li class="d-block d-lg-none">
                             <a class="dropdown-item" href="/admin/support/">
                                 <i class="fas fa-question-circle fa-fw me-2"></i>
                                 <span><fmt:message key="admin_panel.navigation.support"/></span>
                             </a>
                         </li>
-                        <li class="d-block d-md-none">
+                        <li class="d-block d-lg-none">
                             <a class="dropdown-item" href="/admin/logs/">
                                 <i class="fas fa-cog fa-fw me-2"></i>
                                 <span><fmt:message key="admin_panel.navigation.logs"/></span>
                             </a>
                         </li>
-                        <li class="d-block d-md-none">
+                        <li class="d-block d-lg-none">
                             <hr class="dropdown-divider">
                         </li>
                         <li class="d-block">
