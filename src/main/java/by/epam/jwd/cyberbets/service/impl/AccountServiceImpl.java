@@ -7,6 +7,7 @@ import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.dao.impl.transactional.AccountManager;
 import by.epam.jwd.cyberbets.domain.Account;
 import by.epam.jwd.cyberbets.domain.Resource;
+import by.epam.jwd.cyberbets.domain.Transaction;
 import by.epam.jwd.cyberbets.domain.dto.CreateAccountDto;
 import by.epam.jwd.cyberbets.domain.dto.LoginDto;
 import by.epam.jwd.cyberbets.domain.dto.RegisterDto;
@@ -19,8 +20,13 @@ import by.epam.jwd.cyberbets.util.exception.UtilException;
 import com.password4j.Password;
 
 import java.math.BigDecimal;
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AccountServiceImpl implements AccountService {
     private final AccountDao accountDao = DaoProvider.INSTANCE.getAccountDao();
@@ -29,6 +35,15 @@ public class AccountServiceImpl implements AccountService {
 
     AccountServiceImpl() {
 
+    }
+
+    @Override
+    public List<Account> findAllAccountsByRegistrationPeriod(int daysNumber) throws ServiceException {
+        try {
+            return accountDao.findAllAccountsByRegistrationPeriod(daysNumber);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override
@@ -80,6 +95,28 @@ public class AccountServiceImpl implements AccountService {
     public int getTotalAccountsNumberByPeriod(int daysNumber) throws ServiceException {
         try {
             return accountDao.getTotalAccountsNumberByPeriod(daysNumber);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Map<String, Long> getDayRegistrationsByPeriod(int daysNumber) throws ServiceException {
+        try {
+            Instant currentDate = Instant.now();
+            Map<String, Long> registrationsDateAndAmount = new LinkedHashMap<>();
+            Map<Integer,Long> periodRegistrations = accountDao.findAllAccountsByRegistrationPeriod(daysNumber).stream()
+                    .collect(Collectors.groupingBy(a -> (int) (daysNumber - Duration.between(a.getRegistrationDate(), currentDate).toDays()),
+                            Collectors.counting()));
+
+            for(int i = 0; i < daysNumber; i++) {
+                String registrationsDate = currentDate.minus(daysNumber - i, ChronoUnit.DAYS)
+                        .atZone(ZoneOffset.UTC)
+                        .format(DateTimeFormatter.ofPattern("dd.MM"));
+                registrationsDateAndAmount.put(registrationsDate, periodRegistrations.getOrDefault(i, (long)0));
+            }
+
+            return registrationsDateAndAmount;
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

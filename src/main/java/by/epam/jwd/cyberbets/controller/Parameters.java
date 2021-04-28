@@ -4,11 +4,15 @@ public final class Parameters {
     private Parameters() {
     }
 
+    // CALCULATION STATISTICS CONSTANTS
+    public static final Integer MONTH_DAYS = 30;
+
     // GLOBAL
     public static final String ACTION = "action";
     public static final String GUEST_ROLE = "guest";
     public static final String USER_ROLE = "user";
     public static final String ADMIN_ROLE = "admin";
+
 
     public static final String CONNECTION_PROPERTIES = "connection.db";
     public static final String JSON_MAP = "jsonMap";
@@ -46,6 +50,7 @@ public final class Parameters {
     public static final String PASSWORD_PARAM = "password";
     public static final String REPEATED_PASSWORD_PARAM = "repeatedPassword";
 
+
     // RESPONSE PARAMS / PROPERTIES
     public static final String BALANCE_PARAM = "balance";
     public static final String STATUS_PARAM = "status";
@@ -53,7 +58,6 @@ public final class Parameters {
     public static final String STATUS_DENY = "deny";
     public static final String STATUS_EXCEPTION = "exception";
     public static final String DATA_PROPERTY = "data";
-
 
 
     // REQUEST & SESSION ATTRIBUTES
@@ -80,9 +84,11 @@ public final class Parameters {
     public static final String ROLE_ATTR = "role";
     public static final String BALANCE_ATTR = "balance";
 
+
     // COOKIES
     public static final String LANG_COOKIE = "lang";
     public static final String DISCIPLINE_FILTER_COOKIE = "discipline_filter";
+
 
     // DISCIPLINE FILTER
     public static final String CSGO_DISC = "csgo";
@@ -90,7 +96,10 @@ public final class Parameters {
     public static final String LOL_DISC = "lol";
     public static final String VALORANT_DISC = "valorant";
 
+
     // ACTION NAMES
+    public static final String LOAD_DEPOSITS_STATISTICS_ACTION = "loadChartDepositsData";
+    public static final String LOAD_REGISTRATIONS_STATISTICS_ACTION = "loadChartRegistrationsData";
     public static final String UPDATE_ACCOUNT_ACTION = "updateAccount";
     public static final String DEPOSIT_ACTION = "deposit";
     public static final String WITHDRAW_ACTION = "withdraw";
@@ -120,6 +129,7 @@ public final class Parameters {
     public static final String IGNORE_ACTION = "ignore";
     public static final String FORWARD_ERROR_PAGE_ACTION = "forwardErrorPage";
 
+
     // PAGES / SECTIONS
     public static final String BET_MODAL = "/WEB-INF/view/xml/bet-modal.jsp";
     public static final String EVENT_SECTION = "/WEB-INF/view/xml/events.jsp";
@@ -135,7 +145,6 @@ public final class Parameters {
     public static final String ACCOUNT_SETTINGS_PAGE = "/WEB-INF/view/user/settings.jsp";
     public static final String TRANSACTIONS_PAGE = "/WEB-INF/view/user/transactions.jsp";
     public static final String WITHDRAWAL_PAGE = "/WEB-INF/view/user/withdrawal.jsp";
-    public static final String ADMIN_PANEL_PAGE = "/WEB-INF/view/admin/admin.jsp";
     public static final String ADMIN_DASHBOARD_SECTION = "/WEB-INF/view/admin/dashboard.jsp";
     public static final String ADMIN_EVENTS_SECTION = "/WEB-INF/view/admin/events.jsp";
     public static final String ADMIN_LEAGUES_SECTION = "/WEB-INF/view/admin/leagues.jsp";

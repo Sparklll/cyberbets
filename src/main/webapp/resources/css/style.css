@@ -462,10 +462,17 @@ img {
     width: 50px;
 }
 
-/* --DEPOSIT CONTAINER-- */
-.deposit-container .card {
+/* --DEPOSIT/WITHDRAW CONTAINER-- */
+#withdrawContainer,
+#depositContainer {
+    margin-top: 20px;
+}
+
+#withdrawContainer .card,
+#depositContainer .card {
     box-shadow: 0px 0px 30px #6829aa;
 }
+
 
 .form-card .fa-cc-visa {
     color: #4997eb;

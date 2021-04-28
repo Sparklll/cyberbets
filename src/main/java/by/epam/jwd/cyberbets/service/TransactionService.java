@@ -6,6 +6,7 @@ import by.epam.jwd.cyberbets.service.exception.ServiceException;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface TransactionService {
@@ -13,4 +14,5 @@ public interface TransactionService {
     List<Transaction> findAllTransactionsByPeriod(int daysNumber) throws ServiceException;
     Optional<Transaction> findTransactionById(int transactionId) throws ServiceException;
     BigDecimal getTransactionsAmountByPeriod(int daysNumber, TransactionType transactionType) throws ServiceException;
+    Map<String, BigDecimal> getDayTransactionsAmountByPeriod(int daysNumber, TransactionType transactionType) throws ServiceException;
 }

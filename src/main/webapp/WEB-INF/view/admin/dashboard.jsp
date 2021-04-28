@@ -30,7 +30,7 @@
                     <fmt:message key="admin_panel.navigation.dashboard" />
                 </span>
             </div>
-            <div id="dashboardContainer px-5">
+            <div id="dashboardContainer">
                 <div class="row mt-3">
                     <div class="col-12 col-md-6 col-xl-4">
                         <div class="dashboard-card d-flex align-items-center">
@@ -122,7 +122,17 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <canvas id="depositsChart"></canvas>
+                    </div>
+                    <div class="col-6">
+                        <canvas id="registrationsChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,5 +142,8 @@
 </main>
 
 <%@ include file="../general/html/admin-scripts.html" %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+        integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
+        crossorigin="anonymous"></script>
 </body>
 </html>

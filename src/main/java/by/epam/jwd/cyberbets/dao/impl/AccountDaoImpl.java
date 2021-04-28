@@ -13,6 +13,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -22,6 +24,12 @@ public class AccountDaoImpl implements AccountDao {
     private final Connection transactionConnection;
     private final boolean isTransactional;
 
+    private static final String FIND_ALL_ACCOUNTS_BY_REGISTRATION_PERIOD = """
+            select a.id, a.email, a.password_hash, a.role_id, a.balance, a.avatar_resource_id, r.path, a.registration_date
+            from account a
+            inner join resource r on r.id = a.avatar_resource_id
+            where registration_date >= current_timestamp - ? * interval '1' day
+            """;
     private static final String FIND_ACCOUNT_BY_ID = """
             select a.id, a.email, a.password_hash, a.role_id, a.balance, a.avatar_resource_id, r.path, a.registration_date
             from account a
@@ -62,6 +70,27 @@ public class AccountDaoImpl implements AccountDao {
         return isTransactional
                 ? transactionConnection
                 : ConnectionPool.INSTANCE.getConnection();
+    }
+
+
+    @Override
+    public List<Account> findAllAccountsByRegistrationPeriod(int daysNumber) throws DaoException {
+        Connection connection = getConnection();
+
+        try (Connection connectionResource = isTransactional ? null : connection;
+             PreparedStatement ps = connection.prepareStatement(FIND_ALL_ACCOUNTS_BY_REGISTRATION_PERIOD)) {
+            ps.setInt(1, daysNumber);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Account> accounts = new ArrayList<>();
+                while (rs.next()) {
+                    Account account = mapRow(rs);
+                    accounts.add(account);
+                }
+                return accounts;
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override

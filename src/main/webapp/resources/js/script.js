@@ -1378,7 +1378,211 @@ $(document).ready(function () {
     }
 
     if($('#dashboardContainer').length > 0) {
+        var depositsChart = new Chart(
+            document.getElementById('depositsChart'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        backgroundColor: 'rgb(136, 0, 255)',
+                        borderColor: 'rgb(138,74,187)',
+                        data: [],
+                        cubicInterpolationMode: 'monotone',
+                        tension: 0.4,
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        title: {
+                            color: 'rgb(255,255,255)',
+                            display: true,
+                            text: 'Deposit Statistics',
+                            font: {
+                                size:30
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    var label = context.dataset.label || '';
 
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('en-US', {
+                                            style: 'currency',
+                                            currency: 'USD'
+                                        }).format(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            },
+                        },
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                display:true,
+                                color: 'rgb(80,80,80)',
+                                borderColor: 'rgb(255,255,255)',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Amount'
+                            },
+                            ticks: {
+                                color: 'rgb(255,255,255)',
+                                font: {
+                                    size:15
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display:true,
+                                color: 'rgb(80,80,80)',
+                                borderColor: 'rgb(255,255,255)',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            },
+                            ticks: {
+                                color: 'rgb(255,255,255)',
+                                font: {
+                                    size:15
+                                }
+                            }
+                        },
+                    }
+                }
+            }
+        );
+
+        var registrationsChart = new Chart(
+            document.getElementById('registrationsChart'), {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        backgroundColor: 'rgb(136, 0, 255)',
+                        borderColor: 'rgb(138,74,187)',
+                        data: [],
+                        cubicInterpolationMode: 'monotone',
+                        tension: 0.4,
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        title: {
+                            color: 'rgb(255,255,255)',
+                            display: true,
+                            text: 'Registration Statistics',
+                            font: {
+                                size:30
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    var label = context.dataset.label || '';
+
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + ' user(s)'
+                                    }
+                                    return label;
+                                }
+                            },
+                        },
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                display:true,
+                                color: 'rgb(80,80,80)',
+                                borderColor: 'rgb(255,255,255)',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Registered Users'
+                            },
+                            ticks: {
+                                stepSize: 1,
+                                color: 'rgb(255,255,255)',
+                                font: {
+                                    size:15
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display:true,
+                                color: 'rgb(80,80,80)',
+                                borderColor: 'rgb(255,255,255)',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            },
+                            ticks: {
+                                color: 'rgb(255,255,255)',
+                                font: {
+                                    size:15
+                                }
+                            }
+                        },
+                    }
+                }
+            }
+        );
+
+        postData(ACTION_URL, {
+            "action": "loadChartDepositsData",
+        }).then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                return Promise.reject(response);
+            }
+        ).then(function (response) {
+            if (response.status === 'ok') {
+                let data = JSON.parse(response.data);
+                Object.keys(data).forEach(function (key) {
+                    depositsChart.data.labels.push(key);
+                    depositsChart.data.datasets[0].data.push(data[key]);
+                });
+                depositsChart.update();
+            }
+        }).catch((error) => console.log('Something went wrong.', error));
+
+        postData(ACTION_URL, {
+            "action": "loadChartRegistrationsData",
+        }).then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                return Promise.reject(response);
+            }
+        ).then(function (response) {
+            if (response.status === 'ok') {
+                let data = JSON.parse(response.data);
+                Object.keys(data).forEach(function (key) {
+                    registrationsChart.data.labels.push(key);
+                    registrationsChart.data.datasets[0].data.push(data[key]);
+                });
+                registrationsChart.update();
+            }
+        }).catch((error) => console.log('Something went wrong.', error));
     }
 
 
