@@ -14,6 +14,7 @@ public interface EventService {
     List<Event> findAll() throws ServiceException;
     List<Event> findAllEventsByStatus(EventStatus eventStatus) throws ServiceException;
     List<Event> findAllEventsByStatus(EventStatus eventStatus, int limit) throws ServiceException;
+    List<Integer> findAllEventIdsByStatusAndPeriod(EventStatus eventStatus, int daysNumber) throws ServiceException;
     Optional<Event> findEventById(int eventId) throws ServiceException;
     Optional<BigDecimal> findRoyaltyByEventId(int eventId) throws ServiceException;
     int createEvent(EventDto eventDto, List<EventResult> eventResults) throws ServiceException;

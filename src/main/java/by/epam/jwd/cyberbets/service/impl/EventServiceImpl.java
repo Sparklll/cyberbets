@@ -51,6 +51,15 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Integer> findAllEventIdsByStatusAndPeriod(EventStatus eventStatus, int daysNumber) throws ServiceException {
+        try {
+            return eventDao.findAllEventIdsByStatusAndPeriod(eventStatus, daysNumber);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public Optional<Event> findEventById(int eventId) throws ServiceException {
         try {
             return eventDao.findEventById(eventId);

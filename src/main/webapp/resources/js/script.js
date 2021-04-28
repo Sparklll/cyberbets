@@ -1377,6 +1377,11 @@ $(document).ready(function () {
         });
     }
 
+    if($('#dashboardContainer').length > 0) {
+
+    }
+
+
     if ($('#registerModal').length > 0) {
         $('#registerModal #registerEmail').off('input').on('input', function () {
             let email = $('#registerEmail').val();
@@ -2020,9 +2025,9 @@ $(document).ready(function () {
                             return Promise.reject(response);
                         }
                     ).then(function (response) {
-                        if (response.status == "ok") {
+                        if (response.status === "ok") {
                             window.location.href = '/';
-                        } else if(response.status == "deny") {
+                        } else if(response.status === "deny" || response.status === "exception") {
                             $('#paymentError').fadeIn(200).delay(2000).fadeOut(200);
                         }
                     }).catch((error) => console.log('Something went wrong.', error));

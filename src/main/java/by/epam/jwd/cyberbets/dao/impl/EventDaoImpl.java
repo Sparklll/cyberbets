@@ -63,11 +63,16 @@ public class EventDaoImpl implements EventDao {
             """;
     private static final String FIND_ALL_EVENTS_BY_STATUS = FIND_ALL_EVENTS.concat(" where status = ?");
     private static final String FIND_ALL_EVENTS_BY_STATUS_LIMIT = FIND_ALL_EVENTS.concat(" where status = ? limit ?");
+    private static final String FIND_ALL_EVENT_IDS_BY_STATUS_AND_PERIOD = """
+            select id
+            from event
+            where status = ? and start >= current_timestamp - ? * interval '1' day
+            """;
     private static final String FIND_EVENT_BY_ID = FIND_ALL_EVENTS.concat(" where e.id = ?");
     private static final String FIND_ROYALTY_BY_EVENT_ID = "select royalty_percentage from event where id = ?";
 
     private static final String CREATE_EVENT = """
-            insert into event (discipline_id, league_id, first_team_id, second_team_id, event_format_id, start, royalty_percentage, status) 
+            insert into event (discipline_id, league_id, first_team_id, second_team_id, event_format_id, start, royalty_percentage, status)
             values  (?, ?, ?, ?, ?, ?, ?, ?)
             returning id
             """;
@@ -156,6 +161,27 @@ public class EventDaoImpl implements EventDao {
                     events.add(event);
                 }
                 return events;
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Integer> findAllEventIdsByStatusAndPeriod(EventStatus eventStatus, int daysNumber) throws DaoException {
+        Connection connection = getConnection();
+
+        try (Connection connectionResource = isTransactional ? null : connection;
+             PreparedStatement ps = connection.prepareStatement(FIND_ALL_EVENT_IDS_BY_STATUS_AND_PERIOD)) {
+            ps.setInt(1, eventStatus.getId());
+            ps.setInt(2, daysNumber);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Integer> eventIds = new ArrayList<>();
+                while (rs.next()) {
+                    Integer eventId = rs.getInt(ID);
+                    eventIds.add(eventId);
+                }
+                return eventIds;
             }
         } catch (SQLException e) {
             throw new DaoException(e);

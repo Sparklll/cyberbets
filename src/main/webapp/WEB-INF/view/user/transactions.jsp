@@ -38,12 +38,12 @@
         <c:choose>
             <c:when test="${empty accountTransactions}">
                 <div class="general-container d-flex justify-content-center align-items-center col">
-                    <h1 class="text-secondary fw-bold"><fmt:message key="transaction_page.no_data"/></h1>
+                    <h1 class="text-secondary fw-bold"><fmt:message key="label.no_data"/></h1>
                 </div>
             </c:when>
             <c:otherwise>
-                <div class="general-container col">
-                    <div class="transaction-container-header mb-3 text-uppercase fw-bold">
+                <div class="general-container transaction-container col">
+                    <div class="general-container-header mb-3 text-uppercase fw-bold">
                         <div class="row d-flex justify-content-center align-items-center">
                             <span class="col-5"><fmt:message key="transaction_page.container_header.date"/></span>
                             <span class="text-center col-3"><fmt:message
@@ -54,7 +54,7 @@
                     </div>
 
                     <c:forEach items="${accountTransactions}" var="transaction">
-                        <div class="transaction">
+                        <div class="custom-table-row">
                             <div class="row d-flex justify-content-center align-items-center">
                             <span class="col-5"><datetime:format value="${transaction.date}"
                                                                  pattern="dd.MM.yyyy HH:mm"/></span>

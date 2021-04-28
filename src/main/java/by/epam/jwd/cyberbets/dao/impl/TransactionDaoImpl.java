@@ -18,6 +18,7 @@ public class TransactionDaoImpl implements TransactionDao {
     private final boolean isTransactional;
 
     private static final String FIND_ALL_TRANSACTIONS_BY_ACCOUNT_ID = "select * from transaction where account_id = ?";
+    private static final String FIND_ALL_TRANSACTIONS_BY_PERIOD = "select * from transaction where date >= current_timestamp - ? * interval '1' day";
     private static final String FIND_TRANSACTION_BY_ID = "select * from transaction where id = ?";
     private static final String CREATE_TRANSACTION = "insert into transaction (type_id, account_id, amount) values (?, ?, ?) returning id";
     private static final String UPDATE_TRANSACTION = "update transaction set type_id = ?, account_id = ?, amount = ?, date = ? where id = ?";
@@ -46,6 +47,26 @@ public class TransactionDaoImpl implements TransactionDao {
         try (Connection connectionResource = isTransactional ? null : connection;
              PreparedStatement ps = connection.prepareStatement(FIND_ALL_TRANSACTIONS_BY_ACCOUNT_ID)) {
             ps.setInt(1, accountId);
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Transaction> transactions = new ArrayList<>();
+                while (rs.next()) {
+                    Transaction transaction = mapRow(rs);
+                    transactions.add(transaction);
+                }
+                return transactions;
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Transaction> findAllTransactionsByPeriod(int daysNumber) throws DaoException {
+        Connection connection = getConnection();
+
+        try (Connection connectionResource = isTransactional ? null : connection;
+             PreparedStatement ps = connection.prepareStatement(FIND_ALL_TRANSACTIONS_BY_PERIOD)) {
+            ps.setInt(1, daysNumber);
             try (ResultSet rs = ps.executeQuery()) {
                 List<Transaction> transactions = new ArrayList<>();
                 while (rs.next()) {

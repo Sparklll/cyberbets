@@ -13,6 +13,8 @@ public interface AccountDao {
     Optional<Account> findAccountByEmail(String email) throws DaoException;
     OptionalInt findIdByEmail(String email) throws DaoException;
     Optional<BigDecimal> getAccountBalance(int accountId) throws DaoException;
+    int getTotalAccountsNumber() throws DaoException;
+    int getTotalAccountsNumberByPeriod(int daysNumber) throws DaoException;
     void createAccount(CreateAccountDto createAccountDto) throws DaoException;
     void updateAccount(Account account) throws DaoException;
     void updateAccountBalance(int accountId, BigDecimal balance) throws DaoException;

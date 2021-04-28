@@ -416,35 +416,50 @@ img {
     }
 }
 
-/* --USER TRANSACTIONS CONTAINER-- */
-.transaction-container-header {
+.general-container-header {
     padding: 10px;
     border-bottom: 5px solid #8800ff;
 }
 
-.transacion-type-icon {
-    width: 20px
-}
-
-.transaction {
+.custom-table-row {
     font-weight: bold;
     padding: 15px;
     margin: 5px 0;
     transition: background-color 0.3s;
 }
 
-.transaction:nth-child(n):hover {
+.custom-table-row:nth-child(n):hover {
     background-color: rgba(0, 156, 142, 0.8);
     cursor: pointer;
 }
 
 
-.transaction:nth-child(n + 1) {
+.custom-table-row:nth-child(n + 1) {
     background-color: #2d3050;
 }
 
-.transaction:nth-child(2n + 1) {
+.custom-table-row:nth-child(2n + 1) {
     background-color: #3f426c;
+}
+
+/* --USER TRANSACTIONS CONTAINER-- */
+.transacion-type-icon {
+    width: 20px
+}
+
+/* -- MY-BETS CONTAINER-- */
+.mybets-container .discipline-icon-wrapper {
+    padding-right: 20px;
+    border-right: 3px solid #8800ff;
+}
+
+.mybets-container .event-info-wrapper {
+    padding-bottom: 10px;
+    border-bottom: 3px solid #8800ff;
+}
+
+.mybets-container .team {
+    width: 50px;
 }
 
 /* --DEPOSIT CONTAINER-- */
@@ -616,6 +631,26 @@ input:focus + label {
     width: 100%;
     height: 100%;
     /*object-fit: contain;*/
+}
+
+/* --ADMIN DASHBOARD CONTAINER-- */
+.dashboard-card {
+    background-color: #513e7f;
+    border-radius: 10px;
+    height: 150px;
+    padding: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 0 5px 1px white;
+}
+.dashboard-card .circle {
+    background-color: #a9acbb;
+    border-radius: 50%;
+    padding: 25px;
+    box-shadow: 0 0 10px 2px #b43d88;
+}
+
+.circle .icon {
+    width: 50px;
 }
 
 /* FOOTER */

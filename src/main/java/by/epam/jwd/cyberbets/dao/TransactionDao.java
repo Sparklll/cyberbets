@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface TransactionDao {
     List<Transaction> findAllTransactionsByAccountId(int accountId) throws DaoException;
+    List<Transaction> findAllTransactionsByPeriod(int daysNumber) throws DaoException;
     Optional<Transaction> findTransactionById(int transactionId) throws DaoException;
     int createTransaction(Transaction transaction) throws DaoException;
     void updateTransaction(Transaction transaction) throws DaoException;
