@@ -1,4 +1,4 @@
-# <center><img src="docs/img/logo.png" width="300"></center> 
+<p align="center"><img src="docs/img/logo.png" width="300"></p> 
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Sparklll/cyberbets?style=for-the-badge)  ![GitHub](https://img.shields.io/github/license/Sparklll/cyberbets?style=for-the-badge) 
 
 ## <p>Description</p>
@@ -20,5 +20,5 @@ This project is an e-sports betting that focuses on the most popular cyber disci
 
 ## Docs
 
-* [Database Schema](docs/)
+* [Database Schema](docs/DOCS.md)
 
