@@ -7,7 +7,6 @@ import by.epam.jwd.cyberbets.domain.Account;
 import by.epam.jwd.cyberbets.domain.Resource;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.dto.CreateAccountDto;
-import org.apache.logging.log4j.core.time.Instant;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -36,6 +35,12 @@ public class AccountDaoImpl implements AccountDao {
             where a.email = ?
             """;
     private static final String FIND_ID_BY_EMAIL = "select id from account where email = ?";
+    private static final String GET_TOTAL_ACCOUNTS_NUMBER = "select count(*) from account";
+    private static final String GET_TOTAL_ACCOUNTS_NUMBER_BY_PERIOD = """
+            select count(*)
+            from account
+            where registration_date >= current_timestamp - ? * interval '1' day
+            """;
     private static final String GET_ACCOUNT_BALANCE = "select balance from account where id = ?";
     private static final String CREATE_ACCOUNT = "insert into account (email, password_hash) VALUES (?, ?)";
     private static final String UPDATE_ACCOUNT = "update account set email = ?, password_hash = ?, balance = ?, role_id = ?, avatar_resource_id = ? where id = ?";
@@ -130,6 +135,39 @@ public class AccountDaoImpl implements AccountDao {
                     balanceOptional = Optional.of(balance);
                 }
                 return balanceOptional;
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public int getTotalAccountsNumber() throws DaoException {
+        Connection connection = getConnection();
+
+        try (Connection connectionResource = isTransactional ? null : connection;
+             PreparedStatement ps = connection.prepareStatement(GET_TOTAL_ACCOUNTS_NUMBER)) {
+            ps.execute();
+            try (ResultSet rs = ps.getResultSet()) {
+                rs.next();
+                return rs.getInt(COUNT);
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public int getTotalAccountsNumberByPeriod(int daysNumber) throws DaoException {
+        Connection connection = getConnection();
+
+        try (Connection connectionResource = isTransactional ? null : connection;
+             PreparedStatement ps = connection.prepareStatement(GET_TOTAL_ACCOUNTS_NUMBER_BY_PERIOD)) {
+            ps.setInt(1, daysNumber);
+            ps.execute();
+            try (ResultSet rs = ps.getResultSet()) {
+                rs.next();
+                return rs.getInt(COUNT);
             }
         } catch (SQLException e) {
             throw new DaoException(e);

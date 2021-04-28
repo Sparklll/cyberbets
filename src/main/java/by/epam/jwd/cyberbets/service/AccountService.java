@@ -15,6 +15,8 @@ public interface AccountService {
     Optional<Account> findAccountByEmail(String email) throws ServiceException;
     OptionalInt findIdByEmail(String email) throws ServiceException;
     Optional<BigDecimal> getAccountBalance(int accountId) throws ServiceException;
+    int getTotalAccountsNumber() throws ServiceException;
+    int getTotalAccountsNumberByPeriod(int daysNumber) throws ServiceException;
     void createAccount(RegisterDto registerDto) throws ServiceException;
     void updateAccount(Account account) throws ServiceException;
     void updateAccountBalance(int accountId, BigDecimal balance) throws ServiceException;

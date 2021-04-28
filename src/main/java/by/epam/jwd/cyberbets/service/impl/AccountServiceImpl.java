@@ -68,6 +68,24 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public int getTotalAccountsNumber() throws ServiceException {
+        try {
+            return accountDao.getTotalAccountsNumber();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public int getTotalAccountsNumberByPeriod(int daysNumber) throws ServiceException {
+        try {
+            return accountDao.getTotalAccountsNumberByPeriod(daysNumber);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
     public void createAccount(RegisterDto registerDto) throws ServiceException {
         try {
             String email = registerDto.email();

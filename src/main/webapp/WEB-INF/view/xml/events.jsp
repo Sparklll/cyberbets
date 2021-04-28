@@ -12,6 +12,8 @@
 <c:set var="lolIcon" value="/resources/assets/disciplines/lol_icon.png"/>
 <c:set var="valorantIcon" value="/resources/assets/disciplines/valorant_icon.jpg"/>
 
+<%@ page import="by.epam.jwd.cyberbets.domain.EventFormat" %>
+<%@ page import="by.epam.jwd.cyberbets.domain.Discipline" %>
 
 <div class="tab-content" id="eventsTabContent">
     <div class="tab-pane fade show active" id="currentEvents" role="tabpanel"
@@ -55,32 +57,32 @@
 
                                 <div class="event-format d-flex flex-column col-4 justify-content-center align-items-center">
                                     <c:choose>
-                                        <c:when test="${eventData.event.discipline.id eq 1}">
+                                        <c:when test="${eventData.event.discipline eq Discipline.CSGO}">
                                             <img class="discipline-icon" src="${csgoIcon}">
                                         </c:when>
-                                        <c:when test="${eventData.event.discipline.id eq 2}">
+                                        <c:when test="${eventData.event.discipline eq Discipline.DOTA2}">
                                             <img class="discipline-icon" src="${dota2Icon}">
                                         </c:when>
-                                        <c:when test="${eventData.event.discipline.id eq 3}">
+                                        <c:when test="${eventData.event.discipline eq Discipline.LOL}">
                                             <img class="discipline-icon" src="${lolIcon}">
                                         </c:when>
-                                        <c:when test="${eventData.event.discipline.id eq 4}">
+                                        <c:when test="${eventData.event.discipline eq Discipline.VALORANT}">
                                             <img class="discipline-icon" src="${valorantIcon}">
                                         </c:when>
                                     </c:choose>
 
                                     <span>
                                         <c:choose>
-                                            <c:when test="${eventData.event.eventFormat.id eq 1}">
+                                            <c:when test="${eventData.event.eventFormat eq EventFormat.BO1}">
                                                 BO1
                                             </c:when>
-                                            <c:when test="${eventData.event.eventFormat.id eq 2}">
+                                            <c:when test="${eventData.event.eventFormat eq EventFormat.BO1}">
                                                 BO2
                                             </c:when>
-                                            <c:when test="${eventData.event.eventFormat.id eq 3}">
+                                            <c:when test="${eventData.event.eventFormat eq EventFormat.BO1}">
                                                 BO3
                                             </c:when>
-                                            <c:when test="${eventData.event.eventFormat.id eq 4}">
+                                            <c:when test="${eventData.event.eventFormat eq EventFormat.BO1}">
                                                 BO5
                                             </c:when>
                                         </c:choose>

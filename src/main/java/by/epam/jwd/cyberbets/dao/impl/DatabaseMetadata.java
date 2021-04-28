@@ -53,4 +53,5 @@ public final class DatabaseMetadata {
     static final String DATE = "date";
     static final String START = "start";
     static final String ROYALTY_PERCENTAGE = "royalty_percentage";
+    static final String COUNT = "count";
 }

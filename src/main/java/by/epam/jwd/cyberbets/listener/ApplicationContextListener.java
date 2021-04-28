@@ -73,7 +73,7 @@ public class ApplicationContextListener implements ServletContextListener {
             Files.deleteIfExists(link);
             logger.info("Successfully remove symbolic link to app resources source on shutdown");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 }

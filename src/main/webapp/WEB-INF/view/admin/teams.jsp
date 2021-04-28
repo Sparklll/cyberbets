@@ -23,7 +23,9 @@
         <div class="row">
             <div class="header col-12 d-flex justify-content-start align-items-center">
                 <i class="fas fa-angle-double-right"></i>
-                <span class="ms-2 text-uppercase fw-bold">Teams</span>
+                <span class="ms-2 text-uppercase fw-bold">
+                    <fmt:message key="admin_panel.navigation.teams" />
+                </span>
             </div>
 
             <div class="team-control-panel">

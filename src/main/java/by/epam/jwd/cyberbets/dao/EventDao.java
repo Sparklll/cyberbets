@@ -13,6 +13,7 @@ public interface EventDao {
     List<Event> findAll() throws DaoException;
     List<Event> findAllEventsByStatus(EventStatus eventStatus) throws DaoException;
     List<Event> findAllEventsByStatus(EventStatus eventStatus, int limit) throws DaoException;
+    List<Integer> findAllEventIdsByStatusAndPeriod(EventStatus eventStatus, int daysNumber) throws DaoException;
     Optional<Event> findEventById(int eventId) throws DaoException;
     Optional<BigDecimal> findRoyaltyByEventId(int eventId) throws DaoException;
     int createEvent(EventDto eventDto) throws DaoException;

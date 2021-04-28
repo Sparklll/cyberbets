@@ -55,7 +55,15 @@ public final class Parameters {
     public static final String DATA_PROPERTY = "data";
 
 
+
     // REQUEST & SESSION ATTRIBUTES
+    public static final String BETS_DATA_ATTR = "betsData";
+    public static final String ACCOUNTS_NUMBER_ATTR = "accountsNumber";
+    public static final String MONTH_REGISTRATIONS_ATTR = "monthRegistrations";
+    public static final String ACTIVE_EVENTS_NUMBER_ATTR = "activeEventsNumber";
+    public static final String MONTH_DEPOSIT_TRANSACTIONS_AMOUNT_ATTR = "monthDepositTransactionsAmount";
+    public static final String MONTH_PROFIT_ATTR = "monthProfit";
+    public static final String ACTIVE_EVENTS_BETS_AMOUNT_ATTR = "activeEventsBetsAmount";
     public static final String ACCOUNT_TRANSACTIONS_ATTR = "accountTransactions";
     public static final String EVENT_COEFFICIENTS_ATTR = "eventCoefficients";
     public static final String EVENT_RESULTS_ATTR = "eventResults";
