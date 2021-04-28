@@ -1,4 +1,5 @@
 <p align="center"><img src="docs/img/logo.png" width="300"></p> 
+
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Sparklll/cyberbets?style=for-the-badge)  ![GitHub](https://img.shields.io/github/license/Sparklll/cyberbets?style=for-the-badge) 
 
 <p align="center"><img src="docs/img/.png" width="300"></p> 
