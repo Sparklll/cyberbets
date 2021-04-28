@@ -53,9 +53,15 @@
                 <div class="general-container mybets-container col">
                     <div class="general-container-header mb-3 text-uppercase fw-bold">
                         <div class="row d-flex justify-content-center align-items-center">
-                            <span class="col-4">Cобытие</span>
-                            <span class="text-center col-4">Ставка</span>
-                            <span class="text-center col-4">Результат</span>
+                            <span class="col-4">
+                                <fmt:message key="mybets_page.event" />
+                            </span>
+                            <span class="text-center col-4">
+                                <fmt:message key="mybets_page.bet" />
+                            </span>
+                            <span class="text-center col-4">
+                                <fmt:message key="mybets_page.result" />
+                            </span>
                         </div>
                     </div>
 

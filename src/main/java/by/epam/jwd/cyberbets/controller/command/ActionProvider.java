@@ -1,5 +1,7 @@
 package by.epam.jwd.cyberbets.controller.command;
 
+import by.epam.jwd.cyberbets.controller.command.impl.admin.dashboard.LoadDepositsStatistics;
+import by.epam.jwd.cyberbets.controller.command.impl.admin.dashboard.LoadRegistrationsStatistics;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.event.*;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.league.DeleteLeague;
 import by.epam.jwd.cyberbets.controller.command.impl.admin.league.InsertLeague;
@@ -34,6 +36,8 @@ public enum ActionProvider {
     private final Map<String, Action> actions = new HashMap<>();
 
     private ActionProvider() {
+        actions.put(LOAD_DEPOSITS_STATISTICS_ACTION, new LoadDepositsStatistics());
+        actions.put(LOAD_REGISTRATIONS_STATISTICS_ACTION, new LoadRegistrationsStatistics());
         actions.put(UPDATE_ACCOUNT_ACTION, new UpdateAccount());
         actions.put(WITHDRAW_ACTION, new Withdraw());
         actions.put(DEPOSIT_ACTION, new Deposit());

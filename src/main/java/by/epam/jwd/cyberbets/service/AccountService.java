@@ -7,16 +7,20 @@ import by.epam.jwd.cyberbets.domain.dto.UpdatePasswordDto;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
 
 public interface AccountService {
+    List<Account> findAllAccountsByRegistrationPeriod(int daysNumber) throws ServiceException;
     Optional<Account> findAccountById(int accountId) throws ServiceException;
     Optional<Account> findAccountByEmail(String email) throws ServiceException;
     OptionalInt findIdByEmail(String email) throws ServiceException;
     Optional<BigDecimal> getAccountBalance(int accountId) throws ServiceException;
     int getTotalAccountsNumber() throws ServiceException;
     int getTotalAccountsNumberByPeriod(int daysNumber) throws ServiceException;
+    Map<String, Long> getDayRegistrationsByPeriod(int daysNumber) throws ServiceException;
     void createAccount(RegisterDto registerDto) throws ServiceException;
     void updateAccount(Account account) throws ServiceException;
     void updateAccountBalance(int accountId, BigDecimal balance) throws ServiceException;

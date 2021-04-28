@@ -23,8 +23,6 @@ import static by.epam.jwd.cyberbets.controller.Parameters.*;
 public final class AdminDashboardPage implements Action {
     private static final Logger logger = LoggerFactory.getLogger(AdminDashboardPage.class);
 
-    private static final int MONTH_DAYS = 30;
-
     private final AccountService accountService = ServiceProvider.INSTANCE.getAccountService();
     private final TransactionService transactionService = ServiceProvider.INSTANCE.getTransactionService();
     private final BetService betService = ServiceProvider.INSTANCE.getBetService();
