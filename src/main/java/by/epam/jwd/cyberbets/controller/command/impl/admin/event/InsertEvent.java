@@ -40,7 +40,7 @@ public final class InsertEvent implements Action {
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Role role = (Role) request.getAttribute(ROLE_ATTR);
 
-        if (role.getId() == Role.ADMIN.getId()) {
+        if (role == Role.ADMIN) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
             if (jsonMap != null) {
