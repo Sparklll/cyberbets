@@ -1405,6 +1405,12 @@ $(document).ready(function () {
                             }
                         },
                         tooltip: {
+                            titleFont: {
+                                size: 15,
+                            },
+                            bodyFont: {
+                                size: 20,
+                            },
                             callbacks: {
                                 label: function (context) {
                                     var label = context.dataset.label || '';
@@ -1458,7 +1464,11 @@ $(document).ready(function () {
                                 }
                             }
                         },
-                    }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
                 }
             }
         );
@@ -1490,6 +1500,12 @@ $(document).ready(function () {
                             }
                         },
                         tooltip: {
+                            titleFont: {
+                                size: 15,
+                            },
+                            bodyFont: {
+                              size: 20,
+                            },
                             callbacks: {
                                 label: function (context) {
                                     var label = context.dataset.label || '';
@@ -1541,7 +1557,11 @@ $(document).ready(function () {
                                 }
                             }
                         },
-                    }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
                 }
             }
         );
