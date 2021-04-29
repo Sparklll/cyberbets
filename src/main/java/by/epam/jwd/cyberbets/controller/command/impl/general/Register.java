@@ -38,10 +38,6 @@ public final class Register implements Action {
             String repeatedPassword = (String) jsonMap.get(REPEATED_PASSWORD_PARAM);
             RegisterDto registerDto = new RegisterDto(email, password, repeatedPassword);
 
-            logger.info(email);
-            logger.info(password);
-            logger.info(repeatedPassword);
-
             RegisterValidator registerValidator = ValidatorProvider.INSTANCE.getRegisterValidator();
             if(registerValidator.isValid(registerDto)) {
                 JsonObject jsonResponse = new JsonObject();

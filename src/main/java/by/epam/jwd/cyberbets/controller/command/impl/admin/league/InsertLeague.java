@@ -61,7 +61,6 @@ public final class InsertLeague implements Action {
                             Optional<Resource> resourceOptional = leagueService.findIconResourceByLeagueId(id);
                             if(resourceOptional.isPresent()) {
                                 leagueIconPath += resourceOptional.get().getPath();
-                                logger.info(leagueIconPath);
                             }
 
                             jsonResponse.addProperty(ID_PARAM, id);

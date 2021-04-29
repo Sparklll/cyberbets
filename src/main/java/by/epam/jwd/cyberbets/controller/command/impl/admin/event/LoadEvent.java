@@ -82,7 +82,7 @@ public final class LoadEvent implements Action {
                     jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                 } catch (ServiceException | ClassCastException e) {
                     jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.info(e.getMessage(), e);
+                    logger.error(e.getMessage(), e);
                 }
                 out.write(jsonResponse.toString());
             }
