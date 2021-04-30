@@ -1,0 +1,116 @@
+* [32m2021-05-01T01:10:52+03:00 [31m8e4973d2cb1d9545e1ccf3977844881802932d3d[m -[33m (HEAD -> develop, tag: v1.2.2-alpha, origin/develop)[m update transactional module [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+*   [32m2021-04-30T23:21:41+03:00 [31m0541f0bc5a55f5d6b91b538b96b547b588c55379[m -[33m (origin/master, master)[m Merge pull request #12 from Sparklll/develop [34m[GitHub <noreply@github.com>][m [34mE[m
+[32m|[m[33m\[m  
+[32m|[m * [32m2021-04-30T22:48:13+03:00 [31mebf86d57c82cede634d2a861ca7fac5b6873b11c[m -[33m[m fix bet-modal potential prize display issue [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[32m|[m * [32m2021-04-30T22:46:52+03:00 [31m0ff91458bfae70979b1c22e03d1d7870b9873100[m -[33m[m fix transactions issue [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[32m|[m * [32m2021-04-30T00:42:46+03:00 [31m44d03007a5a47f2dcc527c2af8f7fc74f6f2218a[m -[33m[m clean template code [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[32m|[m * [32m2021-04-30T00:42:16+03:00 [31ma4b7d217cd90118889145f934ad434c206090f05[m -[33m[m update visual part of dashboard charts [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[32m|[m * [32m2021-04-29T23:03:08+03:00 [31mb4a9236ca7f895a982eadbd950e2de3f3b6ca33e[m -[33m[m update mybets page [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[32m|[m * [32m2021-04-29T17:24:48+03:00 [31mb3af0be835c4b5069fd72603221248aa09696f8d[m -[33m[m fix event format display bug [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[32m|[m[32m/[m  
+* [32m2021-04-29T09:54:20+03:00 [31m6d8781bf1af5a0953285eaf45cdb44cae87c3dde[m -[33m (tag: v1.2.1-alpha)[m update README.md [34m[GitHub <noreply@github.com>][m [34mE[m
+*   [32m2021-04-29T09:43:17+03:00 [31m5d1bf73949ff1b993b8cfcdf335dca874cf06224[m -[33m[m Merge pull request #11 from Sparklll/develop [34m[GitHub <noreply@github.com>][m [34mE[m
+[34m|[m[35m\[m  
+[34m|[m * [32m2021-04-29T09:37:11+03:00 [31m33dfcf58181b9a51f611fd854af22a71c8df9061[m -[33m[m update docs [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m *   [32m2021-04-29T01:48:43+03:00 [31m2794e5d2924c6c56707f85286de75aaea821cb57[m -[33m[m Merge branch 'master' of github.com:Sparklll/jwd-final into develop [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m [36m|[m[34m\[m  
+[34m|[m [36m|[m[34m/[m  
+[34m|[m[34m/[m[36m|[m   
+* [36m|[m [32m2021-04-28T17:49:38+03:00 [31md2216d6da34c84336fc5dbf958c444fded6f6efc[m -[33m (tag: v1.2.0-alpha)[m update README.md [34m[GitHub <noreply@github.com>][m [34mE[m
+* [36m|[m [32m2021-04-28T17:49:06+03:00 [31m2ee3763d8fdb4246bac726dc6f0c337a0a22c21b[m -[33m[m update DOCS.md [34m[GitHub <noreply@github.com>][m [34mE[m
+* [36m|[m   [32m2021-04-28T17:47:01+03:00 [31m1d606f7ea00d459b0bc4b3a2075565782878f97b[m -[33m[m Merge pull request #10 from Sparklll/develop [34m[GitHub <noreply@github.com>][m [34mE[m
+[1;32m|[m[1;33m\[m [36m\[m  
+[1;32m|[m [1;33m|[m * [32m2021-04-29T01:14:36+03:00 [31m63c6d5907f5ed12eda3f2df7abcbae31727737be[m -[33m[m cosmetic changes [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m [1;33m|[m * [32m2021-04-29T00:15:26+03:00 [31m55c2d27d748cc314277c473111a43345b5d8b83c[m -[33m[m clean code, remove debug info [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m [1;33m|[m[1;33m/[m  
+[1;32m|[m *   [32m2021-04-28T17:44:09+03:00 [31m6eb1535170978d59e90449d6fb91ac15e6beb885[m -[33m[m Merge branch 'master' of github.com:Sparklll/jwd-final into develop [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m [1;34m|[m[1;32m\[m  
+[1;32m|[m [1;34m|[m[1;32m/[m  
+[1;32m|[m[1;32m/[m[1;34m|[m   
+* [1;34m|[m   [32m2021-04-28T17:39:30+03:00 [31m7b04c9ea54e7f048095145ef88e046f542337ad9[m -[33m[m Merge pull request #9 from Sparklll/develop [34m[GitHub <noreply@github.com>][m [34mE[m
+[1;36m|[m[31m\[m [1;34m\[m  
+* [31m\[m [1;34m\[m   [32m2021-04-28T16:58:44+03:00 [31m9766cd59487dd0d2791e388890c716d0aa535262[m -[33m[m Merge pull request #8 from Sparklll/add-license-1 [34m[GitHub <noreply@github.com>][m [34mE[m
+[32m|[m[33m\[m [31m\[m [1;34m\[m  
+[32m|[m * [31m|[m [1;34m|[m [32m2021-04-28T16:58:22+03:00 [31m80cd06d021ef96a1b34750e0b5fba8668493cc9e[m -[33m (origin/add-license-1)[m create LICENSE [34m[GitHub <noreply@github.com>][m [34mE[m
+[32m|[m[32m/[m [31m/[m [1;34m/[m  
+* [31m|[m [1;34m|[m   [32m2021-04-28T09:45:27+03:00 [31m4498b0d1dccd3c85399ebc8b1180a6a4549dbc81[m -[33m[m Merge pull request #7 from Sparklll/develop [34m[GitHub <noreply@github.com>][m [34mE[m
+[34m|[m[35m\[m [31m\[m [1;34m\[m  
+* [35m\[m [31m\[m [1;34m\[m   [32m2021-04-27T16:11:26+03:00 [31m5eb045297e5ed68f5a55588e24cdc4fc0e3f188b[m -[33m[m Merge pull request #6 from Sparklll/develop [34m[GitHub <noreply@github.com>][m [34mE[m
+[36m|[m[1;31m\[m [35m\[m [31m\[m [1;34m\[m  
+[36m|[m [1;31m|[m [35m|[m [31m|[m * [32m2021-04-28T17:43:54+03:00 [31m3621904f1a56b34dd42d5cac57692d3759bb5c19[m -[33m[m update docs [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m [1;31m|[m [35m|[m [31m|[m[31m/[m  
+[36m|[m [1;31m|[m [35m|[m * [32m2021-04-28T17:37:06+03:00 [31m25e1cf77556c83f4cc493e6248cac7fc300d4a99[m -[33m[m update docs [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m [1;31m|[m [35m|[m * [32m2021-04-28T16:11:24+03:00 [31m98d7dd4b352f83d2e96e4368423c0a48588b099e[m -[33m[m add charts stuff to admin dashboard [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m [1;31m|[m [35m|[m[35m/[m  
+[36m|[m [1;31m|[m * [32m2021-04-28T03:41:47+03:00 [31m221ce8eff44acd6222a776b6b0a3adb296a88cb6[m -[33m[m improve user modules, make admin dashboard, clean code [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m [1;31m|[m[1;31m/[m  
+[36m|[m * [32m2021-04-27T01:05:59+03:00 [31mf2f7efc138c2194688c7e5c231bbe7bf4a20b8c5[m -[33m[m clean code, implement user modules [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-04-25T03:41:14+03:00 [31m27e54231d16d4c1864f3f78dc82a78329acbcd94[m -[33m[m add deposit functionality [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-04-21T03:06:19+03:00 [31m069245d42eab1d6953a89d5d8e2986a165bb04f9[m -[33m[m small controller remake, update dao architecture, betting stuff almost done [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-04-20T03:19:55+03:00 [31m5cbb247cc96020e3ea7d24122ba763e2202117b3[m -[33m[m bet module, pre-alpha :D [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-04-19T03:11:01+03:00 [31mce5537abaad63d1136540a038ab6665d8d846ed6[m -[33m[m add bet frontend part, prepare backend [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-04-18T02:53:38+03:00 [31m55e57b131e35b4a0924580ce2fa4f7db60fcbf40[m -[33m[m add basic structure bet-modal server/client rendering [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m *   [32m2021-04-16T13:43:44+03:00 [31m8b6c1631613fdc1a12c5df937e32d4af856e1854[m -[33m[m Merge branch 'master' of github.com:Sparklll/jwd-final into develop [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m [1;32m|[m[36m\[m  
+[36m|[m [1;32m|[m[36m/[m  
+[36m|[m[36m/[m[1;32m|[m   
+* [1;32m|[m   [32m2021-04-14T16:58:39+03:00 [31m65db5c5133f8afb63bd8c042eee2a36297f00afa[m -[33m[m Merge pull request #5 from Sparklll/develop [34m[GitHub <noreply@github.com>][m [34mE[m
+[1;34m|[m[1;35m\[m [1;32m\[m  
+* [1;35m\[m [1;32m\[m   [32m2021-04-13T10:43:18+03:00 [31m396351df278530e630951a5a32c6d3b2ed196302[m -[33m[m Merge pull request #4 from Sparklll/develop [34m[GitHub <noreply@github.com>][m [34mE[m
+[1;36m|[m[31m\[m [1;35m\[m [1;32m\[m  
+[1;36m|[m [31m|[m [1;35m|[m * [32m2021-04-16T03:38:00+03:00 [31mdb30a84f4ba9b15ae1f8a9ed24e833f2d17a706b[m -[33m[m work on completing bet module [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;36m|[m [31m|[m [1;35m|[m[1;35m/[m  
+[1;36m|[m [31m|[m * [32m2021-04-14T16:29:38+03:00 [31m76b50f5f8e01a3cd8009563d4ed666665337b8eb[m -[33m[m add betting functionality default template [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;36m|[m [31m|[m * [32m2021-04-13T23:15:18+03:00 [31mabd05e4b55ba937925d8456dc573fa60d9044956[m -[33m[m improve and expand actions [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;36m|[m [31m|[m * [32m2021-04-13T10:51:24+03:00 [31m5c366aa915d00bcc0885ab51e8780a6535434b6f[m -[33m[m add i18n frontend templates [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;36m|[m [31m|[m[31m/[m  
+[1;36m|[m *   [32m2021-04-13T10:41:56+03:00 [31m3ce60a80844bfa4bc60bab741e612d27f2939aac[m -[33m[m Merge branch 'master' of github.com:Sparklll/jwd-final into develop [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;36m|[m [32m|[m[1;36m\[m  
+[1;36m|[m [32m|[m[1;36m/[m  
+[1;36m|[m[1;36m/[m[32m|[m   
+* [32m|[m   [32m2021-04-13T03:12:36+03:00 [31m3847a6b420dc6e4c0b19dc40d457bd5151fe1b5d[m -[33m[m Merge pull request #3 from Sparklll/develop [34m[GitHub <noreply@github.com>][m [34mE[m
+[34m|[m[35m\[m [32m\[m  
+[34m|[m [35m|[m * [32m2021-04-13T10:41:29+03:00 [31me15d01bc87ff541dcf71f08e919000eadfdc5715[m -[33m[m update README.md [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m [35m|[m[35m/[m  
+[34m|[m * [32m2021-04-13T02:15:15+03:00 [31m689199b75b8745aa23aacfb9b7d4f72ce1200f07[m -[33m[m add custom jsp tag, set up sheduled executor, improve rendering of events section [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m * [32m2021-04-12T03:01:38+03:00 [31m4d6660b5ae8cf6b171d1d0440c2b2075f696b726[m -[33m[m add event container, improve user interaction with system [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m * [32m2021-04-11T03:35:49+03:00 [31m9febecdbdc70eecdc57f4ece81508ab9a5891c10[m -[33m[m improve betting system, make transactional stuff [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m * [32m2021-04-09T02:52:45+03:00 [31m76f6b32c5abe341a01b6e0f1856c22e6ae8235bf[m -[33m[m develop eventResult system [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m * [32m2021-04-06T03:42:58+03:00 [31m382dd8b2614410627900e881525c25d8843144e4[m -[33m[m complete, event module, improving outcomeResult module [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m * [32m2021-04-06T00:30:07+03:00 [31mcde08b1553d4baba25f486cb71768f8e948d8107[m -[33m[m begin debelopment of eventResult system [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m * [32m2021-04-05T02:31:59+03:00 [31m70135e755712e30e1fbc80eb21e1e39b9a115595[m -[33m[m update event block editing [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m * [32m2021-04-05T01:54:35+03:00 [31m970991ee13df5a3e6aa6e72da07f625c7886d616[m -[33m[m 60% events module [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m * [32m2021-04-04T02:48:24+03:00 [31m233d1e40ef1562fd5fe9283bcac5a9a87ff345dd[m -[33m[m admin event module in process [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m * [32m2021-04-02T16:14:47+03:00 [31m753d6c831144d63256f23052fc58077b7cd1b0da[m -[33m[m continue to improve admin panel [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m * [32m2021-04-01T03:46:02+03:00 [31m6350f65a9a72d004b053cf87c6eed72e40a9681e[m -[33m[m add new routes and make basic page structure of admin panel [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[34m|[m[34m/[m  
+*   [32m2021-03-31T22:45:33+03:00 [31mabaa4c61e5d526b252769f65911ab66180a97bdd[m -[33m[m Merge pull request #2 from Sparklll/develop [34m[GitHub <noreply@github.com>][m [34mE[m
+[36m|[m[1;31m\[m  
+[36m|[m * [32m2021-03-31T22:44:21+03:00 [31mf580394c8ad33daa05e023b1df71b9b6c1afc4b6[m -[33m[m improve admin action layer [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-31T22:43:19+03:00 [31m4810877a5bcca8800c9d18ec0f9fa106a392c2c1[m -[33m[m update scripts [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-31T03:37:25+03:00 [31mea8a9bdda38550818870cdd859a3971f3c98ab32[m -[33m[m update admin team block [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-31T01:45:41+03:00 [31m5a4567f9902ad86f8cbbfe8b19531d227b6cf482[m -[33m[m remake domain fundamentals, improve overall stuff, work on admin system [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-28T00:14:05+03:00 [31mc58b8d1992d06a6a091e2040f7e4bcba838e88b9[m -[33m[m improve project structure [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-22T22:22:03+03:00 [31m5f928a8718e2ae43f5eb40a23de6cab00381ea5b[m -[33m[m add filter access system [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-22T02:50:31+03:00 [31ma841c14a765171095ab6f3fe9bd84e6826035286[m -[33m[m complete authorization stuff [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-21T18:23:34+03:00 [31ma5cd93f1222fb8b8d4fd4e14b4b3b52d64ec65e4[m -[33m[m complete authorization system [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-21T03:21:22+03:00 [31m1cb89e885736363b70d60c537c76b389f2929d36[m -[33m[m authorization system alpha [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-19T09:21:00+03:00 [31m8f438d786020625d483064566fd17db2a1b8f582[m -[33m[m add new routes [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-18T21:13:44+03:00 [31m8be55d1ee2d504a854aba2e4061036cb2bbe29c3[m -[33m[m update maven config [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-18T12:44:15+03:00 [31m4f1766bd81bd2922107989ac1244a546950b19e9[m -[33m[m add db columns mapping [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[36m|[m * [32m2021-03-18T02:36:38+03:00 [31m3f5d352b9c73d9c2d1151792f9026039314507c2[m -[33m[m minor updates on layers [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+* [1;31m|[m [32m2021-03-16T16:44:29+03:00 [31m1ad55c208242d5f3da8b65172169f42c51c6745c[m -[33m[m Merge pull request #1 from Sparklll/develop [34m[GitHub <noreply@github.com>][m [34mE[m
+[1;32m|[m[1;31m\[m[1;31m|[m 
+[1;32m|[m * [32m2021-03-16T11:20:17+03:00 [31m2f665215c3ddc0b3ad83b11eda3d3baf2ca5a0c1[m -[33m[m implement action listener, small front changes, add json request support [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m * [32m2021-03-15T22:15:05+03:00 [31mad92f8e1949134745279531ac80474af1476f1d8[m -[33m[m complete, i18n support [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m * [32m2021-03-14T20:58:20+03:00 [31m6d82586d7478d4b8bceb4bf6fef46666a220e59d[m -[33m[m small update of pages and scripts [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m * [32m2021-03-14T16:48:39+03:00 [31m251f2c0e2bc88fa67023b0e8bde483805339c3be[m -[33m[m localize navbar [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m * [32m2021-03-14T15:20:30+03:00 [31m63bb837b066c1b063667382069b1ccc7ed4b3d08[m -[33m[m deal with jsp resources [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m * [32m2021-03-14T03:26:35+03:00 [31mc530980cca08cc48da9f148a7863263f64f7935d[m -[33m[m integrate jsp and localization [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m * [32m2021-03-13T19:22:33+03:00 [31m5acda09c7e69ef23a3217fc9c65df4dfb35cff85[m -[33m[m implement route system [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m * [32m2021-03-13T02:53:30+03:00 [31m1f6ce60c512f5f38338ee152f706124ca5245512[m -[33m[m controller in progress [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m * [32m2021-03-11T20:52:38+03:00 [31m5e2c9ba0579d394eec0e788e4c3ae20b9de13ea1[m -[33m[m add basic layers structure [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m * [32m2021-03-11T20:51:34+03:00 [31m21f657d41d812f1da3c7ba4fbe02c8b2de6ebfba[m -[33m[m add connection layer [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+[1;32m|[m[1;32m/[m  
+* [32m2021-02-18T02:09:58+03:00 [31m0e1900b2e938fb154087794a0516c8adb664df00[m -[33m[m add gitignore [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
+* [32m2021-02-18T02:06:50+03:00 [31mb57f9bbbcd1cd1f1c2122c0075e6cd8f810401af[m -[33m[m add domain layer [34m[Eugene <evgromadko@gmail.com>][m [34mN[m
