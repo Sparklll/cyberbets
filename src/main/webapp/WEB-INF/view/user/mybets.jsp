@@ -154,6 +154,16 @@
                                         </c:when>
                                     </c:choose>
                                 </span>
+                                <span class="bet-upshot text-center mt-2">
+                                    <c:choose>
+                                        <c:when test="${betData.bet.upshot eq 'FIRST_UPSHOT'}">
+                                            ${betData.event.firstTeam.name}
+                                        </c:when>
+                                        <c:when test="${betData.bet.upshot eq 'SECOND_UPSHOT'}">
+                                            ${betData.event.secondTeam.name}
+                                        </c:when>
+                                    </c:choose>
+                                </span>
                             </span>
 
                             <span class="text-center col-4">
@@ -171,7 +181,9 @@
                                                     <i class="fas fa-dollar-sign"></i>
                                                     <fmt:formatNumber value="${betData.bet.amount * betData.betCoefficient}"
                                                                       minIntegerDigits="1"
-                                                                      minFractionDigits="2" groupingUsed="false" />
+                                                                      minFractionDigits="2"
+                                                                      maxFractionDigits="2"
+                                                                      groupingUsed="false" />
                                                 </span>
                                             </c:when>
                                             <c:otherwise>

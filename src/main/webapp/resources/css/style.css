@@ -448,6 +448,10 @@ img {
 }
 
 /* -- MY-BETS CONTAINER-- */
+.mybets-container .custom-table-row {
+    font-size: 0.9rem;
+}
+
 .mybets-container .discipline-icon-wrapper {
     padding-right: 20px;
     border-right: 3px solid #8800ff;
@@ -460,6 +464,11 @@ img {
 
 .mybets-container .team {
     width: 50px;
+}
+
+.mybets-container .custom-table-row .bet-upshot {
+    font-style: italic;
+    color: #00ffae;
 }
 
 /* --DEPOSIT/WITHDRAW CONTAINER-- */
