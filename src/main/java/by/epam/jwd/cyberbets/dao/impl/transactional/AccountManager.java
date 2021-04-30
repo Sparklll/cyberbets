@@ -19,38 +19,14 @@ public class AccountManager {
     private static final Logger logger = LoggerFactory.getLogger(AccountManager.class);
 
     public void performDeposit(int accountId, BigDecimal amount) throws DaoException {
-        Connection transactionConnection = ConnectionPool.INSTANCE.getConnection();
-        try (transactionConnection) {
-            transactionConnection.setAutoCommit(false);
-
-            CompositeDao compositeDao = new CompositeDao.Builder(transactionConnection)
-                    .withAccountDao()
-                    .withTransactionDao()
-                    .build();
-
-            final AccountDao accountDao = compositeDao.getAccountDao();
-            final TransactionDao transactionDao = compositeDao.getTransactionDao();
-
-            Optional<Account> accountOptional = accountDao.findAccountById(accountId);
-            if (accountOptional.isPresent()) {
-                Instant currentDate = Instant.now();
-                Transaction transaction = new Transaction(accountId, TransactionType.DEPOSIT, amount, currentDate);
-
-                transactionDao.createTransaction(transaction);
-                accountDao.addToAccountBalance(accountId, amount);
-            }
-            transactionConnection.commit();
-        } catch (Exception e) {
-            try {
-                transactionConnection.rollback();
-                throw new DaoException(e);
-            } catch (SQLException sqlException) {
-                throw new DaoException(sqlException);
-            }
-        }
+        performTransaction(TransactionType.DEPOSIT, accountId, amount);
     }
 
     public void performWithdraw(int accountId, BigDecimal amount) throws DaoException {
+        performTransaction(TransactionType.WITHDRAW, accountId, amount);
+    }
+
+    private void performTransaction(TransactionType transactionType, int accountId, BigDecimal amount) throws DaoException {
         Connection transactionConnection = ConnectionPool.INSTANCE.getConnection();
         try (transactionConnection) {
             transactionConnection.setAutoCommit(false);
@@ -70,10 +46,16 @@ public class AccountManager {
 
                 if(accountBalance.compareTo(amount) >= 0) {
                     Instant currentDate = Instant.now();
-                    Transaction transaction = new Transaction(accountId, TransactionType.WITHDRAW, amount, currentDate);
 
+                    Transaction transaction = null;
+                    if(transactionType == TransactionType.WITHDRAW) {
+                        transaction = new Transaction(accountId, TransactionType.WITHDRAW, amount, currentDate);
+                        accountDao.subtractFromAccountBalance(accountId, amount);
+                    } else if(transactionType == TransactionType.DEPOSIT) {
+                        transaction = new Transaction(accountId, TransactionType.DEPOSIT, amount, currentDate);
+                        accountDao.addToAccountBalance(accountId, amount);
+                    }
                     transactionDao.createTransaction(transaction);
-                    accountDao.subtractFromAccountBalance(accountId, amount);
                 }
             }
             transactionConnection.commit();
@@ -83,6 +65,12 @@ public class AccountManager {
                 throw new DaoException(e);
             } catch (SQLException sqlException) {
                 throw new DaoException(sqlException);
+            }
+        } finally {
+            try {
+                transactionConnection.setAutoCommit(true);
+            } catch (SQLException sqlException) {
+                logger.error(sqlException.getMessage() ,sqlException);
             }
         }
     }
