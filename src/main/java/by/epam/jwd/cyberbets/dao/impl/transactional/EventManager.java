@@ -54,7 +54,9 @@ public class EventManager {
             }
         } finally {
             try {
-                transactionConnection.setAutoCommit(true);
+                if(transactionConnection != null) {
+                    transactionConnection.setAutoCommit(true);
+                }
             } catch (SQLException sqlException) {
                 logger.error(sqlException.getMessage() ,sqlException);
             }
@@ -148,7 +150,9 @@ public class EventManager {
             }
         } finally {
             try {
-                transactionConnection.setAutoCommit(true);
+                if(transactionConnection != null) {
+                    transactionConnection.setAutoCommit(true);
+                }
             } catch (SQLException sqlException) {
                 logger.error(sqlException.getMessage() ,sqlException);
             }
@@ -190,7 +194,9 @@ public class EventManager {
             }
         } finally {
             try {
-                transactionConnection.setAutoCommit(true);
+                if(transactionConnection != null) {
+                    transactionConnection.setAutoCommit(true);
+                }
             } catch (SQLException sqlException) {
                 logger.error(sqlException.getMessage() ,sqlException);
             }

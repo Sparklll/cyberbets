@@ -65,7 +65,9 @@ public class BetManager {
             }
         } finally {
             try {
-                transactionConnection.setAutoCommit(true);
+                if(transactionConnection != null) {
+                    transactionConnection.setAutoCommit(true);
+                }
             } catch (SQLException sqlException) {
                 logger.error(sqlException.getMessage() ,sqlException);
             }
@@ -125,7 +127,9 @@ public class BetManager {
             }
         }  finally {
             try {
-                transactionConnection.setAutoCommit(true);
+                if(transactionConnection != null) {
+                    transactionConnection.setAutoCommit(true);
+                }
             } catch (SQLException sqlException) {
                 logger.error(sqlException.getMessage() ,sqlException);
             }
@@ -177,7 +181,9 @@ public class BetManager {
             }
         } finally {
             try {
-                transactionConnection.setAutoCommit(true);
+                if(transactionConnection != null) {
+                    transactionConnection.setAutoCommit(true);
+                }
             } catch (SQLException sqlException) {
                 logger.error(sqlException.getMessage() ,sqlException);
             }
