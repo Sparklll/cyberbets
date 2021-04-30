@@ -19,7 +19,6 @@ public final class ProxyConnection implements Connection {
 
     @Override
     public void close() throws SQLException {
-        setAutoCommit(true);
         ConnectionPool.INSTANCE.releaseConnection(this);
     }
 
