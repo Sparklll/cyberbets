@@ -37,30 +37,29 @@ public final class LoadBetModal implements Action {
 
         if (role.getId() >= Role.USER.getId()) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
+            
+            try {
+                Object eventIdObj = jsonMap.get(ID_PARAM);
 
-            if (jsonMap != null) {
-                try {
-                    Double eventId = (Double) jsonMap.get(ID_PARAM);
+                if (eventIdObj instanceof Double eventId) {
 
-                    if(eventId != null) {
-                        int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
-                        List<EventResult> eventResults = eventResultService.findAllByEventId(eventId.intValue()).stream()
-                                .sorted(Comparator.comparing(EventResult::getId))
-                                .toList();
-                        List<Bet> eventBets = betService.findAllBetsByAccountIdAndEventId(accountId, eventId.intValue());
+                    int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
+                    List<EventResult> eventResults = eventResultService.findAllByEventId(eventId.intValue()).stream()
+                            .sorted(Comparator.comparing(EventResult::getId))
+                            .toList();
+                    List<Bet> eventBets = betService.findAllBetsByAccountIdAndEventId(accountId, eventId.intValue());
 
-                        Map<Integer, List<CoefficientsDto>> coefficients = LoadCoefficientsJob.cachedCoefficients;
-                        List<CoefficientsDto> eventCoefficients = coefficients.get(eventId.intValue());
+                    Map<Integer, List<CoefficientsDto>> coefficients = LoadCoefficientsJob.cachedCoefficients;
+                    List<CoefficientsDto> eventCoefficients = coefficients.get(eventId.intValue());
 
-                        request.setAttribute(EVENT_RESULTS_ATTR, eventResults);
-                        request.setAttribute(EVENT_BETS_ATTR, eventBets);
-                        request.setAttribute(EVENT_COEFFICIENTS_ATTR, eventCoefficients);
-                        RequestDispatcher requestDispatcher = request.getRequestDispatcher(BET_MODAL);
-                        requestDispatcher.forward(request, response);
-                    }
-                } catch (ServiceException | ClassCastException e) {
-                    logger.error(e.getMessage(), e);
+                    request.setAttribute(EVENT_RESULTS_ATTR, eventResults);
+                    request.setAttribute(EVENT_BETS_ATTR, eventBets);
+                    request.setAttribute(EVENT_COEFFICIENTS_ATTR, eventCoefficients);
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher(BET_MODAL);
+                    requestDispatcher.forward(request, response);
                 }
+            } catch (ServiceException e) {
+                logger.error(e.getMessage(), e);
             }
         }
     }

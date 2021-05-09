@@ -1,7 +1,6 @@
 package by.epam.jwd.cyberbets.dao.impl;
 
 import by.epam.jwd.cyberbets.dao.*;
-import by.epam.jwd.cyberbets.domain.Transaction;
 
 import java.sql.Connection;
 

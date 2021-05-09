@@ -3,6 +3,7 @@ package by.epam.jwd.cyberbets.controller.command.impl.general.event;
 import by.epam.jwd.cyberbets.controller.command.Action;
 import by.epam.jwd.cyberbets.domain.Event;
 import by.epam.jwd.cyberbets.domain.EventOutcomeType;
+import by.epam.jwd.cyberbets.domain.EventStatus;
 import by.epam.jwd.cyberbets.domain.dto.CoefficientsDto;
 import by.epam.jwd.cyberbets.service.job.LoadCoefficientsJob;
 import by.epam.jwd.cyberbets.service.job.LoadEventJob;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static by.epam.jwd.cyberbets.controller.Parameters.*;
 
@@ -39,7 +41,7 @@ public final class LoadEventSection implements Action {
         Cookie langCookie = null;
         Cookie disciplineFilterCookie = null;
 
-        if(cookies != null) {
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 String cookieName = cookie.getName();
                 if (cookieName.equals(LANG_COOKIE)) {
@@ -65,48 +67,31 @@ public final class LoadEventSection implements Action {
         List<EventData> upcomingEvents = new ArrayList<>();
         List<EventData> pastEvents = new ArrayList<>();
 
+        Stream<Event> cachedLiveEventsStream = LoadEventJob.cachedLiveEvents.stream();
+        Stream<Event> cachedUpcomingEventsStream = LoadEventJob.cachedUpcomingEvents.stream();
+        Stream<Event> cachedPastEventsStream = LoadEventJob.cachedPastEvents.stream();
+
         boolean isFilterDisciplineCookieEmpty = disciplineFilterCookie == null;
-        LoadEventJob.cachedLiveEvents.stream()
+        Stream.concat(Stream.concat(cachedLiveEventsStream, cachedUpcomingEventsStream), cachedPastEventsStream)
                 .filter(e -> isFilterDisciplineCookieEmpty
                         || filterDisciplines.contains(disciplineMap.get(e.getDiscipline().getId())))
-                        .sorted(Comparator.comparing(Event::getStartDate))
-                        .forEach(e -> {
-                            List<CoefficientsDto> eventCoefficients = coefficients.get(e.getId());
-                            for (CoefficientsDto coefficientsDto : eventCoefficients) {
-                                if (coefficientsDto.getEventOutcomeTypeId() == EventOutcomeType.TOTAL_WINNER.getId()) {
-                                    liveEvents.add(new EventData(e, coefficientsDto));
-                                    break;
-                                }
+                .sorted(Comparator.comparing(Event::getStartDate))
+                .forEach(e -> {
+                    List<CoefficientsDto> eventCoefficients = coefficients.get(e.getId());
+                    for (CoefficientsDto coefficientsDto : eventCoefficients) {
+                        if (coefficientsDto.getEventOutcomeTypeId() == EventOutcomeType.TOTAL_WINNER.getId()) {
+                            if (e.getStatus() == EventStatus.LIVE) {
+                                liveEvents.add(new EventData(e, coefficientsDto));
+                            } else if (e.getStatus() == EventStatus.PENDING) {
+                                upcomingEvents.add(new EventData(e, coefficientsDto));
+                            } else if (e.getStatus() == EventStatus.FINISHED) {
+                                pastEvents.add(new EventData(e, coefficientsDto));
                             }
-                        });
-        LoadEventJob.cachedUpcomingEvents.stream()
-                .filter(e -> isFilterDisciplineCookieEmpty
-                        || filterDisciplines.contains(disciplineMap.get(e.getDiscipline().getId())))
-                .sorted(Comparator.comparing(Event::getStartDate))
-                .forEach(e -> {
-                    List<CoefficientsDto> eventCoefficients = coefficients.get(e.getId());
-                    for (CoefficientsDto coefficientsDto : eventCoefficients) {
-                        if (coefficientsDto.getEventOutcomeTypeId() == EventOutcomeType.TOTAL_WINNER.getId()) {
-                            upcomingEvents.add(new EventData(e, coefficientsDto));
                             break;
                         }
                     }
                 });
-        LoadEventJob.cachedPastEvents.stream()
-                .filter(e -> isFilterDisciplineCookieEmpty
-                        || filterDisciplines.contains(disciplineMap.get(e.getDiscipline().getId())))
-                .sorted(Comparator.comparing(Event::getStartDate))
-                .forEach(e -> {
-                    List<CoefficientsDto> eventCoefficients = coefficients.get(e.getId());
-                    for (CoefficientsDto coefficientsDto : eventCoefficients) {
-                        if (coefficientsDto.getEventOutcomeTypeId() == EventOutcomeType.TOTAL_WINNER.getId()) {
-                            pastEvents.add(new EventData(e, coefficientsDto));
-                            break;
-                        }
-                    }
-                });
-
-
+        
         request.setAttribute(LOCALE_ATTR, locale);
         request.setAttribute(LIVE_EVENTS_ATTR, liveEvents);
         request.setAttribute(UPCOMING_EVENTS_ATTR, upcomingEvents);
@@ -116,7 +101,7 @@ public final class LoadEventSection implements Action {
         requestDispatcher.forward(request, response);
     }
 
-    public class EventData {
+    public static class EventData {
         private final Event event;
         private final CoefficientsDto totalCoefficients;
 

@@ -37,47 +37,45 @@ public final class UpdateBet implements Action {
         if (role.getId() >= Role.USER.getId()) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
-                PrintWriter out = response.getWriter();
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-                try {
-                    Double eventResultId = (Double) jsonMap.get(EVENT_RESULT_ID_PARAM);
-                    Double upshotId = (Double) jsonMap.get(UPSHOT_ID_PARAM);
-                    Double amount = (Double) jsonMap.get(AMOUNT_PARAM);
+            try {
+                Object eventResultIdObj = jsonMap.get(EVENT_RESULT_ID_PARAM);
+                Object upshotIdObj = jsonMap.get(UPSHOT_ID_PARAM);
+                Object amountObj = jsonMap.get(AMOUNT_PARAM);
 
-                    if (eventResultId != null
-                            && upshotId != null
-                            && amount != null) {
+                if (eventResultIdObj instanceof Double eventResultId
+                        && upshotIdObj instanceof Double upshotId
+                        && amountObj instanceof Double amount) {
 
-                        int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
-                        BigDecimal amountValue = BigDecimal.valueOf(amount);
+                    int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
+                    BigDecimal amountValue = BigDecimal.valueOf(amount);
 
-                        BetDto betDto = new BetDto(accountId, eventResultId.intValue(), upshotId.intValue(), amountValue);
-                        Validator<BetDto> betValidator = ValidatorProvider.INSTANCE.getBetValidator();
+                    BetDto betDto = new BetDto(accountId, eventResultId.intValue(), upshotId.intValue(), amountValue);
+                    Validator<BetDto> betValidator = ValidatorProvider.INSTANCE.getBetValidator();
 
-                        if(betValidator.isValid(betDto)) {
-                            betService.updateBet(betDto);
+                    if (betValidator.isValid(betDto)) {
+                        betService.updateBet(betDto);
 
-                            Optional<BigDecimal> updatedBalanceOptional = accountService.getAccountBalance(accountId);
-                            if(updatedBalanceOptional.isPresent()) {
-                                BigDecimal updatedBalance = updatedBalanceOptional.get();
-                                jsonResponse.addProperty(BALANCE_PARAM, updatedBalance);
-                            }
-                            jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                        } else {
-                            jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
+                        Optional<BigDecimal> updatedBalanceOptional = accountService.getAccountBalance(accountId);
+                        if (updatedBalanceOptional.isPresent()) {
+                            BigDecimal updatedBalance = updatedBalanceOptional.get();
+                            jsonResponse.addProperty(BALANCE_PARAM, updatedBalance);
                         }
+                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }
-                } catch (ServiceException | ClassCastException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
+                } else {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                 }
-                out.write(jsonResponse.toString());
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }

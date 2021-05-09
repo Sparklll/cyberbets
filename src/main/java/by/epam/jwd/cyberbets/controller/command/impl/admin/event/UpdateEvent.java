@@ -12,7 +12,7 @@ import by.epam.jwd.cyberbets.domain.dto.EventDto;
 import by.epam.jwd.cyberbets.service.EventService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
-import by.epam.jwd.cyberbets.utils.gson.InstantAdapter;
+import by.epam.jwd.cyberbets.util.gson.InstantAdapter;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.ServletException;
@@ -45,32 +45,32 @@ public final class UpdateEvent implements Action {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
             if (jsonMap != null) {
+                PrintWriter out = response.getWriter();
                 JsonObject jsonResponse = new JsonObject();
                 response.setContentType(JSON_UTF8_CONTENT_TYPE);
-                PrintWriter out = response.getWriter();
 
                 try {
-                    Double eventId = (Double) jsonMap.get(ID_PARAM);
-                    Double disciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
-                    Double leagueId = (Double) jsonMap.get(LEAGUE_ID_PARAM);
-                    Double firstTeamId = (Double) jsonMap.get(FIRST_TEAM_ID_PARAM);
-                    Double secondTeamId = (Double) jsonMap.get(SECOND_TEAM_ID_PARAM);
-                    Double formatId = (Double) jsonMap.get(FORMAT_ID_PARAM);
-                    Double eventStatusId = (Double) jsonMap.get(STATUS_PARAM);
-                    Double royaltyParam = (Double) jsonMap.get(ROYALTY_PERCENTAGE_PARAM);
-                    Double startDateParam = (Double) jsonMap.get(START_DATE_PARAM);
-                    String eventResultsJsonStr = new Gson().toJson(jsonMap.get(EVENT_RESULTS_PARAM));
+                    Object eventIdObj = jsonMap.get(ID_PARAM);
+                    Object disciplineIdObj = jsonMap.get(DISCIPLINE_PARAM);
+                    Object leagueIdObj = jsonMap.get(LEAGUE_ID_PARAM);
+                    Object firstTeamIdObj = jsonMap.get(FIRST_TEAM_ID_PARAM);
+                    Object secondTeamIdObj = jsonMap.get(SECOND_TEAM_ID_PARAM);
+                    Object formatIdObj = jsonMap.get(FORMAT_ID_PARAM);
+                    Object eventStatusIdObj = jsonMap.get(STATUS_PARAM);
+                    Object royaltyParamObj = jsonMap.get(ROYALTY_PERCENTAGE_PARAM);
+                    Object startDateParamObj = jsonMap.get(START_DATE_PARAM);
+                    Object eventResultsJsonStrObj = new Gson().toJson(jsonMap.get(EVENT_RESULTS_PARAM));
 
-                    if (eventId != null
-                            && disciplineId != null
-                            && leagueId != null
-                            && firstTeamId != null
-                            && secondTeamId != null
-                            && formatId != null
-                            && eventStatusId != null
-                            && royaltyParam != null
-                            && startDateParam != null
-                            && eventResultsJsonStr != null) {
+                    if (eventIdObj instanceof Double eventId
+                            && disciplineIdObj instanceof Double disciplineId
+                            && leagueIdObj instanceof Double leagueId
+                            && firstTeamIdObj instanceof Double firstTeamId
+                            && secondTeamIdObj instanceof Double secondTeamId
+                            && formatIdObj instanceof Double formatId
+                            && eventStatusIdObj instanceof Double eventStatusId
+                            && royaltyParamObj instanceof Double royaltyParam
+                            && startDateParamObj instanceof Double startDateParam
+                            && eventResultsJsonStrObj instanceof String eventResultsJsonStr) {
 
                         BigDecimal royalty = new BigDecimal(royaltyParam);
                         Instant startDate = Instant.ofEpochSecond(startDateParam.longValue());
@@ -100,7 +100,7 @@ public final class UpdateEvent implements Action {
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }
-                } catch (ServiceException | ClassCastException e) {
+                } catch (ServiceException e) {
                     jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
                     logger.error(e.getMessage(), e);
                 }

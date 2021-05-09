@@ -6,7 +6,7 @@ import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.service.EventService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
-import by.epam.jwd.cyberbets.utils.gson.InstantAdapter;
+import by.epam.jwd.cyberbets.util.gson.InstantAdapter;
 import com.google.gson.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,26 +39,41 @@ public final class LoadEvent implements Action {
         if (role == Role.ADMIN) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                PrintWriter out = response.getWriter();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-                try {
-                    Double filterId = (Double) jsonMap.get(ID_PARAM);
-                    Double filterDisciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
-                    Double filterEventFormat = (Double) jsonMap.get(EVENT_FORMAT_PARAM);
-                    Double filterRoyalty = (Double) jsonMap.get(ROYALTY_PERCENTAGE_PARAM);
-                    Double filterStatus = (Double) jsonMap.get(STATUS_PARAM);
-                    String filterEvent = (String) jsonMap.get(EVENT_PARAM);
-                    String filterLeagueName = (String) jsonMap.get(LEAGUE_NAME_PARAM);
+            try {
+                Object filterIdObj = jsonMap.get(ID_PARAM);
+                Object filterDisciplineIdObj = jsonMap.get(DISCIPLINE_PARAM);
+                Object filterEventFormatObj = jsonMap.get(EVENT_FORMAT_PARAM);
+                Object filterRoyaltyObj = jsonMap.get(ROYALTY_PERCENTAGE_PARAM);
+                Object filterStatusObj = jsonMap.get(STATUS_PARAM);
+                Object filterEventObj = jsonMap.get(EVENT_PARAM);
+                Object filterLeagueNameObj = jsonMap.get(LEAGUE_NAME_PARAM);
+
+                if ((filterIdObj instanceof Double || filterIdObj == null)
+                        && (filterDisciplineIdObj instanceof Double || filterDisciplineIdObj == null)
+                        && (filterEventFormatObj instanceof Double || filterEventFormatObj == null)
+                        && (filterRoyaltyObj instanceof Double || filterRoyaltyObj == null)
+                        && (filterStatusObj instanceof Double || filterStatusObj == null)
+                        && (filterEventObj instanceof String || filterEventObj == null)
+                        && (filterLeagueNameObj instanceof String || filterEventObj == null)) {
+
+                    Double filterId = (Double) filterIdObj;
+                    Double filterDisciplineId = (Double) filterDisciplineIdObj;
+                    Double filterEventFormat = (Double) filterEventFormatObj;
+                    Double filterRoyalty = (Double) filterRoyaltyObj;
+                    Double filterStatus = (Double) filterStatusObj;
+                    String filterEvent = (String) filterEventObj;
+                    String filterLeagueName = (String) filterLeagueNameObj;
 
                     List<Event> events = eventService.findAll();
                     events = events.stream()
                             .filter(e -> {
                                 String eventInfo = (e.getFirstTeam().getName() + e.getSecondTeam().getName()).toLowerCase();
                                 return (filterId == null || e.getId() == filterId.intValue())
-                                        && (filterRoyalty == null || e.getRoyaltyPercentage().equals(BigDecimal.valueOf(filterRoyalty)))
+                                        && (filterRoyalty == null || e.getRoyaltyPercentage().compareTo(BigDecimal.valueOf(filterRoyalty)) == 0)
                                         && (StringUtils.isBlank(filterEvent) || eventInfo.contains(filterEvent.toLowerCase()))
                                         && (StringUtils.isBlank(filterLeagueName) || e.getLeague().getName().toLowerCase().contains(filterLeagueName.toLowerCase()))
                                         && (filterEventFormat == null
@@ -80,12 +95,12 @@ public final class LoadEvent implements Action {
 
                     jsonResponse.add(DATA_PROPERTY, jsonElementEvents);
                     jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                } catch (ServiceException | ClassCastException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
                 }
-                out.write(jsonResponse.toString());
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }

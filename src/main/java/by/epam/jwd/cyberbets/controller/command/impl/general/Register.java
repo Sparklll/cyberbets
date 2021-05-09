@@ -32,21 +32,24 @@ public final class Register implements Action {
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-        if(jsonMap != null) {
-            String email = (String) jsonMap.get(EMAIL_PARAM);
-            String password = (String) jsonMap.get(PASSWORD_PARAM);
-            String repeatedPassword = (String) jsonMap.get(REPEATED_PASSWORD_PARAM);
-            RegisterDto registerDto = new RegisterDto(email, password, repeatedPassword);
+        PrintWriter out = response.getWriter();
+        JsonObject jsonResponse = new JsonObject();
+        response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-            RegisterValidator registerValidator = ValidatorProvider.INSTANCE.getRegisterValidator();
-            if(registerValidator.isValid(registerDto)) {
-                JsonObject jsonResponse = new JsonObject();
-                PrintWriter out = response.getWriter();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
+        try {
+            Object emailObj = jsonMap.get(EMAIL_PARAM);
+            Object passwordObj = jsonMap.get(PASSWORD_PARAM);
+            Object repeatedPasswordObj = jsonMap.get(REPEATED_PASSWORD_PARAM);
 
-                try {
+            if (emailObj instanceof String email
+                    && passwordObj instanceof String password
+                    && repeatedPasswordObj instanceof String repeatedPassword) {
+
+                RegisterDto registerDto = new RegisterDto(email, password, repeatedPassword);
+                RegisterValidator registerValidator = ValidatorProvider.INSTANCE.getRegisterValidator();
+                if (registerValidator.isValid(registerDto)) {
                     Optional<Account> existingAccount = accountService.findAccountByEmail(email);
-                    if(existingAccount.isEmpty()) {
+                    if (existingAccount.isEmpty()) {
                         accountService.createAccount(registerDto);
                         HttpSession httpSession = request.getSession();
                         httpSession.setAttribute(ACCOUNT_EMAIL_ATTR, email);
@@ -54,12 +57,14 @@ public final class Register implements Action {
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }
-                } catch (ServiceException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
                 }
-                out.write(jsonResponse.toString());
+            } else {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
             }
+        } catch (ServiceException e) {
+            jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+            logger.error(e.getMessage(), e);
         }
+        out.write(jsonResponse.toString());
     }
 }

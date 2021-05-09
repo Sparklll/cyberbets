@@ -10,17 +10,17 @@ This project is an e-sports betting that focuses on the most popular cyber disci
 ## <p>Stack</p>
 #### Backend
 - Java 16
-- Jakarta EE 8.0 (JSP/ SERVLETS / JSTL)
+- Jakarta EE 8.0 (JSP / SERVLETS / JSTL)
 - Slf4j/Log4j2
 - Apache Commons Lang 3
 - Google GSON
 - Password4j
 - Database - PostgreSQL 
 
-#### Fronted
+#### Frontend
 - Plain Html/CSS + Bootstrap 5.0
 - JS/JQuery,  + Fetch/Ajax interaction
-- Libraries / Plugins (DayJS, GridJS, NotifyJS, ChartJS, PayformJS, SelectPicker, ~~JQuery i18n~~)
+- Libraries / Plugins (DayJS, GridJS, NotifyJS, ChartJS, PayformJS, SelectPicker)
 
 ## Docs
 

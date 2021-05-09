@@ -52,14 +52,6 @@ public class EventManager {
             } catch (SQLException sqlException) {
                 throw new DaoException(sqlException);
             }
-        } finally {
-            try {
-                if(transactionConnection != null) {
-                    transactionConnection.setAutoCommit(true);
-                }
-            } catch (SQLException sqlException) {
-                logger.error(sqlException.getMessage() ,sqlException);
-            }
         }
     }
 
@@ -148,14 +140,6 @@ public class EventManager {
             } catch (SQLException sqlException) {
                 throw new DaoException(sqlException);
             }
-        } finally {
-            try {
-                if(transactionConnection != null) {
-                    transactionConnection.setAutoCommit(true);
-                }
-            } catch (SQLException sqlException) {
-                logger.error(sqlException.getMessage() ,sqlException);
-            }
         }
     }
 
@@ -191,14 +175,6 @@ public class EventManager {
                 throw new DaoException(e);
             } catch (SQLException sqlException) {
                 throw new DaoException(sqlException);
-            }
-        } finally {
-            try {
-                if(transactionConnection != null) {
-                    transactionConnection.setAutoCommit(true);
-                }
-            } catch (SQLException sqlException) {
-                logger.error(sqlException.getMessage() ,sqlException);
             }
         }
     }

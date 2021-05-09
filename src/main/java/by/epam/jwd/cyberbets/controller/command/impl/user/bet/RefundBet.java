@@ -37,34 +37,33 @@ public final class RefundBet implements Action {
         if (role.getId() >= Role.USER.getId()) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
-                PrintWriter out = response.getWriter();
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-                try {
-                    Double eventResultId = (Double) jsonMap.get(EVENT_RESULT_ID_PARAM);
+            try {
+                Object eventResultIdObj = jsonMap.get(EVENT_RESULT_ID_PARAM);
 
-                    if (eventResultId != null) {
-                        int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
-                        BetDto betDto = new BetDto(accountId, eventResultId.intValue());
-                        betService.deleteBet(betDto);
+                if (eventResultIdObj instanceof Double eventResultId) {
 
-                        Optional<BigDecimal> updatedBalanceOptional = accountService.getAccountBalance(accountId);
-                        if(updatedBalanceOptional.isPresent()) {
-                            BigDecimal updatedBalance = updatedBalanceOptional.get();
-                            jsonResponse.addProperty(BALANCE_PARAM, updatedBalance);
-                        }
-                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                    } else {
-                        jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
+                    int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
+                    BetDto betDto = new BetDto(accountId, eventResultId.intValue());
+                    betService.deleteBet(betDto);
+
+                    Optional<BigDecimal> updatedBalanceOptional = accountService.getAccountBalance(accountId);
+                    if (updatedBalanceOptional.isPresent()) {
+                        BigDecimal updatedBalance = updatedBalanceOptional.get();
+                        jsonResponse.addProperty(BALANCE_PARAM, updatedBalance);
                     }
-                } catch (ServiceException | ClassCastException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
+                } else {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                 }
-                out.write(jsonResponse.toString());
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }

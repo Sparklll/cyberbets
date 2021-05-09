@@ -31,26 +31,22 @@ public class LoadRegistrationsStatistics implements Action {
         Role role = (Role) request.getAttribute(ROLE_ATTR);
 
         if (role == Role.ADMIN) {
-            Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
-                PrintWriter out = response.getWriter();
+            try {
+                Map<String, Long> registrationsDateAndAmount =
+                        accountService.getDayRegistrationsByPeriod(MONTH_DAYS);
 
-                try {
-                    Map<String, Long> registrationsDateAndAmount =
-                            accountService.getDayRegistrationsByPeriod(MONTH_DAYS);
-
-                    String jsonStrRegistrationsDateAndAmount = new Gson().toJson(registrationsDateAndAmount);
-                    jsonResponse.addProperty(DATA_PROPERTY, jsonStrRegistrationsDateAndAmount);
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                } catch (ServiceException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
-                }
-                out.write(jsonResponse.toString());
+                String jsonStrRegistrationsDateAndAmount = new Gson().toJson(registrationsDateAndAmount);
+                jsonResponse.addProperty(DATA_PROPERTY, jsonStrRegistrationsDateAndAmount);
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }

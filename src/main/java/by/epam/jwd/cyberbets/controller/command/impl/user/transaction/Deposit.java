@@ -32,33 +32,31 @@ public final class Deposit implements Action {
         if (role.getId() >= Role.USER.getId()) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
-                PrintWriter out = response.getWriter();
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-                try {
-                    Double amount = (Double) jsonMap.get(AMOUNT_PARAM);
+            try {
+                Object amountObj = jsonMap.get(AMOUNT_PARAM);
 
-                    if (amount != null) {
-                        // Simple stub, no payment service redirection;
-                        BigDecimal amountValue = BigDecimal.valueOf(amount);
-                        if(amountValue.compareTo(BigDecimal.ZERO) > 0) {
-                            int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
-                            accountService.performDeposit(accountId, amountValue);
-                            jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                        } else {
-                            jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
-                        }
+                if (amountObj instanceof Double amount) {
+                    // Simple stub, no payment service redirection;
+                    BigDecimal amountValue = BigDecimal.valueOf(amount);
+                    if (amountValue.compareTo(BigDecimal.ZERO) > 0) {
+                        int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
+                        accountService.performDeposit(accountId, amountValue);
+                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }
-                } catch (ServiceException | ClassCastException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
+                } else {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                 }
-                out.write(jsonResponse.toString());
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }
