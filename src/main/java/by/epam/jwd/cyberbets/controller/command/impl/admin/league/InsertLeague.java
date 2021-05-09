@@ -36,48 +36,46 @@ public final class InsertLeague implements Action {
         if (role == Role.ADMIN) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
-                PrintWriter out = response.getWriter();
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-                try {
-                    Double disciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
-                    String leagueName = (String) jsonMap.get(LEAGUE_NAME_PARAM);
-                    LinkedTreeMap<String, String> leagueIconObj = (LinkedTreeMap<String, String>) jsonMap.get(LEAGUE_ICON_PARAM);
+            try {
+                Object disciplineIdObj = jsonMap.get(DISCIPLINE_PARAM);
+                Object leagueNameObj = jsonMap.get(LEAGUE_NAME_PARAM);
+                Object leagueIconObj = jsonMap.get(LEAGUE_ICON_PARAM);
 
-                    if(leagueName != null
-                            && leagueIconObj !=null
-                            && disciplineId !=null) {
+                if (disciplineIdObj instanceof Double disciplineId
+                        && leagueNameObj instanceof String leagueName
+                        && leagueIconObj instanceof LinkedTreeMap<?, ?> leagueIcon) {
 
-                        String leagueIconBase64 = leagueIconObj.get(PATH_PARAM);
-                        LeagueDto leagueDto = new LeagueDto(leagueName, leagueIconBase64, disciplineId.intValue());
+                    String leagueIconBase64 = (String) leagueIcon.get(PATH_PARAM);
+                    LeagueDto leagueDto = new LeagueDto(leagueName, leagueIconBase64, disciplineId.intValue());
 
-                        Validator<LeagueDto> leagueValidator = ValidatorProvider.INSTANCE.getLeagueValidator();
-                        if (leagueValidator.isValid(leagueDto)) {
-                            int id = leagueService.createLeague(leagueDto);
+                    Validator<LeagueDto> leagueValidator = ValidatorProvider.INSTANCE.getLeagueValidator();
+                    if (leagueValidator.isValid(leagueDto)) {
+                        int id = leagueService.createLeague(leagueDto);
 
-                            String leagueIconPath = "";
-                            Optional<Resource> resourceOptional = leagueService.findIconResourceByLeagueId(id);
-                            if(resourceOptional.isPresent()) {
-                                leagueIconPath += resourceOptional.get().getPath();
-                            }
-
-                            jsonResponse.addProperty(ID_PARAM, id);
-                            jsonResponse.addProperty(PATH_PARAM, leagueIconPath);
-                            jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                        } else {
-                            jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
+                        String leagueIconPath = "";
+                        Optional<Resource> resourceOptional = leagueService.findIconResourceByLeagueId(id);
+                        if (resourceOptional.isPresent()) {
+                            leagueIconPath += resourceOptional.get().getPath();
                         }
+
+                        jsonResponse.addProperty(ID_PARAM, id);
+                        jsonResponse.addProperty(PATH_PARAM, leagueIconPath);
+                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }
-                } catch (ServiceException | ClassCastException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
+                } else {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                 }
-                out.write(jsonResponse.toString());
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }

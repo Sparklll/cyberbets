@@ -38,51 +38,52 @@ public final class UpdateTeam implements Action {
         if (role == Role.ADMIN) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
-                PrintWriter out = response.getWriter();
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-                try {
-                    Double id = (Double) jsonMap.get(ID_PARAM);
-                    Double teamRating = (Double) jsonMap.get(TEAM_RATING_PARAM);
-                    Double disciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
-                    String teamName = (String) jsonMap.get(TEAM_NAME_PARAM);
-                    LinkedTreeMap<String, String> teamLogoObj = (LinkedTreeMap<String, String>) jsonMap.get(TEAM_LOGO_PARAM);
-                    String teamLogoBase64 = teamLogoObj != null ? teamLogoObj.get(PATH_PARAM) : "";
+            try {
+                Object idObj = jsonMap.get(ID_PARAM);
+                Object teamRatingObj = jsonMap.get(TEAM_RATING_PARAM);
+                Object disciplineIdObj = jsonMap.get(DISCIPLINE_PARAM);
+                Object teamNameObj = jsonMap.get(TEAM_NAME_PARAM);
+                Object teamLogoObj = jsonMap.get(TEAM_LOGO_PARAM);
 
-                    if (id != null
-                            && teamRating != null
-                            && disciplineId != null
-                            && teamName != null) {
+                if (idObj instanceof Double id
+                        && teamRatingObj instanceof Double teamRating
+                        && disciplineIdObj instanceof Double disciplineId
+                        && teamNameObj instanceof String teamName) {
 
-                        TeamDto teamDto = new TeamDto(id.intValue(), teamName,
-                                teamRating.intValue(), teamLogoBase64, disciplineId.intValue());
+                    String teamLogoBase64 = teamLogoObj instanceof LinkedTreeMap<?, ?> teamLogo
+                            ? (String) teamLogo.get(PATH_PARAM)
+                            : "";
 
-                        Validator<TeamDto> teamValidator = ValidatorProvider.INSTANCE.getTeamValidator();
-                        if (teamValidator.isValid(teamDto)) {
-                            teamService.updateTeam(teamDto);
+                    TeamDto teamDto = new TeamDto(id.intValue(), teamName,
+                            teamRating.intValue(), teamLogoBase64, disciplineId.intValue());
 
-                            String teamLogoPath = "";
-                            Optional<Resource> resourceOptional = teamService.findLogoResourceByTeamId(id.intValue());
-                            if (resourceOptional.isPresent()) {
-                                teamLogoPath += resourceOptional.get().getPath();
-                            }
+                    Validator<TeamDto> teamValidator = ValidatorProvider.INSTANCE.getTeamValidator();
+                    if (teamValidator.isValid(teamDto)) {
+                        teamService.updateTeam(teamDto);
 
-                            jsonResponse.addProperty(PATH_PARAM, teamLogoPath);
-                            jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                        } else {
-                            jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
+                        String teamLogoPath = "";
+                        Optional<Resource> resourceOptional = teamService.findLogoResourceByTeamId(id.intValue());
+                        if (resourceOptional.isPresent()) {
+                            teamLogoPath += resourceOptional.get().getPath();
                         }
+
+                        jsonResponse.addProperty(PATH_PARAM, teamLogoPath);
+                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }
-                } catch (ServiceException | ClassCastException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
+                } else {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                 }
-                out.write(jsonResponse.toString());
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }

@@ -1,6 +1,5 @@
 package by.epam.jwd.cyberbets.service;
 
-import by.epam.jwd.cyberbets.dao.exception.DaoException;
 import by.epam.jwd.cyberbets.domain.Resource;
 import by.epam.jwd.cyberbets.domain.Team;
 import by.epam.jwd.cyberbets.domain.dto.TeamDto;

@@ -1,7 +1,7 @@
 package by.epam.jwd.cyberbets.controller.command.impl.admin.team;
 
 import by.epam.jwd.cyberbets.controller.command.Action;
-import by.epam.jwd.cyberbets.domain.League;
+import by.epam.jwd.cyberbets.domain.Discipline;
 import by.epam.jwd.cyberbets.domain.Role;
 import by.epam.jwd.cyberbets.domain.Team;
 import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
@@ -40,16 +40,26 @@ public final class LoadTeam implements Action {
         if (role == Role.ADMIN) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                PrintWriter out = response.getWriter();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-                try {
-                    String filterTeamName = (String) jsonMap.get(TEAM_NAME_PARAM);
-                    Double filterId = (Double) jsonMap.get(ID_PARAM);
-                    Double filterTeamRating = (Double) jsonMap.get(TEAM_RATING_PARAM);
-                    Double filterDisciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
+            try {
+                Object filterIdObj = jsonMap.get(ID_PARAM);
+                Object filterTeamNameObj = jsonMap.get(TEAM_NAME_PARAM);
+                Object filterDisciplineIdObj = jsonMap.get(DISCIPLINE_PARAM);
+                Object filterTeamRatingObj = jsonMap.get(TEAM_RATING_PARAM);
+
+
+                if((filterIdObj instanceof Double || filterIdObj == null)
+                        && (filterTeamNameObj instanceof String || filterTeamNameObj == null)
+                        && (filterDisciplineIdObj instanceof Double || filterDisciplineIdObj == null)
+                        && (filterTeamRatingObj instanceof Double || filterTeamRatingObj == null)) {
+
+                    Double filterId = (Double) filterIdObj;
+                    String filterTeamName = (String) filterTeamNameObj;
+                    Double filterDisciplineId = (Double) filterDisciplineIdObj;
+                    Double filterTeamRating = (Double) filterTeamRatingObj;
 
                     List<Team> teams = teamService.findAll();
                     teams = teams.stream()
@@ -67,12 +77,12 @@ public final class LoadTeam implements Action {
 
                     jsonResponse.add(DATA_PROPERTY, jsonElementTeams);
                     jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                } catch (ServiceException | ClassCastException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
                 }
-                out.write(jsonResponse.toString());
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }

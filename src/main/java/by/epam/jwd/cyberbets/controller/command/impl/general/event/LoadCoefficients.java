@@ -21,8 +21,8 @@ import static by.epam.jwd.cyberbets.controller.Parameters.*;
 public final class LoadCoefficients implements Action {
     @Override
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JsonObject jsonResponse = new JsonObject();
         PrintWriter out = response.getWriter();
+        JsonObject jsonResponse = new JsonObject();
         response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
         Map<Integer, List<CoefficientsDto>> coefficients = LoadCoefficientsJob.cachedCoefficients;
@@ -31,7 +31,6 @@ public final class LoadCoefficients implements Action {
 
         jsonResponse.add(DATA_PROPERTY, jsonElementCoefficients);
         jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-
         out.write(jsonResponse.toString());
     }
 }

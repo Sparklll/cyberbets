@@ -35,29 +35,28 @@ public final class LoadEventResults implements Action {
         if (role == Role.ADMIN) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
-                PrintWriter out = response.getWriter();
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-                try {
-                    Double eventId = (Double) jsonMap.get(ID_PARAM);
-                    if (eventId != null) {
-                        List<EventResult> eventResults = eventResultService.findAllByEventId(eventId.intValue());
-                        eventResults.sort(Comparator.comparing(EventResult::getId));
-                        JsonElement eventResultsElement = new Gson().toJsonTree(eventResults);
+            try {
+                Object eventIdObj = jsonMap.get(ID_PARAM);
 
-                        jsonResponse.add(DATA_PROPERTY, eventResultsElement);
-                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                    } else {
-                        jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
-                    }
-                } catch (ServiceException | ClassCastException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
+                if (eventIdObj instanceof Double eventId) {
+                    List<EventResult> eventResults = eventResultService.findAllByEventId(eventId.intValue());
+                    eventResults.sort(Comparator.comparing(EventResult::getId));
+                    JsonElement eventResultsElement = new Gson().toJsonTree(eventResults);
+
+                    jsonResponse.add(DATA_PROPERTY, eventResultsElement);
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
+                } else {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                 }
-                out.write(jsonResponse.toString());
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }

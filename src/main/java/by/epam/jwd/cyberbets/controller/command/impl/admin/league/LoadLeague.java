@@ -39,15 +39,22 @@ public final class LoadLeague implements Action {
         if (role == Role.ADMIN) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                PrintWriter out = response.getWriter();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-                try {
-                    Double filterId = (Double) jsonMap.get(ID_PARAM);
-                    Double filterDisciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
-                    String filterLeagueName = (String) jsonMap.get(LEAGUE_NAME_PARAM);
+            try {
+                Object filterIdObj = jsonMap.get(ID_PARAM);
+                Object filterDisciplineIdObj = jsonMap.get(DISCIPLINE_PARAM);
+                Object filterLeagueNameObj = jsonMap.get(LEAGUE_NAME_PARAM);
+
+                if((filterIdObj instanceof Double || filterIdObj == null)
+                    && (filterDisciplineIdObj instanceof Double || filterDisciplineIdObj == null)
+                    && (filterLeagueNameObj instanceof String || filterLeagueNameObj == null)) {
+
+                    Double filterId = (Double) filterIdObj;
+                    Double filterDisciplineId = (Double) filterDisciplineIdObj;
+                    String filterLeagueName = (String) filterLeagueNameObj;
 
                     List<League> leagues = leagueService.findAll();
                     leagues = leagues.stream()
@@ -64,12 +71,12 @@ public final class LoadLeague implements Action {
 
                     jsonResponse.add(DATA_PROPERTY, jsonElementLeagues);
                     jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                } catch (ServiceException | ClassCastException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
                 }
-                out.write(jsonResponse.toString());
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }

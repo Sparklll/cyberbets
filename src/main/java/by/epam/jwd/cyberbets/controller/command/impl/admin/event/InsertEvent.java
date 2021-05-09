@@ -11,7 +11,7 @@ import by.epam.jwd.cyberbets.domain.dto.EventDto;
 import by.epam.jwd.cyberbets.service.EventService;
 import by.epam.jwd.cyberbets.service.exception.ServiceException;
 import by.epam.jwd.cyberbets.service.impl.ServiceProvider;
-import by.epam.jwd.cyberbets.utils.gson.InstantAdapter;
+import by.epam.jwd.cyberbets.util.gson.InstantAdapter;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.ServletException;
@@ -43,66 +43,64 @@ public final class InsertEvent implements Action {
         if (role == Role.ADMIN) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
-                PrintWriter out = response.getWriter();
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-                try {
-                    Double disciplineId = (Double) jsonMap.get(DISCIPLINE_PARAM);
-                    Double leagueId = (Double) jsonMap.get(LEAGUE_ID_PARAM);
-                    Double firstTeamId = (Double) jsonMap.get(FIRST_TEAM_ID_PARAM);
-                    Double secondTeamId = (Double) jsonMap.get(SECOND_TEAM_ID_PARAM);
-                    Double formatId = (Double) jsonMap.get(FORMAT_ID_PARAM);
-                    Double eventStatusId = (Double) jsonMap.get(STATUS_PARAM);
-                    Double royaltyParam = (Double) jsonMap.get(ROYALTY_PERCENTAGE_PARAM);
-                    Double startDateParam = (Double) jsonMap.get(START_DATE_PARAM);
-                    String eventResultsJsonStr = new Gson().toJson(jsonMap.get(EVENT_RESULTS_PARAM));
+            try {
+                Object disciplineIdObj = jsonMap.get(DISCIPLINE_PARAM);
+                Object leagueIdObj = jsonMap.get(LEAGUE_ID_PARAM);
+                Object firstTeamIdObj = jsonMap.get(FIRST_TEAM_ID_PARAM);
+                Object secondTeamIdObj = jsonMap.get(SECOND_TEAM_ID_PARAM);
+                Object formatIdObj = jsonMap.get(FORMAT_ID_PARAM);
+                Object eventStatusIdObj = jsonMap.get(STATUS_PARAM);
+                Object royaltyParamObj = jsonMap.get(ROYALTY_PERCENTAGE_PARAM);
+                Object startDateParamObj = jsonMap.get(START_DATE_PARAM);
+                Object eventResultsJsonStrObj = new Gson().toJson(jsonMap.get(EVENT_RESULTS_PARAM));
 
-                    if (disciplineId != null
-                            && leagueId != null
-                            && firstTeamId != null
-                            && secondTeamId != null
-                            && formatId != null
-                            && eventStatusId != null
-                            && royaltyParam != null
-                            && startDateParam != null
-                            && eventResultsJsonStr != null) {
+                if (disciplineIdObj instanceof Double disciplineId
+                        && leagueIdObj instanceof Double leagueId
+                        && firstTeamIdObj instanceof Double firstTeamId
+                        && secondTeamIdObj instanceof Double secondTeamId
+                        && formatIdObj instanceof Double formatId
+                        && eventStatusIdObj instanceof Double eventStatusId
+                        && royaltyParamObj instanceof Double royaltyParam
+                        && startDateParamObj instanceof Double startDateParam
+                        && eventResultsJsonStrObj instanceof String eventResultsJsonStr) {
 
-                        BigDecimal royalty = new BigDecimal(royaltyParam);
-                        Instant startDate = Instant.ofEpochSecond(startDateParam.longValue());
+                    BigDecimal royalty = new BigDecimal(royaltyParam);
+                    Instant startDate = Instant.ofEpochSecond(startDateParam.longValue());
 
-                        EventDto eventDto = new EventDto(disciplineId.intValue(), leagueId.intValue(),
-                                firstTeamId.intValue(), secondTeamId.intValue(),
-                                formatId.intValue(), royalty, startDate, eventStatusId.intValue());
-                        List<EventResult> eventResults = new Gson().fromJson(eventResultsJsonStr,
-                                new TypeToken<ArrayList<EventResult>>() {
-                                }.getType());
+                    EventDto eventDto = new EventDto(disciplineId.intValue(), leagueId.intValue(),
+                            firstTeamId.intValue(), secondTeamId.intValue(),
+                            formatId.intValue(), royalty, startDate, eventStatusId.intValue());
+                    List<EventResult> eventResults = new Gson().fromJson(eventResultsJsonStr,
+                            new TypeToken<ArrayList<EventResult>>() {
+                            }.getType());
 
-                        Validator<EventDto> eventValidator = ValidatorProvider.INSTANCE.getEventValidator();
-                        EventResultValidator eventResultValidator = ValidatorProvider.INSTANCE.getEventResultValidator();
-                        if (eventValidator.isValid(eventDto) && eventResultValidator.isValid(eventResults)) {
-                            int id = eventService.createEvent(eventDto, eventResults);
-                            Event createdEvent = eventService.findEventById(id).get();
+                    Validator<EventDto> eventValidator = ValidatorProvider.INSTANCE.getEventValidator();
+                    EventResultValidator eventResultValidator = ValidatorProvider.INSTANCE.getEventResultValidator();
+                    if (eventValidator.isValid(eventDto) && eventResultValidator.isValid(eventResults)) {
+                        int id = eventService.createEvent(eventDto, eventResults);
+                        Event createdEvent = eventService.findEventById(id).get();
 
-                            Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
-                            String jsonStrEvent = gson.toJson(createdEvent);
-                            JsonElement jsonElementEvent = JsonParser.parseString(jsonStrEvent);
+                        Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
+                        String jsonStrEvent = gson.toJson(createdEvent);
+                        JsonElement jsonElementEvent = JsonParser.parseString(jsonStrEvent);
 
-                            jsonResponse.add(DATA_PROPERTY, jsonElementEvent);
-                            jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                        } else {
-                            jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
-                        }
+                        jsonResponse.add(DATA_PROPERTY, jsonElementEvent);
+                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
                     } else {
                         jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                     }
-                } catch (ServiceException | ClassCastException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
+                } else {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                 }
-                out.write(jsonResponse.toString());
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }

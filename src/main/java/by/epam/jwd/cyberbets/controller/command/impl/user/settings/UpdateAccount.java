@@ -36,52 +36,51 @@ public final class UpdateAccount implements Action {
         if (role.getId() >= Role.USER.getId()) {
             Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-            if (jsonMap != null) {
-                JsonObject jsonResponse = new JsonObject();
-                response.setContentType(JSON_UTF8_CONTENT_TYPE);
-                PrintWriter out = response.getWriter();
+            PrintWriter out = response.getWriter();
+            JsonObject jsonResponse = new JsonObject();
+            response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-                try {
-                    String newAvatarBase64 = (String) jsonMap.get(NEW_AVATAR_PARAM);
-                    String currentPassword = (String) jsonMap.get(CURRENT_PASSWORD_PARAM);
-                    String newPassword = (String) jsonMap.get(NEW_PASSWORD_PARAM);
-                    String repeatedNewPassword = (String) jsonMap.get(REPEATED_NEW_PASSWORD_PARAM);
+            try {
+                Object newAvatarBase64Obj = jsonMap.get(NEW_AVATAR_PARAM);
+                Object currentPasswordObj = jsonMap.get(CURRENT_PASSWORD_PARAM);
+                Object newPasswordObj = jsonMap.get(NEW_PASSWORD_PARAM);
+                Object repeatedNewPasswordObj = jsonMap.get(REPEATED_NEW_PASSWORD_PARAM);
 
-                    boolean isUpdated = false;
-                    int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
+                boolean isUpdated = false;
+                int accountId = (int) request.getAttribute(ACCOUNT_ID_ATTR);
 
-                    if (currentPassword != null
-                            && newPassword != null
-                            && repeatedNewPassword != null) {
+                if (currentPasswordObj instanceof String currentPassword
+                        && newPasswordObj instanceof String newPassword
+                        && repeatedNewPasswordObj instanceof String repeatedNewPassword) {
 
-                        UpdatePasswordDto updatePasswordDto =
-                                new UpdatePasswordDto(currentPassword, newPassword, repeatedNewPassword);
-                        Validator<UpdatePasswordDto> updatePasswordDtoValidator =
-                                ValidatorProvider.INSTANCE.getUpdatePasswordValidator();
-                        if (updatePasswordDtoValidator.isValid(updatePasswordDto)) {
-                            isUpdated = accountService.updateAccountPassword(accountId, updatePasswordDto);
-
-                            HttpSession httpSession = request.getSession(false);
-                            if (isUpdated && httpSession != null) {
-                                httpSession.invalidate();
-                            }
+                    UpdatePasswordDto updatePasswordDto =
+                            new UpdatePasswordDto(currentPassword, newPassword, repeatedNewPassword);
+                    Validator<UpdatePasswordDto> updatePasswordDtoValidator =
+                            ValidatorProvider.INSTANCE.getUpdatePasswordValidator();
+                    if (updatePasswordDtoValidator.isValid(updatePasswordDto)) {
+                        isUpdated = accountService.updateAccountPassword(accountId, updatePasswordDto);
+                        HttpSession httpSession = request.getSession(false);
+                        if (isUpdated && httpSession != null) {
+                            httpSession.invalidate();
                         }
                     }
-                    if (StringUtils.isNotBlank(newAvatarBase64)) {
-                        isUpdated = accountService.updateAccountAvatar(accountId, newAvatarBase64);
-                    }
-
-                    if (isUpdated) {
-                        jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
-                    } else {
-                        jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
-                    }
-                } catch (ServiceException | ClassCastException e) {
-                    jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                    logger.error(e.getMessage(), e);
                 }
-                out.write(jsonResponse.toString());
+                
+                if (newAvatarBase64Obj instanceof String newAvatarBase64
+                        && StringUtils.isNotBlank(newAvatarBase64)) {
+                    isUpdated = accountService.updateAccountAvatar(accountId, newAvatarBase64);
+                }
+
+                if (isUpdated) {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_OK);
+                } else {
+                    jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
+                }
+            } catch (ServiceException e) {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+                logger.error(e.getMessage(), e);
             }
+            out.write(jsonResponse.toString());
         }
     }
 }

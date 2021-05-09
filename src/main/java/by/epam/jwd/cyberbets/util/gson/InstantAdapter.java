@@ -1,4 +1,4 @@
-package by.epam.jwd.cyberbets.utils.gson;
+package by.epam.jwd.cyberbets.util.gson;
 
 import com.google.gson.*;
 

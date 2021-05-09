@@ -28,15 +28,18 @@ public final class Login implements Action {
     public void perform(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> jsonMap = (Map<String, Object>) request.getAttribute(JSON_MAP);
 
-        if (jsonMap != null) {
-            String email = (String) jsonMap.get(EMAIL_PARAM);
-            String password = (String) jsonMap.get(PASSWORD_PARAM);
-            LoginDto loginDto = new LoginDto(email, password);
+        PrintWriter out = response.getWriter();
+        JsonObject jsonResponse = new JsonObject();
+        response.setContentType(JSON_UTF8_CONTENT_TYPE);
 
-            PrintWriter out = response.getWriter();
-            JsonObject jsonResponse = new JsonObject();
-            response.setContentType(JSON_UTF8_CONTENT_TYPE);
-            try {
+        try {
+            Object emailObj = jsonMap.get(EMAIL_PARAM);
+            Object passwordObj = jsonMap.get(PASSWORD_PARAM);
+
+            if (emailObj instanceof String email
+                    && passwordObj instanceof String password) {
+
+                LoginDto loginDto = new LoginDto(email, password);
                 if (accountService.isAuthorizationValid(loginDto)) {
                     HttpSession httpSession = request.getSession();
                     httpSession.setAttribute(ACCOUNT_EMAIL_ATTR, email);
@@ -44,11 +47,14 @@ public final class Login implements Action {
                 } else {
                     jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
                 }
-            } catch (ServiceException e) {
-                jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
-                logger.error(e.getMessage(), e);
+            } else {
+                jsonResponse.addProperty(STATUS_PARAM, STATUS_DENY);
             }
-            out.write(jsonResponse.toString());
+        } catch (ServiceException e) {
+            jsonResponse.addProperty(STATUS_PARAM, STATUS_EXCEPTION);
+            logger.error(e.getMessage(), e);
         }
+        out.write(jsonResponse.toString());
     }
 }
+

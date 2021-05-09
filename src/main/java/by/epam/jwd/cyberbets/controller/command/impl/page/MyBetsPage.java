@@ -76,7 +76,7 @@ public final class MyBetsPage implements Action {
         requestDispatcher.forward(request, response);
     }
 
-    public class BetData {
+    public static class BetData {
         private final Event event;
         private final EventResult eventResult;
         private final BigDecimal betCoefficient;
